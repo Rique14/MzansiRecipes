@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "114113882209",
+    "project_id": "mzansi-recipes-cdd41",
+    "storage_bucket": "mzansi-recipes-cdd41.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:114113882209:android:b129187e9a3590a8356220",
+        "android_client_info": {
+          "package_name": "com.mzansi.recipes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "114113882209-gp8cblvmjcdh3gmov898pq1jerugg24i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwSeNtawlf9wFxD6LId8EgaMUBmEqRcTs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "114113882209-gp8cblvmjcdh3gmov898pq1jerugg24i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
