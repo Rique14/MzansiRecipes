@@ -6,7 +6,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
@@ -17,6 +19,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -24,8 +28,9 @@ import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.mzansi.recipes.BuildConfig
 import com.mzansi.recipes.R
-import com.mzansi.recipes.ViewModel.HomeViewModel
-import com.mzansi.recipes.ViewModel.HomeViewModelFactory
+import com.mzansi.recipes.ViewModel.DisplayMode
+import com.mzansi.recipes.ViewModel.RecipeViewModel
+import com.mzansi.recipes.ViewModel.RecipeViewModelFactory
 import com.mzansi.recipes.data.db.RecipeEntity
 import com.mzansi.recipes.data.repo.RecipeRepository
 import com.mzansi.recipes.di.AppModules
@@ -36,24 +41,21 @@ import com.mzansi.recipes.ui.common.MzansiBottomNavigationBar
 @Composable
 fun HomeScreen(nav: NavController) {
     val db = AppModules.provideDb(nav.context)
-    val service = AppModules.provideTastyService(AppModules.provideOkHttp(BuildConfig.RAPIDAPI_KEY))
+    val service = AppModules.provideMealDbService(AppModules.provideOkHttp(BuildConfig.RAPIDAPI_KEY))
     val repo = RecipeRepository(service, db.recipeDao())
-    val vm: HomeViewModel = viewModel(factory = HomeViewModelFactory(repo))
+    val vm: RecipeViewModel = viewModel(factory = RecipeViewModelFactory(repo))
     val state by vm.state.collectAsState()
-    var searchText by remember { mutableStateOf("") }
-
-    LaunchedEffect(Unit) { vm.load() }
 
     Scaffold(
         bottomBar = {
             MzansiBottomNavigationBar(navController = nav)
         },
-        containerColor = MaterialTheme.colorScheme.background // sets the base background
+        containerColor = MaterialTheme.colorScheme.background
     ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(bottom = innerPadding.calculateBottomPadding()) // only respect bottom padding for nav bar
+                .padding(bottom = innerPadding.calculateBottomPadding())
         ) {
             // Header Section
             Box(
@@ -74,11 +76,11 @@ fun HomeScreen(nav: NavController) {
                     )
                     Spacer(Modifier.width(12.dp))
                     TextField(
-                        value = searchText,
-                        onValueChange = { searchText = it },
-                        placeholder = { Text("Search", color = Color.Gray) },
+                        value = state.searchQuery,
+                        onValueChange = { vm.onSearchQueryChanged(it) },
+                        placeholder = { Text(stringResource(id = R.string.search), color = Color.Gray) },
                         leadingIcon = {
-                            Icon(Icons.Filled.Search, contentDescription = "Search Icon", tint = Color.Gray)
+                            Icon(Icons.Filled.Search, contentDescription = stringResource(id = R.string.search), tint = Color.Gray)
                         },
                         modifier = Modifier
                             .weight(1f)
@@ -97,49 +99,114 @@ fun HomeScreen(nav: NavController) {
                 }
             }
 
-            // Main Content
+            // Main Scrollable Content
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(16.dp)
+                    .padding(horizontal = 16.dp)
+                    .verticalScroll(rememberScrollState())
             ) {
+                Spacer(Modifier.height(16.dp))
+
                 // Categories Section
-                Text("Categories", style = MaterialTheme.typography.headlineSmall)
+                Text(stringResource(id = R.string.categories), style = MaterialTheme.typography.headlineSmall)
                 Spacer(Modifier.height(8.dp))
-                Row(
-                    Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    AssistChip(onClick = { /* TODO */ }, label = { Text("Breakfast") })
-                    AssistChip(onClick = { /* TODO */ }, label = { Text("Lunch") })
-                    AssistChip(onClick = { /* TODO */ }, label = { Text("Dinner") })
+                if (state.isLoadingCategories) {
+                    LinearProgressIndicator(Modifier.fillMaxWidth())
+                } else if (state.categories.isEmpty()){
+                    Text(stringResource(id = R.string.no_categories_found))
+                } else {
+                    LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        items(state.categories) { category ->
+                            AssistChip(
+                                onClick = { vm.loadRecipesForCategory(category.strCategory) },
+                                label = { Text(category.strCategory) }
+                            )
+                        }
+                    }
                 }
                 Spacer(Modifier.height(24.dp))
 
                 // Trending Section
-                Text("Trending", style = MaterialTheme.typography.headlineSmall)
+                Text(stringResource(id = R.string.trending), style = MaterialTheme.typography.headlineSmall)
                 Spacer(Modifier.height(8.dp))
-                if (state.loading) {
+                if (state.isLoadingTrending) {
                     LinearProgressIndicator(Modifier.fillMaxWidth())
-                } else if (state.error != null) {
-                    Text("Error: ${state.error}", color = MaterialTheme.colorScheme.error)
+                } else if (state.trendingRecipes.isEmpty()) {
+                    Text(stringResource(id = R.string.no_trending_recipes))
                 } else {
                     LazyRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                        items(state.trending) { recipeEntity ->
+                        items(state.trendingRecipes) { recipeEntity ->
                             RecipeItem(recipe = recipeEntity, navController = nav)
                         }
                     }
                 }
                 Spacer(Modifier.height(24.dp))
 
-                // For You Section
-                Text("For You", style = MaterialTheme.typography.headlineSmall)
-                Spacer(Modifier.height(8.dp))
-                LazyRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                    items(state.trending) { recipeEntity ->
-                        RecipeItem(recipe = recipeEntity, navController = nav)
+                // Dynamic Content Area (Search Results / Category Recipes / Placeholder)
+                when (state.activeDisplayMode) {
+                    DisplayMode.SEARCH_RESULTS -> {
+                        Text(
+                            stringResource(id = R.string.search_results_title, state.searchQuery),
+                            style = MaterialTheme.typography.headlineSmall
+                        )
+                        Spacer(Modifier.height(8.dp))
+                        if (state.isLoadingSearchResults) {
+                            LinearProgressIndicator(Modifier.fillMaxWidth())
+                        } else if (state.searchResults.isEmpty()) {
+                            Text(stringResource(id = R.string.no_search_results, state.searchQuery))
+                        } else {
+                            LazyRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                                items(state.searchResults) { recipeEntity ->
+                                    RecipeItem(recipe = recipeEntity, navController = nav)
+                                }
+                            }
+                        }
+                    }
+                    DisplayMode.CATEGORY_RECIPES -> {
+                        Text(
+                            state.selectedCategoryName?.let {
+                                stringResource(id = R.string.category_recipes_title, it)
+                            } ?: stringResource(id = R.string.categories), // Fallback title
+                            style = MaterialTheme.typography.headlineSmall
+                        )
+                        Spacer(Modifier.height(8.dp))
+                        if (state.isLoadingRecipesForCategory) {
+                            LinearProgressIndicator(Modifier.fillMaxWidth())
+                        } else if (state.recipesForCategory.isEmpty()) {
+                            Text(stringResource(id = R.string.no_category_recipes, state.selectedCategoryName ?: "this category"))
+                        } else {
+                            LazyRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                                items(state.recipesForCategory) { recipeEntity ->
+                                    RecipeItem(recipe = recipeEntity, navController = nav)
+                                }
+                            }
+                        }
+                    }
+                    DisplayMode.TRENDING_ONLY -> {
+                        // This space can be used for a "For You" section if desired.
+                        // For now, a simple placeholder or an empty space.
+                        Box(modifier = Modifier.fillMaxWidth().padding(vertical = 24.dp), contentAlignment = Alignment.Center){
+                             Text(
+                                 stringResource(id = R.string.explore_recipes_placeholder),
+                                 style = MaterialTheme.typography.bodyLarge,
+                                 textAlign = TextAlign.Center
+                             )
+                        }
                     }
                 }
+                if (state.error != null && 
+                    !state.isLoadingTrending && 
+                    !state.isLoadingCategories && 
+                    !state.isLoadingSearchResults && 
+                    !state.isLoadingRecipesForCategory) {
+                     Text(
+                         stringResource(id = R.string.error_loading_recipes) + "\n${state.error}", 
+                         color = MaterialTheme.colorScheme.error, 
+                         modifier = Modifier.padding(top = 8.dp)
+                     )
+                }
+                Spacer(Modifier.height(16.dp)) // Padding at the bottom of the scrollable content
             }
         }
     }
@@ -150,12 +217,17 @@ fun RecipeItem(recipe: RecipeEntity, navController: NavController) {
     Card(
         modifier = Modifier
             .width(160.dp)
-            .clickable { navController.navigate(Routes.RecipeDetail.replace("{id}", recipe.id)) },
-        shape = RoundedCornerShape(8.dp)
+            .clickable { navController.navigate(Routes.recipeDetail(recipe.id, recipe.title)) },
+        shape = RoundedCornerShape(8.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column {
             Image(
-                painter = rememberAsyncImagePainter(model = recipe.imageUrl),
+                painter = rememberAsyncImagePainter(
+                    model = recipe.imageUrl,
+                    error = painterResource(id = R.drawable.ic_placeholder_image), // Placeholder on error
+                    placeholder = painterResource(id = R.drawable.ic_placeholder_image) // Placeholder while loading
+                ),
                 contentDescription = recipe.title,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -175,3 +247,4 @@ fun RecipeItem(recipe: RecipeEntity, navController: NavController) {
         }
     }
 }
+
