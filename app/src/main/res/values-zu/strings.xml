@@ -1,0 +1,60 @@
+<resources>
+    <string name="app_name">Mzansi Recipes</string>
+
+    <!-- Common UI Text -->
+    <string name="search">Sesha</string>
+    <string name="categories">Izigaba</string>
+    <string name="breakfast">Ibhulakufesi</string>
+    <string name="lunch">Isidlo sasemini</string>
+    <string name="dinner">Isidlo sakusihlwa</string>
+    <string name="trending">Okuthrendayo</string>
+    <string name="for_you">Okwakho</string>
+    <string name="community">Umphakathi</string>
+    <string name="shopping">Thenga</string>
+    <string name="add">ENGEZA</string>
+    <string name="post">Thumela</string>
+    <string name="cancel">Khansela</string>
+    <string name="back_button_desc">Emuva</string>
+    <string name="edit_button">Hlela</string>
+
+    <!-- Recipe Detail -->
+    <string name="ready_in">Ilunge ku: %1$s imiz</string>
+    <string name="serves">Okwanele: %1$s</string>
+    <string name="ingredients">Izithako</string>
+    <string name="instructions">Imiyalo</string>
+    <string name="recipe_detail">Imininingwane Yeresiphi</string>
+
+    <!-- HomeScreen dynamic content -->
+    <string name="search_results_title">Imiphumela Yosesho ye-\"%1$s\"</string>
+    <string name="category_recipes_title">Amacebo okupheka ku-%1$s</string>
+    <string name="no_search_results">Ayikho imiphumela etholakele ye-\"%1$s\".</string>
+    <string name="no_category_recipes">Awekho amacebo okupheka atholakele ku-%1$s.</string>
+    <string name="explore_recipes_placeholder">Hlola amacebo okupheka, sesha, noma khetha isigaba!</string>
+    <string name="no_trending_recipes">Awekho amacebo okupheka athrendayo atholakalayo okwamanje.</string>
+    <string name="error_loading_recipes">Ayikwazanga ukulayisha amacebo okupheka. Sicela uzame futhi.</string>
+    <string name="no_categories_found">Azikho izigaba ezitholakele.</string>
+
+    <!-- Community Screen -->
+    <string name="popular">Okudumile</string>
+    <string name="recent">Okwakamuva</string>
+    <string name="create_post_title">Dala Okuthunyelwe Okusha</string>
+    <string name="post_title_label">Isihloko Sokuthunyelwe</string>
+    <string name="no_posts_message">Akukho okuthunyelwe okwamanje. Iba ngowokuqala ukwabelana!</string>
+
+    <!-- Shopping Screen -->
+    <string name="shopping_list_title">Uhlu Lwezinto Ezithengwayo</string>
+    <string name="shopping_list_section_header">Uhlu Lwami</string>
+    <string name="shopping_list_empty_message">Uhlu lwakho lwezinto ezithengwayo alunanto.</string>
+    <string name="delete_item_action_desc">Susa into</string>
+
+    <!-- Settings Screen -->
+    <string name="settings">Izilungiselelo</string>
+    <string name="general">OKUJWAYELEKILE</string>
+    <string name="profile">Iphrofayili</string>
+    <string name="notifications">Izaziso</string>
+    <string name="themes">Izindikimba</string>
+    <string name="language">Ulimi</string>
+    <string name="logout">Phuma</string>
+    <string name="select_language">Khetha Ulimi</string>
+
+</resources>

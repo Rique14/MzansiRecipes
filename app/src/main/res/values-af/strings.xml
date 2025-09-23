@@ -1,0 +1,60 @@
+<resources>
+    <string name="app_name">Mzansi Resepte</string>
+
+    <!-- Common UI Text -->
+    <string name="search">Soek</string>
+    <string name="categories">Kategorieë</string>
+    <string name="breakfast">Ontbyt</string>
+    <string name="lunch">Middagete</string>
+    <string name="dinner">Aandete</string>
+    <string name="trending">Gewild</string>
+    <string name="for_you">Vir Jou</string>
+    <string name="community">Gemeenskap</string>
+    <string name="shopping">Winkel</string>
+    <string name="add">VOEG BY</string>
+    <string name="post">Plaas</string>
+    <string name="cancel">Kanselleer</string>
+    <string name="back_button_desc">Terug</string>
+    <string name="edit_button">Wysig</string>
+
+    <!-- Recipe Detail -->
+    <string name="ready_in">Gereed in: %1$s min</string>
+    <string name="serves">Bedien: %1$s</string>
+    <string name="ingredients">Bestanddele</string>
+    <string name="instructions">Instruksies</string>
+    <string name="recipe_detail">Resep Besonderhede</string>
+
+    <!-- HomeScreen dynamic content -->
+    <string name="search_results_title">Soekresultate vir \"%1$s\"</string>
+    <string name="category_recipes_title">Resepte in %1$s</string>
+    <string name="no_search_results">Geen resultate gevind vir \"%1$s\" nie.</string>
+    <string name="no_category_recipes">Geen resepte gevind in %1$s nie.</string>
+    <string name="explore_recipes_placeholder">Verken resepte, soek, of kies \'n kategorie!</string>
+    <string name="no_trending_recipes">Geen gewilde resepte tans beskikbaar nie.</string>
+    <string name="error_loading_recipes">Kon nie resepte laai nie. Probeer asseblief weer.</string>
+    <string name="no_categories_found">Geen kategorieë gevind nie.</string>
+
+    <!-- Community Screen -->
+    <string name="popular">Populêr</string>
+    <string name="recent">Onlangs</string>
+    <string name="create_post_title">Skep n Nuwe Plasing</string>
+    <string name="post_title_label">Plasingtitel</string>
+    <string name="no_posts_message">Nog geen plasings nie. Wees die eerste om te deel!</string>
+
+    <!-- Shopping Screen -->
+    <string name="shopping_list_title">Inkopielys</string>
+    <string name="shopping_list_section_header">My Lys</string>
+    <string name="shopping_list_empty_message">Jou inkopielys is leeg.</string>
+    <string name="delete_item_action_desc">Vee item uit</string>
+
+    <!-- Settings Screen -->
+    <string name="settings">Instellings</string>
+    <string name="general">ALGEMEEN</string>
+    <string name="profile">Profiel</string>
+    <string name="notifications">Kennisgewings</string>
+    <string name="themes">Temas</string>
+    <string name="language">Taal</string>
+    <string name="logout">Teken uit</string>
+    <string name="select_language">Kies Taal</string>
+
+</resources>
