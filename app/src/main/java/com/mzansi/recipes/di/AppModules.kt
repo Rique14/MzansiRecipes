@@ -3,7 +3,7 @@ package com.mzansi.recipes.di
 import android.content.Context
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.room.Room
-import com.mzansi.recipes.data.api.TastyService
+import com.mzansi.recipes.data.api.MealDbService
 import com.mzansi.recipes.data.db.AppDatabase
 import com.mzansi.recipes.data.repo.AuthRepository
 import com.mzansi.recipes.data.repo.CommunityRepository
@@ -30,7 +30,7 @@ object AppModules {
     fun provideOkHttp(rapidApiKey: String): OkHttpClient {
         val auth = Interceptor { chain ->
             val req = chain.request().newBuilder()
-                .addHeader("x-rapidapi-host", "tasty-api1.p.rapidapi.com")
+                .addHeader("x-rapidapi-host", "themealdb.p.rapidapi.com")
                 .addHeader("x-rapidapi-key", rapidApiKey)
                 .build()
             chain.proceed(req)
@@ -44,16 +44,16 @@ object AppModules {
             .build()
     }
 
-    fun provideTastyService(client: OkHttpClient): TastyService {
+    fun provideMealDbService(client: OkHttpClient): MealDbService {
         val moshi = Moshi.Builder()
             .addLast(KotlinJsonAdapterFactory())
             .build()
         return Retrofit.Builder()
-            .baseUrl("https://tasty-api1.p.rapidapi.com")
+            .baseUrl("https://themealdb.p.rapidapi.com")
             .client(client)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
-            .create(TastyService::class.java)
+            .create(MealDbService::class.java)
     }
 
     fun provideAuth() = FirebaseAuth.getInstance()
@@ -62,7 +62,7 @@ object AppModules {
     fun provideNetworkMonitor(context: Context) = NetworkMonitor(context)
 
     fun provideUserPrefs(context: Context) = UserPreferences(context.dataStore)
-    fun provideRecipeRepo(service: TastyService, db: AppDatabase) =
+    fun provideRecipeRepo(service: MealDbService, db: AppDatabase) =
         RecipeRepository(service, db.recipeDao())
     fun provideShoppingRepo(db: AppDatabase, fs: FirebaseFirestore, auth: FirebaseAuth) =
         ShoppingRepository(db.shoppingDao(), fs, auth)

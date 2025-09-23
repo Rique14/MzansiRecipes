@@ -1,5 +1,6 @@
 package com.mzansi.recipes.ui.settings
 
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -16,19 +17,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.mzansi.recipes.R
 import com.mzansi.recipes.di.AppModules
 import com.mzansi.recipes.navigation.Routes
 import com.mzansi.recipes.ViewModel.SettingsViewModel
 import com.mzansi.recipes.ViewModel.SettingsViewModelFactory
 import com.mzansi.recipes.data.preferences.SettingsState
 import com.mzansi.recipes.ui.common.MzansiBottomNavigationBar
-import com.mzansi.recipes.util.LocaleHelper
-import com.mzansi.recipes.util.restartApp
 import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -46,7 +48,7 @@ fun SettingsScreen(nav: NavController) {
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        "Settings",
+                        stringResource(id = R.string.settings),
                         color = Color.White,
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
@@ -78,7 +80,7 @@ fun SettingsScreen(nav: NavController) {
                 .padding(vertical = 8.dp)
         ) {
             Text(
-                text = "GENERAL",
+                text = stringResource(id = R.string.general),
                 style = MaterialTheme.typography.labelMedium,
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
             )
@@ -86,17 +88,17 @@ fun SettingsScreen(nav: NavController) {
             // Profile
             SettingItemRow(
                 icon = Icons.Filled.Person,
-                title = "Profile",
+                title = stringResource(id = R.string.profile),
                 onClick = { nav.navigate(Routes.Profile) },
                 trailingContent = {
-                    Icon(Icons.Filled.KeyboardArrowRight, contentDescription = "Navigate to Profile")
+                    Icon(Icons.Filled.KeyboardArrowRight, contentDescription = stringResource(id = R.string.profile))
                 }
             )
 
             // Notifications
             SettingItemRow(
                 icon = Icons.Filled.Notifications,
-                title = "Notifications",
+                title = stringResource(id = R.string.notifications),
                 trailingContent = {
                     Switch(
                         checked = state.notificationsEnabled,
@@ -109,14 +111,12 @@ fun SettingsScreen(nav: NavController) {
             // Themes
             SettingItemRow(
                 icon = Icons.Filled.Palette,
-                title = "Themes",
+                title = stringResource(id = R.string.themes),
                 modifier = Modifier.clickable { themeExpanded = true },
                 trailingContent = {
                     Box {
                         Text(
-                            text = state.theme.replaceFirstChar {
-                                if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
-                            },
+                            text = state.theme.replaceFirstChar { it.titlecase(Locale.getDefault()) },
                             style = MaterialTheme.typography.bodyLarge.copy(
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -145,7 +145,7 @@ fun SettingsScreen(nav: NavController) {
             // Language
             SettingItemRow(
                 icon = Icons.Filled.Language,
-                title = "Language",
+                title = stringResource(id = R.string.language),
                 modifier = Modifier.clickable { languageExpanded = true },
                 trailingContent = {
                     Row(
@@ -153,7 +153,11 @@ fun SettingsScreen(nav: NavController) {
                         modifier = Modifier.wrapContentWidth()
                     ) {
                         Text(
-                            text = if (state.language == "zu") "Zulu" else "English",
+                            text = when (state.language) {
+                                "zu" -> "isiZulu"
+                                "af" -> "Afrikaans"
+                                else -> "English"
+                            },
                             style = MaterialTheme.typography.bodyLarge.copy(
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             ),
@@ -167,20 +171,25 @@ fun SettingsScreen(nav: NavController) {
                                 text = { Text("English") },
                                 onClick = {
                                     vm.setLanguage("en")
-                                    val ctx = nav.context
-                                    LocaleHelper.setLocale(ctx, "en")
+                                    // This is the correct, modern way to change the language
+                                    AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags("en"))
                                     languageExpanded = false
-                                    restartApp(ctx)
                                 }
                             )
                             DropdownMenuItem(
-                                text = { Text("Zulu") },
+                                text = { Text("isiZulu") },
                                 onClick = {
                                     vm.setLanguage("zu")
-                                    val ctx = nav.context
-                                    LocaleHelper.setLocale(ctx, "zu")
+                                    AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags("zu"))
                                     languageExpanded = false
-                                    restartApp(ctx)
+                                }
+                            )
+                            DropdownMenuItem(
+                                text = { Text("Afrikaans") },
+                                onClick = {
+                                    vm.setLanguage("af")
+                                    AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags("af"))
+                                    languageExpanded = false
                                 }
                             )
                         }
@@ -191,13 +200,13 @@ fun SettingsScreen(nav: NavController) {
             // Logout
             SettingItemRow(
                 icon = Icons.AutoMirrored.Filled.ExitToApp,
-                title = "Logout",
+                title = stringResource(id = R.string.logout),
                 onClick = {
                     AppModules.provideAuth().signOut()
                     nav.navigate(Routes.Login) { popUpTo(Routes.Home) { inclusive = true } }
                 },
                 trailingContent = {
-                    Icon(Icons.Filled.KeyboardArrowRight, contentDescription = "Logout")
+                    Icon(Icons.Filled.KeyboardArrowRight, contentDescription = stringResource(id = R.string.logout))
                 }
             )
         }
@@ -218,7 +227,7 @@ private fun SettingItemRow(
 
     val finalModifier = if (onClick != null && trailingContent == null) {
         baseModifier.clickable(onClick = onClick)
-    } else if (onClick != null && trailingContent != null && title != "Notifications") {
+    } else if (onClick != null && trailingContent != null && title != stringResource(id = R.string.notifications)) {
         baseModifier.clickable(onClick = onClick)
     } else {
         baseModifier

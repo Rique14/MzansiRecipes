@@ -1,51 +1,57 @@
 package com.mzansi.recipes.ViewModel
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.mzansi.recipes.data.repo.RecipeFullDetails
 import com.mzansi.recipes.data.repo.RecipeRepository
+import com.mzansi.recipes.data.repo.ShoppingRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-data class RecipeDetailUiState(
-    val details: RecipeFullDetails? = null,
+// Renamed to reflect its purpose and match the new data structure
+data class RecipeDetailState(
     val loading: Boolean = false,
-    val error: String? = null
+    val error: String? = null,
+    val details: com.mzansi.recipes.data.repo.RecipeFullDetails? = null,
+    val addedToShopping: Boolean = false
 )
 
 class RecipeDetailViewModel(
-    private val repo: RecipeRepository,
+    private val recipeRepo: RecipeRepository,
+    private val shoppingRepo: ShoppingRepository,
     private val recipeId: String
 ) : ViewModel() {
-    private val _state = MutableStateFlow(RecipeDetailUiState())
+
+    private val _state = MutableStateFlow(RecipeDetailState())
     val state = _state.asStateFlow()
 
     init {
-        load()
+        load(recipeId)
     }
 
-    private fun load() = viewModelScope.launch {
+    private fun load(id: String) = viewModelScope.launch {
         _state.value = _state.value.copy(loading = true, error = null)
         try {
-            val details = repo.getFullDetail(recipeId)
-            _state.value = _state.value.copy(loading = false, details = details)
+            val detail = recipeRepo.getFullDetail(id)
+            _state.value = _state.value.copy(
+                loading = false,
+                details = detail
+            )
         } catch (e: Exception) {
-            _state.value = _state.value.copy(loading = false, error = e.message)
+            _state.value = _state.value.copy(
+                loading = false,
+                error = e.message ?: "An unknown error occurred"
+            )
         }
     }
-}
 
-class RecipeDetailViewModelFactory(
-    private val repo: RecipeRepository,
-    private val recipeId: String
-) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(RecipeDetailViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return RecipeDetailViewModel(repo, recipeId) as T
+    fun addAllIngredientsToShopping() = viewModelScope.launch {
+        val s = _state.value.details
+        if (s?.ingredients?.isEmpty() != false) return@launch
+
+        s.ingredients.forEach { item ->
+            shoppingRepo.addItem(name = item, originRecipeId = s.id)
         }
-        throw IllegalArgumentException("Unknown ViewModel class")
+        _state.value = _state.value.copy(addedToShopping = true)
     }
 }

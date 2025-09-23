@@ -2,9 +2,11 @@ package com.mzansi.recipes.ui.community
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
@@ -15,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -22,25 +25,33 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
+import com.mzansi.recipes.BuildConfig
+import com.mzansi.recipes.R
 import com.mzansi.recipes.ViewModel.CommunityViewModel
 import com.mzansi.recipes.ViewModel.CommunityViewModelFactory
+import com.mzansi.recipes.data.repo.RecipeRepository
 import com.mzansi.recipes.di.AppModules
 import com.mzansi.recipes.ui.common.MzansiBottomNavigationBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CommunityScreen(nav: NavController) {
-    val repo = AppModules.provideCommunityRepo(AppModules.provideFirestore(), AppModules.provideAuth())
-    val vm: CommunityViewModel = viewModel(factory = CommunityViewModelFactory(repo))
+    val communityRepo = AppModules.provideCommunityRepo(AppModules.provideFirestore(), AppModules.provideAuth())
+    // Instantiate RecipeRepository, similar to HomeScreen
+    val recipeRepo = RecipeRepository(
+        AppModules.provideMealDbService(AppModules.provideOkHttp(BuildConfig.RAPIDAPI_KEY)),
+        AppModules.provideDb(nav.context).recipeDao()
+    )
+    val vm: CommunityViewModel = viewModel(factory = CommunityViewModelFactory(communityRepo, recipeRepo))
     val state by vm.state.collectAsState()
     var showCreateDialog by remember { mutableStateOf(false) }
 
-    LaunchedEffect(Unit) { vm.load() }
+    LaunchedEffect(Unit) { vm.loadContent() } // Updated to loadContent
 
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("COMMUNITY", color = Color.White, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, fontSize = 30.sp) },
+                title = { Text(stringResource(id = R.string.community), color = Color.White, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, fontSize = 30.sp) },
                 navigationIcon = {
                     IconButton(onClick = { nav.popBackStack() }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Color.White)
@@ -55,7 +66,7 @@ fun CommunityScreen(nav: NavController) {
         bottomBar = { MzansiBottomNavigationBar(navController = nav) },
         floatingActionButton = {
             FloatingActionButton(onClick = { showCreateDialog = true }) {
-                Icon(Icons.Default.Add, contentDescription = "Create Post")
+                Icon(Icons.Default.Add, contentDescription = stringResource(id = R.string.create_post_title))
             }
         }
     ) { paddingValues ->
@@ -77,20 +88,30 @@ fun CommunityScreen(nav: NavController) {
             Spacer(Modifier.height(16.dp))
 
             // Categories Section
-            Text("Categories", style = MaterialTheme.typography.titleLarge)
+            Text(stringResource(id = R.string.categories), style = MaterialTheme.typography.titleLarge)
             Spacer(Modifier.height(8.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.Start)
-            ) {
-                AssistChip(onClick = { /* TODO */ }, label = { Text("Popular") })
-                AssistChip(onClick = { /* TODO */ }, label = { Text("Recent") })
-                AssistChip(onClick = { /* TODO */ }, label = { Text("Lunch") })
+            if (state.isLoadingCategories) {
+                LinearProgressIndicator(Modifier.fillMaxWidth())
+            } else if (state.categories.isEmpty()) {
+                Text(stringResource(id = R.string.no_categories_found))
+            } else {
+                LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    items(state.categories) { category ->
+                        AssistChip(
+                            onClick = { /* TODO: Implement category filtering for community posts if needed */ },
+                            label = { Text(category.strCategory) }
+                        )
+                    }
+                }
             }
             Spacer(Modifier.height(16.dp))
 
+            // Posts Section title (or other relevant title like "Popular Posts")
+            Text(stringResource(id = R.string.popular), style = MaterialTheme.typography.titleLarge) // Example title
+            Spacer(Modifier.height(8.dp))
+
             when {
-                state.loading -> {
+                state.loadingPosts -> { // Changed from state.loading
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         CircularProgressIndicator()
                     }
@@ -102,7 +123,7 @@ fun CommunityScreen(nav: NavController) {
                 }
                 state.posts.isEmpty() -> {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Text("No posts yet. Be the first to share!", style = MaterialTheme.typography.bodyLarge)
+                        Text(stringResource(id = R.string.no_posts_message), style = MaterialTheme.typography.bodyLarge)
                     }
                 }
                 else -> {
@@ -147,12 +168,12 @@ fun CreatePostDialog(onDismiss: () -> Unit, onCreate: (String) -> Unit) {
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Create a New Post") },
+        title = { Text(stringResource(id = R.string.create_post_title)) },
         text = {
             OutlinedTextField(
                 value = title,
                 onValueChange = { title = it },
-                label = { Text("Post Title") },
+                label = { Text(stringResource(id = R.string.post_title_label)) },
                 modifier = Modifier.fillMaxWidth()
             )
         },
@@ -161,12 +182,12 @@ fun CreatePostDialog(onDismiss: () -> Unit, onCreate: (String) -> Unit) {
                 onClick = { if (title.isNotBlank()) onCreate(title) },
                 enabled = title.isNotBlank()
             ) {
-                Text("Post")
+                Text(stringResource(id = R.string.post))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(id = R.string.cancel))
             }
         }
     )

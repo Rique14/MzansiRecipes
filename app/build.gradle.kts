@@ -118,6 +118,7 @@ dependencies {
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.palette.ktx)
+    implementation(libs.androidx.appcompat)
     // kapt("androidx.room:room-compiler:2.6.1") // Changed
     ksp("androidx.room:room-compiler:2.6.1") // To KSP
     implementation(libs.androidx.navigation.compose)

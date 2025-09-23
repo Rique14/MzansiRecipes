@@ -2,32 +2,63 @@ package com.mzansi.recipes.ViewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mzansi.recipes.data.api.CategorySummary
 import com.mzansi.recipes.data.repo.CommunityPost
 import com.mzansi.recipes.data.repo.CommunityRepository
+import com.mzansi.recipes.data.repo.RecipeRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 data class CommunityUiState(
     val posts: List<CommunityPost> = emptyList(),
-    val loading: Boolean = false,
-    val error: String? = null
+    val categories: List<CategorySummary> = emptyList(),
+    val loadingPosts: Boolean = false,
+    val isLoadingCategories: Boolean = false,
+    val error: String? = null // Shared error state for now
 )
 
-class CommunityViewModel(private val repo: CommunityRepository) : ViewModel() {
+class CommunityViewModel(
+    private val communityRepo: CommunityRepository,
+    private val recipeRepo: RecipeRepository // Added RecipeRepository
+) : ViewModel() {
     private val _state = MutableStateFlow(CommunityUiState())
     val state = _state.asStateFlow()
 
-    fun load() = viewModelScope.launch {
-        _state.value = _state.value.copy(loading = true, error = null)
+    // Renamed load to loadContent to be more descriptive
+    fun loadContent() {
+        loadPosts()
+        loadCategories()
+    }
+
+    private fun loadPosts() = viewModelScope.launch {
+        _state.update { it.copy(loadingPosts = true, error = null) }
         try {
-            val posts = repo.listPopular()
-            _state.value = _state.value.copy(loading = false, posts = posts)
+            val posts = communityRepo.listPopular() // Assuming this is the default load
+            _state.update { it.copy(loadingPosts = false, posts = posts) }
         } catch (e: Exception) {
-            _state.value = _state.value.copy(loading = false, error = e.message)
+            _state.update { it.copy(loadingPosts = false, error = e.message) }
         }
     }
 
-    fun like(postId: String) = viewModelScope.launch { repo.like(postId); load() }
-    fun create(title: String) = viewModelScope.launch { repo.create(title); load() }
+    private fun loadCategories() = viewModelScope.launch {
+        _state.update { it.copy(isLoadingCategories = true, error = null) } // Clear previous errors specifically for categories if needed
+        try {
+            val categories = recipeRepo.getCategories()
+            _state.update { it.copy(isLoadingCategories = false, categories = categories) }
+        } catch (e: Exception) {
+            _state.update { it.copy(isLoadingCategories = false, error = e.message) } // Use shared error state
+        }
+    }
+
+    fun like(postId: String) = viewModelScope.launch {
+        communityRepo.like(postId)
+        loadPosts() // Refresh posts after liking
+    }
+
+    fun create(title: String) = viewModelScope.launch {
+        communityRepo.create(title)
+        loadPosts() // Refresh posts after creating
+    }
 }

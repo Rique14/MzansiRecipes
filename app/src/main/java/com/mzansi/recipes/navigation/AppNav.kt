@@ -2,8 +2,10 @@ package com.mzansi.recipes.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.mzansi.recipes.ui.auth.ForgotPasswordScreen
 import com.mzansi.recipes.ui.auth.LoginScreen
 import com.mzansi.recipes.ui.auth.RegisterScreen
@@ -20,7 +22,9 @@ object Routes {
     const val Register = "register"
     const val Forgot = "forgot"
     const val Home = "home"
-    const val RecipeDetail = "recipe/{id}"
+    // Updated route to include title
+    const val RecipeDetail = "recipe/{id}/{title}"
+    fun recipeDetail(id: String, title: String) = "recipe/$id/$title"
     const val Shopping = "shopping"
     const val Community = "community"
     const val Settings = "settings"
@@ -40,9 +44,16 @@ fun AppNavHost(nav: NavHostController) {
         composable(Routes.Settings) { SettingsScreen(nav) }
         composable(Routes.Profile) { ProfileScreen(nav) }
         composable(Routes.EditProfile) { EditProfileScreen(nav) }
-        composable(Routes.RecipeDetail) { backStack ->
+        composable(
+            route = Routes.RecipeDetail,
+            arguments = listOf(
+                navArgument("id") { type = NavType.StringType },
+                navArgument("title") { type = NavType.StringType }
+            )
+        ) { backStack ->
             val id = backStack.arguments?.getString("id") ?: ""
-            RecipeDetailScreen(nav, id)
+            val title = backStack.arguments?.getString("title") ?: ""
+            RecipeDetailScreen(nav, id, title)
         }
     }
 }

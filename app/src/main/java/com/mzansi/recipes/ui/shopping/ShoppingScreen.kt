@@ -11,17 +11,17 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.mzansi.recipes.R
 import com.mzansi.recipes.ViewModel.ShoppingViewModel
 import com.mzansi.recipes.ViewModel.ShoppingViewModelFactory
 import com.mzansi.recipes.di.AppModules
 import com.mzansi.recipes.ui.common.MzansiBottomNavigationBar
-import androidx.compose.ui.unit.sp
-
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,10 +33,10 @@ fun ShoppingScreen(nav: NavController) {
 
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar( // ✅ Centered title for consistency
+            CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        "SHOPPING",
+                        stringResource(id = R.string.shopping_list_title),
                         color = Color.White,
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
@@ -47,7 +47,7 @@ fun ShoppingScreen(nav: NavController) {
                     IconButton(onClick = { nav.popBackStack() }) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(id = R.string.back_button_desc),
                             tint = Color.White
                         )
                     }
@@ -73,12 +73,12 @@ fun ShoppingScreen(nav: NavController) {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text("List", style = MaterialTheme.typography.titleLarge)
+                Text(stringResource(id = R.string.shopping_list_section_header), style = MaterialTheme.typography.titleLarge)
                 Button(
                     onClick = { /* TODO: Toggle editMode or handle edit action */ },
                     shape = MaterialTheme.shapes.medium
                 ) {
-                    Text("EDIT")
+                    Text(stringResource(id = R.string.edit_button))
                 }
             }
             Spacer(Modifier.height(12.dp))
@@ -90,7 +90,7 @@ fun ShoppingScreen(nav: NavController) {
                         .padding(top = 50.dp),
                     contentAlignment = Alignment.TopCenter
                 ) {
-                    Text("Your shopping list is empty.", style = MaterialTheme.typography.bodyLarge)
+                    Text(stringResource(id = R.string.shopping_list_empty_message), style = MaterialTheme.typography.bodyLarge)
                 }
             } else {
                 LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -104,7 +104,7 @@ fun ShoppingScreen(nav: NavController) {
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
                                 Text(
-                                    item.itemName,
+                                    item.itemName, // Assuming itemName is not for localization, as it's user-generated data
                                     style = MaterialTheme.typography.bodyLarge,
                                     modifier = Modifier.weight(1f)
                                 )
@@ -116,7 +116,7 @@ fun ShoppingScreen(nav: NavController) {
                                     IconButton(onClick = { vm.delete(item) }) {
                                         Icon(
                                             Icons.Default.Close,
-                                            contentDescription = "Delete item",
+                                            contentDescription = stringResource(id = R.string.delete_item_action_desc),
                                             tint = Color.Red
                                         )
                                     }

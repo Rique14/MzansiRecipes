@@ -10,6 +10,7 @@
         android:allowBackup="true"
         android:label="Mzansi Recipes"
         android:theme="@style/Theme.MzansiRecipes"
+        android.localeConfig="@xml/locales_config"
         android:networkSecurityConfig="@xml/network_security_config"
         tools:ignore="Instantiatable">
         <activity

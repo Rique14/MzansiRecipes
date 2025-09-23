@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -19,28 +20,26 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.mzansi.recipes.BuildConfig
+import com.mzansi.recipes.R
 import com.mzansi.recipes.ViewModel.RecipeDetailViewModel
 import com.mzansi.recipes.ViewModel.RecipeDetailViewModelFactory
-import com.mzansi.recipes.ViewModel.ShoppingViewModel
-import com.mzansi.recipes.ViewModel.ShoppingViewModelFactory
 import com.mzansi.recipes.data.repo.RecipeRepository
 import com.mzansi.recipes.di.AppModules
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RecipeDetailScreen(nav: NavController, id: String) {
+fun RecipeDetailScreen(nav: NavController, id: String, title: String) {
     val db = AppModules.provideDb(nav.context)
     val shoppingRepo = AppModules.provideShoppingRepo(db, AppModules.provideFirestore(), AppModules.provideAuth())
-    val shoppingVm: ShoppingViewModel = viewModel(factory = ShoppingViewModelFactory(shoppingRepo))
 
-    val recipeRepo = RecipeRepository(AppModules.provideTastyService(AppModules.provideOkHttp(BuildConfig.RAPIDAPI_KEY)), db.recipeDao())
-    val detailVm: RecipeDetailViewModel = viewModel(factory = RecipeDetailViewModelFactory(recipeRepo, id))
+    val recipeRepo = RecipeRepository(AppModules.provideMealDbService(AppModules.provideOkHttp(BuildConfig.RAPIDAPI_KEY)), db.recipeDao())
+    val detailVm: RecipeDetailViewModel = viewModel(factory = RecipeDetailViewModelFactory(recipeRepo, shoppingRepo, id))
     val state by detailVm.state.collectAsState()
 
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text(state.details?.title ?: "Recipe", color = Color.White, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, fontSize = 30.sp) },
+                title = { Text(stringResource(id = R.string.recipe_detail), color = Color.White, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, fontSize = 30.sp) },
                 navigationIcon = {
                     IconButton(onClick = { nav.popBackStack() }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Color.White)
@@ -81,16 +80,11 @@ fun RecipeDetailScreen(nav: NavController, id: String) {
                     )
                     Spacer(Modifier.height(16.dp))
                     Column(Modifier.padding(horizontal = 16.dp)) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text("Ready in: ${details.prepTime ?: '?'} min", style = MaterialTheme.typography.bodyMedium)
-                            Text("Serves: ${details.servings ?: '?'}", style = MaterialTheme.typography.bodyMedium)
-                        }
+                        Text(details.title, style = MaterialTheme.typography.headlineMedium)
+                        Spacer(Modifier.height(8.dp))
+                        Text("${details.area} | ${details.category}", style = MaterialTheme.typography.bodyMedium)
                         Spacer(Modifier.height(24.dp))
-                        Text("Ingredients", style = MaterialTheme.typography.titleLarge)
+                        Text(stringResource(id = R.string.ingredients), style = MaterialTheme.typography.titleLarge)
                         Spacer(Modifier.height(12.dp))
 
                         // Ingredients in two columns
@@ -112,17 +106,25 @@ fun RecipeDetailScreen(nav: NavController, id: String) {
                             }
                         }
                         Spacer(Modifier.height(24.dp))
+                        Text(stringResource(id = R.string.instructions), style = MaterialTheme.typography.titleLarge)
+                        Spacer(Modifier.height(12.dp))
+                        val instructionsList = details.instructions?.lines()?.filter { it.isNotBlank() } ?: emptyList()
+                        instructionsList.forEachIndexed { index, instruction ->
+                            Row(modifier = Modifier.padding(bottom = 8.dp)) {
+                                Text("${index + 1}. ", fontWeight = FontWeight.Bold)
+                                Text(instruction)
+                            }
+                        }
+                        Spacer(Modifier.height(24.dp))
                         Button(
-                            onClick = {
-                                details.ingredients.forEach { shoppingVm.addItem(it) }
-                            },
+                            onClick = { detailVm.addAllIngredientsToShopping() },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 32.dp)
                                 .height(50.dp),
                             shape = MaterialTheme.shapes.medium
                         ) {
-                            Text("ADD", style = MaterialTheme.typography.labelLarge)
+                            Text(stringResource(id = R.string.add), style = MaterialTheme.typography.labelLarge)
                         }
                     }
                 }
