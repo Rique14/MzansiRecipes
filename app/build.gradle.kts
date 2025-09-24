@@ -5,7 +5,6 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("com.google.gms.google-services")
-    // kotlin("kapt") // Removed
     alias(libs.plugins.ksp) // Added
 
 }
@@ -100,10 +99,12 @@ dependencies {
     // Splash Screen
     implementation(libs.androidx.core.splashscreen) // Added this line
 
-    // Firebase
+    // Firebase & Google Sign-In
     implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation("com.google.firebase:firebase-messaging-ktx") // Added for FCM
+    implementation("com.google.android.gms:play-services-auth:21.2.0") // Added for Google Sign-In
 
 
     // Retrofit + Moshi

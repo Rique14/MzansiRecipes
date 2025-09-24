@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "114113882209-h4l6mesn9lm1uv3aq9ec250ksutgk1da.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mzansi.recipes",
+            "certificate_hash": "74ded9da34243f2383ff2c350562ae97b839fd61"
+          }
+        },
+        {
           "client_id": "114113882209-gp8cblvmjcdh3gmov898pq1jerugg24i.apps.googleusercontent.com",
           "client_type": 3
         }

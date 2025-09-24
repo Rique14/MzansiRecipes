@@ -14,8 +14,19 @@
     <string name="add">ADD</string>
     <string name="post">Post</string>
     <string name="cancel">Cancel</string>
-    <string name="back_button_desc">Back</string>
-    <string name="edit_button">Edit</string>
+    <string name="back_button_desc" translatable="false">Back</string>
+    <string name="guest_user">Guest User</string>
+    <string name="no_email_available">No email available</string>
+    <string name="profile_picture_content_desc" translatable="false">Profile picture</string>
+
+
+
+    <!-- Bottom Navigation -->
+    <string name="bottom_nav_home">Home</string>
+    <string name="bottom_nav_community">Community</string>
+    <string name="bottom_nav_shop">Shop</string>
+    <string name="bottom_nav_settings">Settings</string>
+
 
     <!-- Recipe Detail -->
     <string name="ready_in">Ready in: %1$s min</string>

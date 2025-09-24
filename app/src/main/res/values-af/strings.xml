@@ -15,7 +15,17 @@
     <string name="post">Plaas</string>
     <string name="cancel">Kanselleer</string>
     <string name="back_button_desc">Terug</string>
-    <string name="edit_button">Wysig</string>
+    <string name="edit_button" >Wysig</string>
+    <string name="guest_user">Gasgebruiker</string>
+    <string name="no_email_available">Geen e-pos beskikbaar nie</string>
+
+    <!-- Bottom Navigation -->
+    <string name="bottom_nav_home">Tuis</string>
+    <string name="bottom_nav_community">Gemeenskap</string>
+    <string name="bottom_nav_shop">Winkel</string>
+    <string name="bottom_nav_settings">Instellings</string>
+
+
 
     <!-- Recipe Detail -->
     <string name="ready_in">Gereed in: %1$s min</string>

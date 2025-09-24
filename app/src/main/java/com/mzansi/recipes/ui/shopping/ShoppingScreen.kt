@@ -70,16 +70,11 @@ fun ShoppingScreen(nav: NavController) {
             Spacer(Modifier.height(16.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
+                // horizontalArrangement = Arrangement.SpaceBetween, // Removed as only one item remains
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(stringResource(id = R.string.shopping_list_section_header), style = MaterialTheme.typography.titleLarge)
-                Button(
-                    onClick = { /* TODO: Toggle editMode or handle edit action */ },
-                    shape = MaterialTheme.shapes.medium
-                ) {
-                    Text(stringResource(id = R.string.edit_button))
-                }
+                // Edit Button Removed
             }
             Spacer(Modifier.height(12.dp))
 

@@ -16,6 +16,14 @@
     <string name="cancel">Khansela</string>
     <string name="back_button_desc">Emuva</string>
     <string name="edit_button">Hlela</string>
+    <string name="guest_user">Umsebenzisi Oyisivakashi</string>
+    <string name="no_email_available">Alukho i-imeyili etholakalayo</string>
+
+    <!-- Bottom Navigation -->
+    <string name="bottom_nav_home">Ekhaya</string>
+    <string name="bottom_nav_community">Umphakathi</string>
+    <string name="bottom_nav_shop">Thenga</string>
+    <string name="bottom_nav_settings">Izilungiselelo</string>
 
     <!-- Recipe Detail -->
     <string name="ready_in">Ilunge ku: %1$s imiz</string>

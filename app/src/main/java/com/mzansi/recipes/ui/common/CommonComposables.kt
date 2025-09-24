@@ -1,5 +1,6 @@
 package com.mzansi.recipes.ui.common
 
+import android.util.Log
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
@@ -15,23 +16,34 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.mzansi.recipes.R // Import R class for string resources
 import com.mzansi.recipes.navigation.Routes
 
+// Changed label to labelResId to hold the resource ID
 data class BottomNavItem(
-    val label: String,
+    val labelResId: Int,
     val icon: ImageVector,
     val route: String
 )
 
 @Composable
 fun MzansiBottomNavigationBar(navController: NavController) {
+    val currentConfig = LocalConfiguration.current
+    Log.d("BottomNav", "Recomposing. Current config locale: ${currentConfig.locales[0]}")
+    Log.d("BottomNav", "Home label from stringResource: ${stringResource(id = R.string.bottom_nav_home)}")
+    Log.d("BottomNav", "Community label from stringResource: ${stringResource(id = R.string.bottom_nav_community)}")
+    Log.d("BottomNav", "Shop label from stringResource: ${stringResource(id = R.string.bottom_nav_shop)}")
+    Log.d("BottomNav", "Settings label from stringResource: ${stringResource(id = R.string.bottom_nav_settings)}")
+
     val navItems = listOf(
-        BottomNavItem(label = "Home", icon = Icons.Default.Home, route = Routes.Home),
-        BottomNavItem(label = "Community", icon = Icons.Default.Favorite, route = Routes.Community),
-        BottomNavItem(label = "Shop", icon = Icons.Default.ShoppingCart, route = Routes.Shopping),
-        BottomNavItem(label = "Settings", icon = Icons.Default.Settings, route = Routes.Settings)
+        BottomNavItem(labelResId = R.string.bottom_nav_home, icon = Icons.Default.Home, route = Routes.Home),
+        BottomNavItem(labelResId = R.string.bottom_nav_community, icon = Icons.Default.Favorite, route = Routes.Community),
+        BottomNavItem(labelResId = R.string.bottom_nav_shop, icon = Icons.Default.ShoppingCart, route = Routes.Shopping),
+        BottomNavItem(labelResId = R.string.bottom_nav_settings, icon = Icons.Default.Settings, route = Routes.Settings)
     )
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -43,22 +55,15 @@ fun MzansiBottomNavigationBar(navController: NavController) {
                 selected = currentRoute == item.route,
                 onClick = {
                     navController.navigate(item.route) {
-                        // Pop up to the start destination of the graph to
-                        // avoid building up a large stack of destinations
-                        // on the back stack as users select items
                         popUpTo(Routes.Home) {
-                            // Save state if you want to preserve the state of the screens
-                            // saveState = true
+                            // saveState = true // Optional
                         }
-                        // Avoid multiple copies of the same destination when
-                        // reselecting the same item
                         launchSingleTop = true
-                        // Restore state when reselecting a previously selected item
-                        // restoreState = true
+                        // restoreState = true // Optional
                     }
                 },
-                icon = { Icon(item.icon, contentDescription = item.label) },
-                label = { Text(item.label) },
+                icon = { Icon(item.icon, contentDescription = stringResource(id = item.labelResId)) },
+                label = { Text(stringResource(id = item.labelResId)) },
                 colors = NavigationBarItemDefaults.colors(
                     selectedIconColor = MaterialTheme.colorScheme.primary,
                     unselectedIconColor = Color.Gray,

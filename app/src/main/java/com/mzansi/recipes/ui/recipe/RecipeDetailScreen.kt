@@ -68,7 +68,7 @@ fun RecipeDetailScreen(nav: NavController, id: String, title: String) {
                     Modifier
                         .padding(paddingValues)
                         .verticalScroll(rememberScrollState())
-                        .padding(bottom = 16.dp)
+                        .padding(bottom = 16.dp) // Ensure padding for the button at the bottom
                 ) {
                     Image(
                         painter = rememberAsyncImagePainter(model = details.imageUrl),
@@ -92,7 +92,11 @@ fun RecipeDetailScreen(nav: NavController, id: String, title: String) {
                             Column(Modifier.weight(1f)) {
                                 details.ingredients.forEachIndexed { index, item ->
                                     if (index % 2 == 0) {
-                                        IngredientRow(item = item, onCheckedChange = { /* TODO */ })
+                                        IngredientRow(
+                                            item = item,
+                                            checked = state.ingredientSelection[item] ?: false,
+                                            onCheckedChange = { detailVm.toggleIngredientSelection(item) }
+                                        )
                                     }
                                 }
                             }
@@ -100,7 +104,11 @@ fun RecipeDetailScreen(nav: NavController, id: String, title: String) {
                             Column(Modifier.weight(1f)) {
                                 details.ingredients.forEachIndexed { index, item ->
                                     if (index % 2 != 0) {
-                                        IngredientRow(item = item, onCheckedChange = { /* TODO */ })
+                                        IngredientRow(
+                                            item = item,
+                                            checked = state.ingredientSelection[item] ?: false,
+                                            onCheckedChange = { detailVm.toggleIngredientSelection(item) }
+                                        )
                                     }
                                 }
                             }
@@ -117,7 +125,7 @@ fun RecipeDetailScreen(nav: NavController, id: String, title: String) {
                         }
                         Spacer(Modifier.height(24.dp))
                         Button(
-                            onClick = { detailVm.addAllIngredientsToShopping() },
+                            onClick = { detailVm.addAllIngredientsToShopping() }, // This will now add only selected items
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 32.dp)
@@ -134,8 +142,9 @@ fun RecipeDetailScreen(nav: NavController, id: String, title: String) {
 }
 
 @Composable
-fun IngredientRow(item: String, checked: Boolean = false, onCheckedChange: (Boolean) -> Unit) {
-    var isChecked by remember { mutableStateOf(checked) }
+fun IngredientRow(item: String, checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
+    // Removed local isChecked state: var isChecked by remember { mutableStateOf(checked) }
+    // The checked state is now directly controlled by the ViewModel via the 'checked' parameter.
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -143,10 +152,9 @@ fun IngredientRow(item: String, checked: Boolean = false, onCheckedChange: (Bool
             .padding(vertical = 4.dp)
     ) {
         Checkbox(
-            checked = isChecked,
-            onCheckedChange = { 
-                isChecked = it 
-                onCheckedChange(it)
+            checked = checked, // Use the passed-in checked state
+            onCheckedChange = { newCheckedState -> 
+                onCheckedChange(newCheckedState) // Call the passed-in lambda to notify ViewModel
             }
         )
         Spacer(Modifier.width(8.dp))

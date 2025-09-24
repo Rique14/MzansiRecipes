@@ -13,7 +13,6 @@ import com.mzansi.recipes.ui.community.CommunityScreen
 import com.mzansi.recipes.ui.home.HomeScreen
 import com.mzansi.recipes.ui.settings.SettingsScreen
 import com.mzansi.recipes.ui.settings.ProfileScreen
-import com.mzansi.recipes.ui.settings.EditProfileScreen
 import com.mzansi.recipes.ui.shopping.ShoppingScreen
 import com.mzansi.recipes.ui.recipe.RecipeDetailScreen
 
@@ -22,14 +21,12 @@ object Routes {
     const val Register = "register"
     const val Forgot = "forgot"
     const val Home = "home"
-    // Updated route to include title
     const val RecipeDetail = "recipe/{id}/{title}"
     fun recipeDetail(id: String, title: String) = "recipe/$id/$title"
     const val Shopping = "shopping"
     const val Community = "community"
     const val Settings = "settings"
     const val Profile = "profile"
-    const val EditProfile = "edit_profile"
 }
 
 @Composable
@@ -43,7 +40,6 @@ fun AppNavHost(nav: NavHostController) {
         composable(Routes.Community) { CommunityScreen(nav) }
         composable(Routes.Settings) { SettingsScreen(nav) }
         composable(Routes.Profile) { ProfileScreen(nav) }
-        composable(Routes.EditProfile) { EditProfileScreen(nav) }
         composable(
             route = Routes.RecipeDetail,
             arguments = listOf(

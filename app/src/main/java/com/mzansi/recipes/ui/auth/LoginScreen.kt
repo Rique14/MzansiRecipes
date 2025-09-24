@@ -1,5 +1,10 @@
 package com.mzansi.recipes.ui.auth
 
+import android.app.Activity
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -7,12 +12,13 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.outlined.MailOutline
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -21,6 +27,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
+import com.mzansi.recipes.R
 import com.mzansi.recipes.navigation.Routes
 import com.mzansi.recipes.ViewModel.AuthViewModel
 import com.mzansi.recipes.ViewModel.AuthViewModelFactory
@@ -32,9 +45,43 @@ fun LoginScreen(nav: NavController) {
     val repo = AppModules.provideAuthRepo(AppModules.provideAuth(), AppModules.provideFirestore())
     val vm: AuthViewModel = viewModel(factory = AuthViewModelFactory(repo))
     val state by vm.state.collectAsState()
+    val context = LocalContext.current
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+
+    // Configure Google Sign-In
+    val googleSignInClient: GoogleSignInClient by lazy {
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(context.getString(R.string.default_web_client_id)) // Crucial for Firebase
+            .requestEmail()
+            .build()
+        GoogleSignIn.getClient(context, gso)
+    }
+
+    val googleSignInLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult(),
+        onResult = { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+                try {
+                    val account: GoogleSignInAccount? = task.getResult(ApiException::class.java)
+                    if (account != null && account.idToken != null) {
+                        vm.signInWithGoogle(account.idToken!!)
+                    } else {
+                        Log.w("LoginScreen", "Google Sign In failed: No ID token or account found.")
+                        // Optionally update state.error here
+                    }
+                } catch (e: ApiException) {
+                    Log.w("LoginScreen", "Google Sign In failed with ApiException: ${e.statusCode}", e)
+                    // Optionally update state.error here based on e.statusCode
+                }
+            } else {
+                 Log.w("LoginScreen", "Google Sign In activity was cancelled or failed. Result code: ${result.resultCode}")
+                 // Optionally update state.error here
+            }
+        }
+    )
 
     if (state.loggedIn) {
         LaunchedEffect(Unit) { nav.navigate(Routes.Home) { popUpTo(Routes.Login) { inclusive = true } } }
@@ -46,7 +93,7 @@ fun LoginScreen(nav: NavController) {
                 .fillMaxWidth()
                 .background(MaterialTheme.colorScheme.primary)
                 .statusBarsPadding()
-                .padding(vertical = 20.dp), // Adjust padding for header height
+                .padding(vertical = 20.dp),
             contentAlignment = Alignment.Center
         ) {
             Text(
@@ -69,7 +116,7 @@ fun LoginScreen(nav: NavController) {
                 onValueChange = { email = it },
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = { Text("Email") },
-                trailingIcon = { Icon(imageVector = Icons.Outlined.MailOutline, contentDescription = "Email Icon") }, // Explicitly named imageVector
+                trailingIcon = { Icon(imageVector = Icons.Outlined.MailOutline, contentDescription = "Email Icon") },
                 shape = RoundedCornerShape(8.dp),
                 colors = TextFieldDefaults.colors(
                     focusedIndicatorColor = Color.Transparent,
@@ -89,7 +136,7 @@ fun LoginScreen(nav: NavController) {
                 onValueChange = { password = it },
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = { Text("Password") },
-                trailingIcon = { Icon(imageVector = Icons.Filled.Visibility, contentDescription = "Password Icon") }, // Explicitly named imageVector
+                trailingIcon = { Icon(imageVector = Icons.Filled.Visibility, contentDescription = "Password Icon") },
                 shape = RoundedCornerShape(8.dp),
                 colors = TextFieldDefaults.colors(
                     focusedIndicatorColor = Color.Transparent,
@@ -141,14 +188,14 @@ fun LoginScreen(nav: NavController) {
             Spacer(Modifier.height(24.dp))
 
             OutlinedButton(
-                onClick = { /* TODO: Implement Google Sign-In */ },
+                onClick = { googleSignInLauncher.launch(googleSignInClient.signInIntent) },
                 modifier = Modifier.fillMaxWidth().height(48.dp),
                 shape = RoundedCornerShape(8.dp)
             ) {
-                Icon(
-                    imageVector = Icons.Filled.Star, // Explicitly named imageVector
-                    contentDescription = "Google Logo Placeholder", 
-                    modifier = Modifier.size(20.dp)
+                Image(
+                    painter = painterResource(id = R.drawable.google),
+                    contentDescription = "Google Logo", 
+                    modifier = Modifier.size(24.dp)
                 )
                 Spacer(Modifier.width(8.dp))
                 Text("LOGIN IN WITH GOOGLE", color = MaterialTheme.colorScheme.onSurface)
