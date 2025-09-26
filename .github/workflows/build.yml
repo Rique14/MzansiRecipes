@@ -1,0 +1,39 @@
+name: Android CI Build and Test
+
+on:
+  push:
+    branches: [ main ] # Adjust if your main branch is named differently (e.g., master)
+  pull_request:
+    branches: [ main ] # Adjust if your main branch is named differently
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin' # Standard distribution
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        # This action handles caching Gradle dependencies and the Gradle wrapper,
+        # and makes gradlew executable.
+
+      - name: Build and run unit tests
+        run: ./gradlew build # The 'build' task typically compiles, runs lint, and executes unit tests for all variants.
+
+      # If you want to be more specific or run tests separately:
+      # - name: Run unit tests
+      #   run: ./gradlew testDebugUnitTest
+
+      # Optional: If you want to upload the generated APK as an artifact
+      # - name: Upload Debug APK
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: app-debug-apk # Name of the artifact
+      #     path: app/build/outputs/apk/debug/app-debug.apk # Path to your APK
