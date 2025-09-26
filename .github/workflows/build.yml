@@ -27,13 +27,8 @@ jobs:
       - name: Build and run unit tests
         run: ./gradlew build # The 'build' task typically compiles, runs lint, and executes unit tests for all variants.
 
-      # If you want to be more specific or run tests separately:
+
+      # Part 3:
       # - name: Run unit tests
       #   run: ./gradlew testDebugUnitTest
 
-      # Optional: If you want to upload the generated APK as an artifact
-      # - name: Upload Debug APK
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: app-debug-apk # Name of the artifact
-      #     path: app/build/outputs/apk/debug/app-debug.apk # Path to your APK
