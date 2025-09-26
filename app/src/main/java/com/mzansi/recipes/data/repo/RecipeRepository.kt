@@ -87,14 +87,13 @@ class RecipeRepository(
             // Continue with fetching new trending items even if demotion fails for some reason
         }
 
-        // Step 2: Fetch and mark new trending items from a specific category
-        // FEATURED_CATEGORY_NAME is now a class constant
+
+        // FEATURED_CATEGORY_NAME now a class constant
         Log.d(TAG, "triggerTrendingRecipesRefresh: Fetching recipes from category '$FEATURED_CATEGORY_NAME' to mark as trending.")
         try {
             val response = service.filterByCategory(FEATURED_CATEGORY_NAME)
             val trendingRecipeEntities = response.meals?.take(10)?.mapNotNull { mealSummary ->
-                // Check if this item already exists, possibly just demoted.
-                // We want to ensure its category is correct and it's marked as trending.
+
                 val existing = recipeDao.getById(mealSummary.idMeal)
                 RecipeEntity(
                     id = mealSummary.idMeal,

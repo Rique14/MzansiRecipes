@@ -76,6 +76,14 @@
     <string name="logout">Phuma</string>
     <string name="select_language">Khetha Ulimi</string>
 
+    <!-- User Post Detail Screen -->
+    <string name="uncategorized_label">Okungahlukanisiwe</string>
+    <string name="like_post_desc">Thanda okuthunyelwe</string>
+    <string name="no_ingredients_provided">Azikho izithako ezinikeziwe.</string>
+    <string name="no_instructions_provided">Ayikho imiyalelo enikeziwe.</string>
+    <string name="post_not_found_error">Okuthunyelwe akutholakalanga.</string>
+    <string name="loading">Iyalayisha...</string>
+
     <!-- Saved Recipes Screen -->
     <string name="saved_recipes_title">Amacebo Okupheka Agciniwe</string>
     <string name="no_saved_recipes">Awunamacala okupheka agciniwe okwamanje.</string>

@@ -51,7 +51,7 @@ fun SavedRecipesScreen(navController: NavController) {
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = stringResource(id = R.string.saved_recipes_title), // Will add this string
+                        text = stringResource(id = R.string.saved_recipes_title),
                         color = Color.White,
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
@@ -94,7 +94,7 @@ fun SavedRecipesScreen(navController: NavController) {
                 }
                 !uiState.isLoading && uiState.savedRecipes.isEmpty() -> {
                     Text(
-                        text = stringResource(id = R.string.no_saved_recipes), // Will add this string
+                        text = stringResource(id = R.string.no_saved_recipes),
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.bodyLarge,
                         modifier = Modifier

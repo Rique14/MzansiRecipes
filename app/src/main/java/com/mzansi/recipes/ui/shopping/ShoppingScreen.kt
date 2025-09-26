@@ -99,7 +99,7 @@ fun ShoppingScreen(nav: NavController) {
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
                                 Text(
-                                    item.itemName, // Assuming itemName is not for localization, as it's user-generated data
+                                    item.itemName,
                                     style = MaterialTheme.typography.bodyLarge,
                                     modifier = Modifier.weight(1f)
                                 )

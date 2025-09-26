@@ -51,7 +51,7 @@ object AppModules {
 
     private val MIGRATION_4_5 = object : Migration(4, 5) {
         override fun migrate(db: SupportSQLiteDatabase) {
-            // Create new table with the desired schema (without prepTime and servings)
+            // Create new table with the desired schema
             db.execSQL("CREATE TABLE IF NOT EXISTS `recipes_new` (`id` TEXT NOT NULL, `title` TEXT NOT NULL, `imageUrl` TEXT, `category` TEXT, `trending` INTEGER NOT NULL DEFAULT 0, `pendingSync` INTEGER NOT NULL DEFAULT 0, `instructions` TEXT, `area` TEXT, PRIMARY KEY(`id`))")
             // Copy data from old table to new table
             db.execSQL("INSERT INTO `recipes_new` (id, title, imageUrl, category, trending, pendingSync, instructions, area) SELECT id, title, imageUrl, category, trending, pendingSync, instructions, area FROM recipes")

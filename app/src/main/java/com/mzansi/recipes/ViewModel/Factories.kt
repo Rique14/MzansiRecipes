@@ -74,12 +74,12 @@ class CommunityViewModelFactory(
     }
 }
 
-// Factory for UserPostDetailViewModel (Using CreationExtras)
+// Factory for UserPostDetailViewModel
 class UserPostDetailViewModelFactory(
     private val communityRepository: CommunityRepository
 ) : AbstractSavedStateViewModelFactory() {
     override fun <T : ViewModel> create( 
-        key: String, // key is still here from the AbstractSavedStateViewModelFactory's create method we override
+        key: String,
         modelClass: Class<T>,
         handle: SavedStateHandle
     ): T {

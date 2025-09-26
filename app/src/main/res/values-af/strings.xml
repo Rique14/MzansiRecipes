@@ -77,6 +77,14 @@
     <string name="logout">Teken uit</string>
     <string name="select_language">Kies Taal</string>
 
+    <!-- User Post Detail Screen -->
+    <string name="uncategorized_label">Ongekategoriseer</string>
+    <string name="like_post_desc">Hou van plasing</string>
+    <string name="no_ingredients_provided">Geen bestanddele verskaf nie.</string>
+    <string name="no_instructions_provided">Geen instruksies verskaf nie.</string>
+    <string name="post_not_found_error">Plasing nie gevind nie.</string>
+    <string name="loading">Laai tans...</string>
+
     <!-- Saved Recipes Screen -->
     <string name="saved_recipes_title">Gestoorde Resepte</string>
     <string name="no_saved_recipes">Jy het nog geen gestoorde resepte nie.</string>

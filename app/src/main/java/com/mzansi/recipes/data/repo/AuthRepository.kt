@@ -55,8 +55,8 @@ class AuthRepository(
             )
             
             // For new users, also set default preferences.
-            // For existing users, this will only update name and email if they changed in Google account,
-            // thanks to SetOptions.merge().
+            // For existing users, this will only update name and email if they changed in Google account
+
             if (isNewUser) {
                 userData["preferredLanguage"] = "en"
                 userData["theme"] = "system"

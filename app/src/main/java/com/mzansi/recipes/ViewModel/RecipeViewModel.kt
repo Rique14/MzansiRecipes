@@ -21,16 +21,16 @@ enum class DisplayMode {
 
 data class HomeState(
     val trendingRecipes: List<RecipeEntity> = emptyList(),
-    val categories: List<CategoryEntity> = emptyList(), // Changed to CategoryEntity
+    val categories: List<CategoryEntity> = emptyList(),
     val searchResults: List<RecipeEntity> = emptyList(),
     val recipesForCategory: List<RecipeEntity> = emptyList(),
     val searchQuery: String = "",
     val selectedCategoryName: String? = null,
     val activeDisplayMode: DisplayMode = DisplayMode.TRENDING_ONLY,
-    val isLoadingTrendingRefresh: Boolean = false, // Renamed for clarity
-    val isLoadingCategoriesRefresh: Boolean = false, // Renamed for clarity
+    val isLoadingTrendingRefresh: Boolean = false,
+    val isLoadingCategoriesRefresh: Boolean = false,
     val isLoadingSearchResults: Boolean = false,
-    val isLoadingCategoryRecipesRefresh: Boolean = false, // Renamed for clarity
+    val isLoadingCategoryRecipesRefresh: Boolean = false,
     val error: String? = null
 )
 
@@ -61,7 +61,7 @@ class RecipeViewModel(private val repo: RecipeRepository) : ViewModel() {
         viewModelScope.launch {
             if (isInitial) _state.update { it.copy(isLoadingCategoriesRefresh = true, error = null) }
             try {
-                repo.refreshCategoriesIfNeeded() // This fetches from network if cache is empty & online
+                repo.refreshCategoriesIfNeeded() // Fetches from network if cache is empty & online
             } catch (e: Exception) {
                 _state.update { it.copy(error = "Failed to refresh categories: ${e.message}") }
             } finally {
@@ -151,7 +151,7 @@ class RecipeViewModel(private val repo: RecipeRepository) : ViewModel() {
             } catch (e: Exception) {
                 _state.update { it.copy(error = "Failed to refresh $categoryName recipes: ${e.message}", isLoadingCategoryRecipesRefresh = false) }
             }
-            // Note: isLoadingCategoryRecipesRefresh is primarily managed by the flow collection now
+
         }
     }
 

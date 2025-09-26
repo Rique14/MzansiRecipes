@@ -36,7 +36,7 @@ import com.mzansi.recipes.data.db.RecipeEntity
 import com.mzansi.recipes.di.AppModules
 import com.mzansi.recipes.navigation.Routes
 import com.mzansi.recipes.ui.common.MzansiBottomNavigationBar
-// import com.mzansi.recipes.util.NetworkMonitor // No longer directly needed here for instantiation
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -124,7 +124,7 @@ fun HomeScreen(nav: NavController) {
                 // Categories Section
                 Text(stringResource(id = R.string.categories), style = MaterialTheme.typography.headlineSmall)
                 Spacer(Modifier.height(8.dp))
-                // Updated loading state and category property access
+
                 if (state.isLoadingCategoriesRefresh) {
                     LinearProgressIndicator(Modifier.fillMaxWidth())
                 } else if (state.categories.isEmpty()){
@@ -144,7 +144,7 @@ fun HomeScreen(nav: NavController) {
                 // Trending Section
                 Text(stringResource(id = R.string.trending), style = MaterialTheme.typography.headlineSmall)
                 Spacer(Modifier.height(8.dp))
-                // Updated loading state
+
                 if (state.isLoadingTrendingRefresh) {
                     LinearProgressIndicator(Modifier.fillMaxWidth())
                 } else if (state.trendingRecipes.isEmpty()) {

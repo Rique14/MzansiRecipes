@@ -171,7 +171,7 @@ fun SettingsScreen(nav: NavController) {
                                 text = { Text("English") },
                                 onClick = {
                                     vm.setLanguage("en")
-                                    // This is the correct, modern way to change the language
+
                                     AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags("en"))
                                     languageExpanded = false
                                 }

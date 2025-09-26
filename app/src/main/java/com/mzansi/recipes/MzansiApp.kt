@@ -22,7 +22,7 @@ class MzansiApp : Application() {
                 NotificationManager.IMPORTANCE_HIGH
             ).apply {
                 description = "Reminders for your shopping list items."
-                // You can set other properties like light color, vibration pattern, etc.
+
             }
 
             // Recipe Alerts Channel

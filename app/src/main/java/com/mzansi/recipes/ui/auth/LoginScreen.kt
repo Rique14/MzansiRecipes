@@ -70,15 +70,15 @@ fun LoginScreen(nav: NavController) {
                         vm.signInWithGoogle(account.idToken!!)
                     } else {
                         Log.w("LoginScreen", "Google Sign In failed: No ID token or account found.")
-                        // Optionally update state.error here
+
                     }
                 } catch (e: ApiException) {
                     Log.w("LoginScreen", "Google Sign In failed with ApiException: ${e.statusCode}", e)
-                    // Optionally update state.error here based on e.statusCode
+
                 }
             } else {
                  Log.w("LoginScreen", "Google Sign In activity was cancelled or failed. Result code: ${result.resultCode}")
-                 // Optionally update state.error here
+
             }
         }
     )

@@ -26,7 +26,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     /**
      * Called when a new FCM registration token is generated for the device.
-     * This token is used to send messages to this specific device.
+     * Token is used to send messages to this specific device.
      */
     override fun onNewToken(token: String) {
         Log.d(TAG, "Refreshed token: $token")
@@ -43,37 +43,30 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         Log.d(TAG, "From: ${remoteMessage.from}")
 
-        // Check if message contains a data payload.
+
         remoteMessage.data.isNotEmpty().let {
             Log.d(TAG, "Message data payload: " + remoteMessage.data)
             // Handle data payload here. For example, determine the type of alert.
-            // You could use a specific key in the data payload to decide which channel to use.
+
             val notificationType = remoteMessage.data["type"] ?: "general"
             val channelId = when (notificationType) {
                 "shopping" -> CHANNEL_ID_SHOPPING
                 "recipe" -> CHANNEL_ID_RECIPES
                 else -> CHANNEL_ID_RECIPES // Default channel
             }
-            // You can also get title and body from data payload if not using notification payload
+
              val dataTitle = remoteMessage.data["title"]
              val dataBody = remoteMessage.data["body"]
         }
 
-        // Check if message contains a notification payload.
+
         remoteMessage.notification?.let {
             Log.d(TAG, "Message Notification Body: ${it.body}")
             sendNotification(it.title, it.body, remoteMessage.data["type"])
         }
     }
 
-    /**
-     * Persist token to third-party servers.
-     *
-     * Modify this method to associate the user's FCM registration token with any server-side account
-     * maintained by your application.
-     *
-     * @param token The new token.
-     */
+
     private fun sendRegistrationToServer(token: String?) {
         val userId = FirebaseAuth.getInstance().currentUser?.uid
         if (userId != null && token != null) {
@@ -87,13 +80,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
     }
 
-    /**
-     * Create and show a simple notification containing the received FCM message.
-     *
-     * @param messageTitle FCM message title received.
-     * @param messageBody FCM message body received.
-     * @param notificationType Type of notification to determine channel.
-     */
+
     private fun sendNotification(messageTitle: String?, messageBody: String?, notificationType: String?) {
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
@@ -120,9 +107,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        // Since android Oreo notification channel is needed.
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            // Create channels if they don't exist (idempotent)
+
             val shoppingChannel = NotificationChannel(
                 CHANNEL_ID_SHOPPING,
                 "Shopping Reminders",

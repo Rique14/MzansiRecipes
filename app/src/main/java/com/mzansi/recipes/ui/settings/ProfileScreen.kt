@@ -45,7 +45,7 @@ fun ProfileScreen(
                     Log.d("ProfileScreen", "Fetched name from Firestore: $firestoreUserName")
                 } else {
                     Log.d("ProfileScreen", "User document does not exist in Firestore for UID: ${currentUser.uid}")
-                    firestoreUserName = null // Explicitly set to null if document doesn't exist
+                    firestoreUserName = null
                 }
             } catch (e: Exception) {
                 Log.e("ProfileScreen", "Error fetching user name from Firestore", e)
@@ -95,7 +95,7 @@ fun ProfileScreen(
             // Changed verticalArrangement to start to accommodate the new button
             verticalArrangement = Arrangement.Top
         ) {
-            Spacer(modifier = Modifier.height(32.dp)) // Added some space at the top
+            Spacer(modifier = Modifier.height(32.dp))
 
             if (currentUser?.photoUrl != null) {
                 AsyncImage(
@@ -134,12 +134,12 @@ fun ProfileScreen(
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
 
-            Spacer(modifier = Modifier.height(24.dp)) // Space before the new button
+            Spacer(modifier = Modifier.height(24.dp))
 
             // <<< NEW BUTTON >>>
             Button(
                 onClick = { navController.navigate(Routes.SavedRecipes) },
-                modifier = Modifier.fillMaxWidth(0.8f) // Button takes 80% of width
+                modifier = Modifier.fillMaxWidth(0.8f)
             ) {
                 Text(stringResource(id = R.string.saved_recipes_title)) // Re-using existing string
             }

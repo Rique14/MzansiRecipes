@@ -41,7 +41,7 @@ class RecipeDetailViewModel(
         _state.update { it.copy(loading = true, error = null, details = null, ingredientSelection = emptyMap()) } 
         Log.d(TAG, "Loading details for recipeId: $id")
         try {
-            // Fetch and cache full details, this will also update/create the RecipeEntity in DB
+
             val detail = recipeRepo.fetchAndCacheFullRecipeDetails(id)
             Log.d(TAG, "RecipeDetailViewModel: Received details from repo: Title: ${detail?.title}, Area: ${detail?.area}, Category: ${detail?.category}")
 
@@ -49,10 +49,10 @@ class RecipeDetailViewModel(
             _state.update {
                 Log.d(TAG, "RecipeDetailViewModel: Updating state with Area: ${detail?.area}, Category: ${detail?.category}")
                 it.copy(
-                    loading = false, // Loading for main details is done
+                    loading = false,
                     details = detail,
                     ingredientSelection = initialSelection
-                    // isSavedOffline will be updated by observeRecipeSavedStatus
+
                 )
             }
             Log.d(TAG, "Details loaded: ${detail?.title}, Ingredients count: ${detail?.ingredients?.size}")
@@ -79,8 +79,7 @@ class RecipeDetailViewModel(
                     _state.update { it.copy(isSavedOffline = recipeEntity.isSavedOffline) }
                     Log.d(TAG, "Recipe $id saved status updated to: ${recipeEntity.isSavedOffline}")
                 } else {
-                    // This case might happen if the recipe is deleted or not yet created by fetchAndCacheFullRecipeDetails
-                    // For now, assume it means not saved if entity is null after initial load attempt.
+
                     _state.update { it.copy(isSavedOffline = false) }
                      Log.d(TAG, "Recipe $id entity not found for saved status observation, assuming not saved.")
                 }
@@ -112,7 +111,7 @@ class RecipeDetailViewModel(
 
         if (selectedIngredients.isEmpty()) {
             Log.d(TAG, "No ingredients selected for recipe: ${currentDetails.title}.")
-            _state.update { it.copy(addedToShopping = false) } // Indicate nothing was added or use a new state var
+            _state.update { it.copy(addedToShopping = false) }
             return@launch
         }
 
@@ -136,7 +135,7 @@ class RecipeDetailViewModel(
 
     // <<< NEW FUNCTION >>>
     fun toggleSaveRecipe() = viewModelScope.launch {
-        val currentRecipeId = recipeId // from constructor
+        val currentRecipeId = recipeId
         val currentSavedStatus = _state.value.isSavedOffline
         Log.d(TAG, "toggleSaveRecipe called for $currentRecipeId. Current saved status: $currentSavedStatus")
         try {
@@ -146,13 +145,12 @@ class RecipeDetailViewModel(
             } else {
                 if (_state.value.details == null) {
                      Log.w(TAG, "Attempting to save recipe $currentRecipeId before its details are loaded. Details should be loaded by now via init.")
-                    // It's unexpected for details to be null here if loadRecipeDetails was called in init.
-                    // However, the saveRecipeForOffline in repo will call fetchAndCacheFullRecipeDetails again if needed.
+
                 }
                 recipeRepo.saveRecipeForOffline(currentRecipeId)
                 Log.d(TAG, "Saving recipe $currentRecipeId for offline.")
             }
-            // The state.isSavedOffline will automatically update due to the observeRecipeSavedStatus flow.
+
         } catch (e: Exception) {
             Log.e(TAG, "Error toggling save state for recipe $currentRecipeId: ${e.message}", e)
             _state.update { it.copy(error = "Failed to update save status: ${e.message}") }

@@ -42,7 +42,7 @@ class NetworkMonitor(context: Context) {
     init {
         try {
             Log.d(TAG, "Initializing NetworkMonitor")
-            _isOnline.value = isCurrentlyOnline() // Re-check before registering to ensure initial state is robust
+            _isOnline.value = isCurrentlyOnline()
             val req = NetworkRequest.Builder()
                 .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
                 .build()

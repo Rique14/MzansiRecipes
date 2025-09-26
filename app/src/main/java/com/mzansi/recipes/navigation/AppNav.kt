@@ -45,7 +45,7 @@ fun AppNavHost(nav: NavHostController) {
         composable(Routes.Community) { CommunityScreen(nav) }
         composable(Routes.Settings) { SettingsScreen(nav) }
         composable(Routes.Profile) { ProfileScreen(nav) }
-        composable(Routes.SavedRecipes) { SavedRecipesScreen(nav) } // <<< ADDED COMPOSABLE
+        composable(Routes.SavedRecipes) { SavedRecipesScreen(nav) } // ADDED COMPOSABLE
         composable(
             route = Routes.RecipeDetail,
             arguments = listOf(
@@ -58,7 +58,7 @@ fun AppNavHost(nav: NavHostController) {
             RecipeDetailScreen(nav, id, title)
         }
         composable(
-            route = Routes.UserPostDetail, // New composable entry
+            route = Routes.UserPostDetail,
             arguments = listOf(
                 navArgument("postId") { type = NavType.StringType }
             )

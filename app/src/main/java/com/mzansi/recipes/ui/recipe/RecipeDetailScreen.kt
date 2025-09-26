@@ -28,16 +28,16 @@ import com.mzansi.recipes.ViewModel.RecipeDetailViewModel
 import com.mzansi.recipes.ViewModel.RecipeDetailViewModelFactory
 // import com.mzansi.recipes.data.repo.RecipeRepository // No longer directly needed here for instantiation
 import com.mzansi.recipes.di.AppModules
-// import com.mzansi.recipes.util.NetworkMonitor // No longer directly needed here for instantiation
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecipeDetailScreen(nav: NavController, id: String, title: String) {
-    val context = LocalContext.current // Get context
+    val context = LocalContext.current
     val db = AppModules.provideDb(context)
     val shoppingRepo = AppModules.provideShoppingRepo(db, AppModules.provideFirestore(), AppModules.provideAuth())
     val service = AppModules.provideMealDbService(AppModules.provideOkHttp(BuildConfig.RAPIDAPI_KEY))
-    // Use the singleton NetworkMonitor from AppModules
+
     val networkMonitor = remember { AppModules.provideNetworkMonitor(context) }
 
     // Updated RecipeRepository instantiation to use AppModules for all dependencies
@@ -61,12 +61,12 @@ fun RecipeDetailScreen(nav: NavController, id: String, title: String) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Color.White)
                     }
                 },
-                actions = { // <<< ADDED ACTIONS PARAMETER
+                actions = {
                     IconButton(onClick = { detailVm.toggleSaveRecipe() }) {
                         Icon(
                             imageVector = if (state.isSavedOffline) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
                             contentDescription = if (state.isSavedOffline) "Unsave Recipe" else "Save Recipe",
-                            tint = Color.White // Match other icon tint
+                            tint = Color.White
                         )
                     }
                 },
@@ -77,12 +77,12 @@ fun RecipeDetailScreen(nav: NavController, id: String, title: String) {
         }
     ) { paddingValues ->
         when {
-            state.loading && state.details == null -> { // Show loading only if details are not yet available
+            state.loading && state.details == null -> {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator()
                 }
             }
-            state.error != null && state.details == null -> { // Show error only if details are not yet available
+            state.error != null && state.details == null -> {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Text("Error: ${state.error}", color = MaterialTheme.colorScheme.error)
                 }
@@ -93,7 +93,7 @@ fun RecipeDetailScreen(nav: NavController, id: String, title: String) {
                     Modifier
                         .padding(paddingValues)
                         .verticalScroll(rememberScrollState())
-                        .padding(bottom = 16.dp) // Ensure padding for the button at the bottom
+                        .padding(bottom = 16.dp)
                 ) {
                     Image(
                         painter = rememberAsyncImagePainter(model = details.imageUrl),
@@ -152,7 +152,7 @@ fun RecipeDetailScreen(nav: NavController, id: String, title: String) {
                         }
                         Spacer(Modifier.height(24.dp))
                         Button(
-                            onClick = { detailVm.addAllIngredientsToShopping() }, // This will now add only selected items
+                            onClick = { detailVm.addAllIngredientsToShopping() },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 32.dp)

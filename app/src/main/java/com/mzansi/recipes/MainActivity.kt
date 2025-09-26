@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
             Log.d("MainActivity", "POST_NOTIFICATIONS permission granted.")
         } else {
             Log.w("MainActivity", "POST_NOTIFICATIONS permission denied.")
-            // Optionally, inform the user that notifications will be disabled.
+
         }
     }
 
@@ -62,13 +62,13 @@ class MainActivity : AppCompatActivity() {
         networkMonitor = AppModules.provideNetworkMonitor(applicationContext)
         requestNotificationPermission()
 
-        val prefs = AppModules.provideUserPrefs(this) // Type of 'prefs' is crucial here
+        val prefs = AppModules.provideUserPrefs(this)
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
             Log.d("MainActivity", "setContent recomposing. Current composable locale: ${androidx.compose.ui.platform.LocalConfiguration.current.locales[0]}")
-            // Ensure SettingsViewModelFactory is correctly defined and its constructor matches 'prefs'
+
             val settingsVm: SettingsViewModel = viewModel(factory = SettingsViewModelFactory(prefs))
             val settings by settingsVm.settings.collectAsState(initial = null)
 
@@ -120,12 +120,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        // No need to call networkMonitor.close() here if it's a true singleton managed by AppModules
-        // and intended to live for the app's lifecycle. 
-        // However, if AppModules might re-create it or if you want strict cleanup, it can stay.
-        // For now, let's assume it's managed by AppModules and its lifecycle is tied to the app.
-        // If issues arise, we can revisit closing it.
-        // networkMonitor.close() // Let's comment this out for a true singleton behavior for now.
+
     }
 }
 

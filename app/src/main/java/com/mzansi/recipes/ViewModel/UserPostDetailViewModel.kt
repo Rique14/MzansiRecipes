@@ -57,12 +57,12 @@ class UserPostDetailViewModel(
     }
 
     fun likePost() {
-        // Reuse existing like logic if the post is not null
+
         _uiState.value.post?.let {
             viewModelScope.launch {
                 try {
                     communityRepository.like(it.postId)
-                    // The flow from getPostById should automatically update the like count
+
                 } catch (e: Exception) {
                     _uiState.update { state ->
                         state.copy(error = "Failed to like post: ${e.message}")

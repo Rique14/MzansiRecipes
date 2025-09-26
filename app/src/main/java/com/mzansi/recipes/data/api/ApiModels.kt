@@ -32,7 +32,7 @@ data class TastySearchItem(
     @Json(name = "thumbnail_url") val thumbnailUrl: String?
 )
 
-// Existing model for recipe details - can be kept for the detail screen
+// Model for recipe details
 data class TastyRecipeDetail(
     val id: String?,
     val name: String?,
@@ -47,7 +47,7 @@ data class TastyRecipeDetail(
     )
 }
 
-// Old response types - can be removed or kept for reference, but are no longer used by trending.
+
 data class TastyListResponse(
     @Json(name = "results") val results: List<TastyRecipeBrief> = emptyList()
 )

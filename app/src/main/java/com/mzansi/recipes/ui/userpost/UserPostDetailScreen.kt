@@ -35,7 +35,7 @@ import com.mzansi.recipes.di.AppModules
 @Composable
 fun UserPostDetailScreen(
     navController: NavController,
-    postId: String // Though primarily used by SavedStateHandle in VM via factory
+    postId: String
 ) {
     val context = LocalContext.current
     val communityRepository = AppModules.provideCommunityRepo(
@@ -44,11 +44,11 @@ fun UserPostDetailScreen(
         AppModules.provideStorage()
     )
 
-    // val savedStateRegistryOwner = LocalSavedStateRegistryOwner.current // Removed
+
 
     val viewModel: UserPostDetailViewModel = viewModel(
         factory = UserPostDetailViewModelFactory(communityRepository), // Updated factory instantiation
-        key = postId // Ensures ViewModel is re-created if postId changes
+        key = postId
     )
 
     val uiState by viewModel.uiState.collectAsState()

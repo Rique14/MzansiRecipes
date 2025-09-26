@@ -48,8 +48,7 @@ class AuthViewModel(private val repo: AuthRepository) : ViewModel() {
         try {
             Log.d("AuthViewModel", "Attempting Google Sign-In with token: $idToken")
             val credential = GoogleAuthProvider.getCredential(idToken, null)
-            // We'll need to ensure AuthRepository has a method like signInWithCredentialAndManageUser
-            // that handles both Firebase auth and Firestore user creation/update.
+
             repo.signInWithCredentialAndManageUser(credential) 
             _state.value = _state.value.copy(loading = false, loggedIn = true)
             Log.d("AuthViewModel", "Google Sign-In successful.")

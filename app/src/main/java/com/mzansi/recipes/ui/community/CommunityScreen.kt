@@ -6,7 +6,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable // Added import
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -40,11 +40,10 @@ import com.mzansi.recipes.R
 import com.mzansi.recipes.ViewModel.CommunityViewModel
 import com.mzansi.recipes.ViewModel.CommunityViewModelFactory
 import com.mzansi.recipes.data.db.CategoryEntity
-// import com.mzansi.recipes.data.repo.RecipeRepository // No longer directly needed here for instantiation
 import com.mzansi.recipes.di.AppModules
-import com.mzansi.recipes.navigation.Routes // Added import
+import com.mzansi.recipes.navigation.Routes
 import com.mzansi.recipes.ui.common.MzansiBottomNavigationBar
-// import com.mzansi.recipes.util.NetworkMonitor // No longer directly needed here for instantiation
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -146,7 +145,7 @@ fun CommunityScreen(nav: NavController) {
             Spacer(Modifier.height(8.dp))
 
             when {
-                state.loadingPosts && state.filteredPosts.isEmpty() -> { // Show loading only if filtered list is empty during load
+                state.loadingPosts && state.filteredPosts.isEmpty() -> {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         CircularProgressIndicator()
                     }
@@ -156,7 +155,7 @@ fun CommunityScreen(nav: NavController) {
                         Text("Error: ${state.error}", color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodyLarge)
                     }
                 }
-                state.filteredPosts.isEmpty() -> { // Check filteredPosts now
+                state.filteredPosts.isEmpty() -> {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         Text(stringResource(id = R.string.no_posts_message), style = MaterialTheme.typography.bodyLarge)
                     }
