@@ -2,9 +2,9 @@ name: Android CI Build and Test
 
 on:
   push:
-    branches: [ master ] # Adjust if your main branch is named differently (e.g., master)
+    branches: [ master ]
   pull_request:
-    branches: [ master ] # Adjust if your main branch is named differently
+    branches: [ master ]
 
 jobs:
   build-and-test:
@@ -21,11 +21,13 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
-        # This action handles caching Gradle dependencies and the Gradle wrapper,
-        # and makes gradlew executable.
+
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
 
       - name: Build and run unit tests
-        run: ./gradlew build # The 'build' task typically compiles, runs lint, and executes unit tests for all variants.
+        run: ./gradlew build
 
 
       # Part 3:
