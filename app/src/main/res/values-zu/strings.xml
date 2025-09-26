@@ -14,12 +14,20 @@
     <string name="add">ENGEZA</string>
     <string name="post">Thumela</string>
     <string name="cancel">Khansela</string>
-    <string name="back_button_desc">Emuva</string>
     <string name="edit_button">Hlela</string>
+    <string name="back_button_desc">Khansela</string>
     <string name="guest_user">Umsebenzisi Oyisivakashi</string>
     <string name="no_email_available">Alukho i-imeyili etholakalayo</string>
+    <string name="profile_picture_content_desc">Isithombe Sephrofayili</string>
+    <string name="select_image_button">Khetha Iphrofayili</string>
+    <string name="post_ingredients_label">Thumela Izithako</string>
+    <string name="post_instructions_label">Thumela Imiyalelo</string>
+
+
 
     <!-- Bottom Navigation -->
+
+    <string name="offline_message">Umlayezo ongaxhunyiwe ku-inthanethi</string>
     <string name="bottom_nav_home">Ekhaya</string>
     <string name="bottom_nav_community">Umphakathi</string>
     <string name="bottom_nav_shop">Thenga</string>
@@ -48,6 +56,9 @@
     <string name="create_post_title">Dala Okuthunyelwe Okusha</string>
     <string name="post_title_label">Isihloko Sokuthunyelwe</string>
     <string name="no_posts_message">Akukho okuthunyelwe okwamanje. Iba ngowokuqala ukwabelana!</string>
+    <string name="posts_in_category_title">Okuthunyelwe ku-%1$s</string>
+    <string name="select_category_label">Khetha Isigaba</string>
+    <string name="category_label">Isigaba</string>
 
     <!-- Shopping Screen -->
     <string name="shopping_list_title">Uhlu Lwezinto Ezithengwayo</string>
@@ -64,5 +75,10 @@
     <string name="language">Ulimi</string>
     <string name="logout">Phuma</string>
     <string name="select_language">Khetha Ulimi</string>
+
+    <!-- Saved Recipes Screen -->
+    <string name="saved_recipes_title">Amacebo Okupheka Agciniwe</string>
+    <string name="no_saved_recipes">Awunamacala okupheka agciniwe okwamanje.</string>
+
 
 </resources>

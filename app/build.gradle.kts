@@ -105,7 +105,7 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore-ktx")
     implementation("com.google.firebase:firebase-messaging-ktx") // Added for FCM
     implementation("com.google.android.gms:play-services-auth:21.2.0") // Added for Google Sign-In
-
+    implementation("com.google.firebase:firebase-storage-ktx")
 
     // Retrofit + Moshi
     implementation("com.squareup.retrofit2:retrofit:2.9.0")

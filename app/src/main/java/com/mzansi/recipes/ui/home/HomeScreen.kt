@@ -32,17 +32,30 @@ import com.mzansi.recipes.ViewModel.DisplayMode
 import com.mzansi.recipes.ViewModel.RecipeViewModel
 import com.mzansi.recipes.ViewModel.RecipeViewModelFactory
 import com.mzansi.recipes.data.db.RecipeEntity
-import com.mzansi.recipes.data.repo.RecipeRepository
+// import com.mzansi.recipes.data.repo.RecipeRepository // No longer directly needed here for instantiation
 import com.mzansi.recipes.di.AppModules
 import com.mzansi.recipes.navigation.Routes
 import com.mzansi.recipes.ui.common.MzansiBottomNavigationBar
+// import com.mzansi.recipes.util.NetworkMonitor // No longer directly needed here for instantiation
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(nav: NavController) {
-    val db = AppModules.provideDb(nav.context)
+    val context = nav.context
+    val db = AppModules.provideDb(context)
     val service = AppModules.provideMealDbService(AppModules.provideOkHttp(BuildConfig.RAPIDAPI_KEY))
-    val repo = RecipeRepository(service, db.recipeDao())
+    // Use the singleton NetworkMonitor from AppModules
+    val networkMonitor = remember { AppModules.provideNetworkMonitor(context) } 
+    
+    // Updated RecipeRepository instantiation to use AppModules for all dependencies
+    val repo = remember {
+        AppModules.provideRecipeRepo(
+            service = service,
+            recipeDao = db.recipeDao(),
+            categoryDao = db.categoryDao(),
+            networkMonitor = networkMonitor
+        )
+    }
     val vm: RecipeViewModel = viewModel(factory = RecipeViewModelFactory(repo))
     val state by vm.state.collectAsState()
 
@@ -111,7 +124,8 @@ fun HomeScreen(nav: NavController) {
                 // Categories Section
                 Text(stringResource(id = R.string.categories), style = MaterialTheme.typography.headlineSmall)
                 Spacer(Modifier.height(8.dp))
-                if (state.isLoadingCategories) {
+                // Updated loading state and category property access
+                if (state.isLoadingCategoriesRefresh) {
                     LinearProgressIndicator(Modifier.fillMaxWidth())
                 } else if (state.categories.isEmpty()){
                     Text(stringResource(id = R.string.no_categories_found))
@@ -119,8 +133,8 @@ fun HomeScreen(nav: NavController) {
                     LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         items(state.categories) { category ->
                             AssistChip(
-                                onClick = { vm.loadRecipesForCategory(category.strCategory) },
-                                label = { Text(category.strCategory) }
+                                onClick = { vm.loadRecipesForCategory(category.name) },
+                                label = { Text(category.name) }
                             )
                         }
                     }
@@ -130,7 +144,8 @@ fun HomeScreen(nav: NavController) {
                 // Trending Section
                 Text(stringResource(id = R.string.trending), style = MaterialTheme.typography.headlineSmall)
                 Spacer(Modifier.height(8.dp))
-                if (state.isLoadingTrending) {
+                // Updated loading state
+                if (state.isLoadingTrendingRefresh) {
                     LinearProgressIndicator(Modifier.fillMaxWidth())
                 } else if (state.trendingRecipes.isEmpty()) {
                     Text(stringResource(id = R.string.no_trending_recipes))
@@ -171,7 +186,8 @@ fun HomeScreen(nav: NavController) {
                             style = MaterialTheme.typography.headlineSmall
                         )
                         Spacer(Modifier.height(8.dp))
-                        if (state.isLoadingRecipesForCategory) {
+                        // Updated loading state
+                        if (state.isLoadingCategoryRecipesRefresh) {
                             LinearProgressIndicator(Modifier.fillMaxWidth())
                         } else if (state.recipesForCategory.isEmpty()) {
                             Text(stringResource(id = R.string.no_category_recipes, state.selectedCategoryName ?: "this category"))
@@ -184,8 +200,6 @@ fun HomeScreen(nav: NavController) {
                         }
                     }
                     DisplayMode.TRENDING_ONLY -> {
-                        // This space can be used for a "For You" section if desired.
-                        // For now, a simple placeholder or an empty space.
                         Box(modifier = Modifier.fillMaxWidth().padding(vertical = 24.dp), contentAlignment = Alignment.Center){
                              Text(
                                  stringResource(id = R.string.explore_recipes_placeholder),
@@ -195,11 +209,12 @@ fun HomeScreen(nav: NavController) {
                         }
                     }
                 }
+                // Updated loading state checks for error display
                 if (state.error != null && 
-                    !state.isLoadingTrending && 
-                    !state.isLoadingCategories && 
+                    !state.isLoadingTrendingRefresh && 
+                    !state.isLoadingCategoriesRefresh && 
                     !state.isLoadingSearchResults && 
-                    !state.isLoadingRecipesForCategory) {
+                    !state.isLoadingCategoryRecipesRefresh) {
                      Text(
                          stringResource(id = R.string.error_loading_recipes) + "\n${state.error}", 
                          color = MaterialTheme.colorScheme.error, 
@@ -247,4 +262,3 @@ fun RecipeItem(recipe: RecipeEntity, navController: NavController) {
         }
     }
 }
-

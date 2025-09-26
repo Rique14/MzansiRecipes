@@ -9,9 +9,22 @@ import android.util.Log // Added for logging
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
@@ -21,10 +34,13 @@ import com.mzansi.recipes.di.AppModules
 import com.mzansi.recipes.navigation.AppNavHost
 import com.mzansi.recipes.ui.theme.MzansiTheme
 import com.mzansi.recipes.ViewModel.SettingsViewModel
-import com.mzansi.recipes.ViewModel.SettingsViewModelFactory
+import com.mzansi.recipes.ViewModel.SettingsViewModelFactory // Ensure this import is correct
 import android.content.res.Resources
+import com.mzansi.recipes.util.NetworkMonitor
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var networkMonitor: NetworkMonitor
 
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -42,14 +58,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         Log.d("MainActivity", "onCreate called. Current app locale: ${this.resources.configuration.locales[0]}, System locale: ${Configuration(Resources.getSystem().configuration).locales[0]}")
 
+        // Use the singleton NetworkMonitor from AppModules
+        networkMonitor = AppModules.provideNetworkMonitor(applicationContext)
         requestNotificationPermission()
 
-        val prefs = AppModules.provideUserPrefs(this)
+        val prefs = AppModules.provideUserPrefs(this) // Type of 'prefs' is crucial here
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
             Log.d("MainActivity", "setContent recomposing. Current composable locale: ${androidx.compose.ui.platform.LocalConfiguration.current.locales[0]}")
+            // Ensure SettingsViewModelFactory is correctly defined and its constructor matches 'prefs'
             val settingsVm: SettingsViewModel = viewModel(factory = SettingsViewModelFactory(prefs))
             val settings by settingsVm.settings.collectAsState(initial = null)
 
@@ -59,9 +78,16 @@ class MainActivity : AppCompatActivity() {
                 else -> isSystemInDarkTheme()
             }
 
+            val isOnline by networkMonitor.isOnline.collectAsState()
+
             MzansiTheme(darkTheme = dark) {
-                val nav = rememberNavController()
-                AppNavHost(nav)
+                Column {
+                    if (!isOnline) {
+                        OfflineBanner()
+                    }
+                    val nav = rememberNavController()
+                    AppNavHost(nav)
+                }
             }
         }
     }
@@ -76,13 +102,10 @@ class MainActivity : AppCompatActivity() {
                     Log.d("MainActivity", "POST_NOTIFICATIONS permission already granted.")
                 }
                 shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS) -> {
-                    // Optionally, show an educational UI to explain why the permission is needed.
-                    // Then, launch the permission request.
                     Log.i("MainActivity", "Showing rationale for POST_NOTIFICATIONS permission.")
                     requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
                 }
                 else -> {
-                    // Directly ask for the permission.
                     Log.i("MainActivity", "Requesting POST_NOTIFICATIONS permission.")
                     requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
                 }
@@ -93,9 +116,31 @@ class MainActivity : AppCompatActivity() {
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         Log.d("MainActivity", "onConfigurationChanged. New locale: ${newConfig.locales[0]}")
-        // If locale is in android:configChanges, you might need to manually trigger recomposition
-        // or ensure components correctly listen to LocalConfiguration.current.
-        // Forcing a recreate() here after a manual locale change that doesn't get auto-handled
-        // can be a solution, but usually AppCompatDelegate.setApplicationLocales should trigger this.
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // No need to call networkMonitor.close() here if it's a true singleton managed by AppModules
+        // and intended to live for the app's lifecycle. 
+        // However, if AppModules might re-create it or if you want strict cleanup, it can stay.
+        // For now, let's assume it's managed by AppModules and its lifecycle is tied to the app.
+        // If issues arise, we can revisit closing it.
+        // networkMonitor.close() // Let's comment this out for a true singleton behavior for now.
+    }
+}
+
+@Composable
+fun OfflineBanner() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.errorContainer)
+            .padding(8.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = stringResource(R.string.offline_message), 
+            color = MaterialTheme.colorScheme.onErrorContainer
+        )
     }
 }

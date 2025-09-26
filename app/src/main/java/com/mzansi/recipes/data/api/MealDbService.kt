@@ -5,7 +5,7 @@ import retrofit2.http.Query
 
 // Basic data classes for TheMealDB response
 data class MealDbResponse(val meals: List<MealSummary>)
-data class MealDetailResponse(val meals: List<MealDetail>)
+data class MealDetailResponse(val meals: List<MealDetail>?) // meals is now nullable
 
 // Represents a meal in a list
 data class MealSummary(

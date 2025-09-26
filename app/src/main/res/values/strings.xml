@@ -14,11 +14,14 @@
     <string name="add">ADD</string>
     <string name="post">Post</string>
     <string name="cancel">Cancel</string>
-    <string name="back_button_desc" translatable="false">Back</string>
+    <string name="back_button_desc">Back</string>
     <string name="guest_user">Guest User</string>
     <string name="no_email_available">No email available</string>
-    <string name="profile_picture_content_desc" translatable="false">Profile picture</string>
-
+    <string name="profile_picture_content_desc">Profile picture</string>
+    <string name="select_image_button">Select Image</string>
+    <string name="offline_message">Offline Message</string>
+    <string name="post_ingredients_label">Post Ingredients</string>
+    <string name="post_instructions_label">Post Instructions</string>
 
 
     <!-- Bottom Navigation -->
@@ -51,6 +54,9 @@
     <string name="create_post_title">Create a New Post</string>
     <string name="post_title_label">Post Title</string>
     <string name="no_posts_message">No posts yet. Be the first to share!</string>
+    <string name="posts_in_category_title">Posts in %1$s</string>
+    <string name="select_category_label">Select Category</string>
+    <string name="category_label">Category</string>
 
     <!-- Shopping Screen -->
     <string name="shopping_list_title">Shopping List</string>
@@ -67,5 +73,18 @@
     <string name="language">Language</string>
     <string name="logout">Logout</string>
     <string name="select_language">Select Language</string>
+    <string name="edit_button">Edit</string>
+
+    <!-- User Post Detail Screen -->
+    <string name="uncategorized_label">Uncategorized</string>
+    <string name="like_post_desc">Like post</string>
+    <string name="no_ingredients_provided">No ingredients provided.</string>
+    <string name="no_instructions_provided">No instructions provided.</string>
+    <string name="post_not_found_error">Post not found.</string>
+    <string name="loading">Loading...</string>
+
+    <!-- Saved Recipes Screen -->
+    <string name="saved_recipes_title">Saved Recipes</string>
+    <string name="no_saved_recipes">You have no saved recipes yet.</string>
 
 </resources>

@@ -22,6 +22,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.mzansi.recipes.R
 import com.mzansi.recipes.di.AppModules
+import com.mzansi.recipes.navigation.Routes // <<< ADDED IMPORT
 import kotlinx.coroutines.tasks.await
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -91,8 +92,11 @@ fun ProfileScreen(
                 .padding(padding)
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center // Center content vertically
+            // Changed verticalArrangement to start to accommodate the new button
+            verticalArrangement = Arrangement.Top
         ) {
+            Spacer(modifier = Modifier.height(32.dp)) // Added some space at the top
+
             if (currentUser?.photoUrl != null) {
                 AsyncImage(
                     model = currentUser.photoUrl.toString(),
@@ -129,7 +133,16 @@ fun ProfileScreen(
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
+
+            Spacer(modifier = Modifier.height(24.dp)) // Space before the new button
+
+            // <<< NEW BUTTON >>>
+            Button(
+                onClick = { navController.navigate(Routes.SavedRecipes) },
+                modifier = Modifier.fillMaxWidth(0.8f) // Button takes 80% of width
+            ) {
+                Text(stringResource(id = R.string.saved_recipes_title)) // Re-using existing string
+            }
         }
     }
 }
-

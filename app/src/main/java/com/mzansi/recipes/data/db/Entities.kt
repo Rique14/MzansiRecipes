@@ -8,10 +8,12 @@ data class RecipeEntity(
     @PrimaryKey val id: String,
     val title: String,
     val imageUrl: String?,
-    val prepTime: String?,
-    val servings: Int?,
     val category: String?,
-    val trending: Boolean = false
+    val trending: Boolean = false,
+    val pendingSync: Boolean = false,
+    val instructions: String? = null,
+    val area: String? = null,
+    val isSavedOffline: Boolean = false // <<< NEW FIELD
 )
 
 @Entity(tableName = "ingredients")

@@ -2,65 +2,94 @@ package com.mzansi.recipes.ViewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mzansi.recipes.data.api.CategorySummary
+import com.mzansi.recipes.data.db.CategoryEntity // Changed from CategorySummary
 import com.mzansi.recipes.data.db.RecipeEntity
 import com.mzansi.recipes.data.repo.RecipeRepository
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 enum class DisplayMode {
-    TRENDING_ONLY, // Initial state, or when no search/category is active
+    TRENDING_ONLY,
     SEARCH_RESULTS,
     CATEGORY_RECIPES
 }
 
 data class HomeState(
     val trendingRecipes: List<RecipeEntity> = emptyList(),
-    val categories: List<CategorySummary> = emptyList(),
+    val categories: List<CategoryEntity> = emptyList(), // Changed to CategoryEntity
     val searchResults: List<RecipeEntity> = emptyList(),
     val recipesForCategory: List<RecipeEntity> = emptyList(),
     val searchQuery: String = "",
     val selectedCategoryName: String? = null,
     val activeDisplayMode: DisplayMode = DisplayMode.TRENDING_ONLY,
-    val isLoadingTrending: Boolean = false,
-    val isLoadingCategories: Boolean = false,
+    val isLoadingTrendingRefresh: Boolean = false, // Renamed for clarity
+    val isLoadingCategoriesRefresh: Boolean = false, // Renamed for clarity
     val isLoadingSearchResults: Boolean = false,
-    val isLoadingRecipesForCategory: Boolean = false,
+    val isLoadingCategoryRecipesRefresh: Boolean = false, // Renamed for clarity
     val error: String? = null
 )
 
 class RecipeViewModel(private val repo: RecipeRepository) : ViewModel() {
     private val _state = MutableStateFlow(HomeState())
-    val state = _state.asStateFlow()
+    val state: StateFlow<HomeState> = _state.asStateFlow()
 
     init {
-        loadInitialData()
+        observeCategories()
+        observeTrendingRecipes()
+
+        // Initial refresh attempts
+        refreshCategories(isInitial = true)
+        refreshTrendingRecipes(isInitial = true)
     }
 
-    private fun loadInitialData() {
-        loadTrendingRecipes()
-        loadCategories()
-    }
-
-    fun loadTrendingRecipes() = viewModelScope.launch {
-        _state.update { it.copy(isLoadingTrending = true, error = null) }
-        try {
-            val trending = repo.refreshTrending()
-            _state.update { it.copy(isLoadingTrending = false, trendingRecipes = trending) }
-        } catch (e: Exception) {
-            _state.update { it.copy(isLoadingTrending = false, error = e.message) }
+    private fun observeCategories() {
+        viewModelScope.launch {
+            repo.observeCategories()
+                .catch { e -> _state.update { it.copy(error = "Error observing categories: ${e.message}") } }
+                .collectLatest { categories ->
+                    _state.update { it.copy(categories = categories) }
+                }
         }
     }
 
-    private fun loadCategories() = viewModelScope.launch {
-        _state.update { it.copy(isLoadingCategories = true, error = null) }
-        try {
-            val categories = repo.getCategories()
-            _state.update { it.copy(isLoadingCategories = false, categories = categories) }
-        } catch (e: Exception) {
-            _state.update { it.copy(isLoadingCategories = false, error = e.message) }
+    fun refreshCategories(isInitial: Boolean = false) {
+        viewModelScope.launch {
+            if (isInitial) _state.update { it.copy(isLoadingCategoriesRefresh = true, error = null) }
+            try {
+                repo.refreshCategoriesIfNeeded() // This fetches from network if cache is empty & online
+            } catch (e: Exception) {
+                _state.update { it.copy(error = "Failed to refresh categories: ${e.message}") }
+            } finally {
+                if (isInitial) _state.update { it.copy(isLoadingCategoriesRefresh = false) }
+            }
+        }
+    }
+
+    private fun observeTrendingRecipes() {
+        viewModelScope.launch {
+            repo.observeTrendingRecipes()
+                .catch { e -> _state.update { it.copy(error = "Error observing trending recipes: ${e.message}") } }
+                .collectLatest { trending ->
+                    _state.update { it.copy(trendingRecipes = trending) }
+                }
+        }
+    }
+
+    fun refreshTrendingRecipes(isInitial: Boolean = false) {
+        viewModelScope.launch {
+            if (isInitial) _state.update { it.copy(isLoadingTrendingRefresh = true, error = null) }
+            try {
+                repo.triggerTrendingRecipesRefresh()
+            } catch (e: Exception) {
+                _state.update { it.copy(error = "Failed to refresh trending recipes: ${e.message}") }
+            } finally {
+                if (isInitial) _state.update { it.copy(isLoadingTrendingRefresh = false) }
+            }
         }
     }
 
@@ -69,71 +98,64 @@ class RecipeViewModel(private val repo: RecipeRepository) : ViewModel() {
         if (query.isNotBlank() && query.length > 2) {
             performSearch()
         } else {
-            // Clear search results and revert display mode if query is too short or blank
             _state.update {
                 it.copy(
                     searchResults = emptyList(),
-                    activeDisplayMode = DisplayMode.TRENDING_ONLY,
-                    selectedCategoryName = null, // also clear category selection
-                    recipesForCategory = emptyList()
+                    activeDisplayMode = if (it.selectedCategoryName != null) DisplayMode.CATEGORY_RECIPES else DisplayMode.TRENDING_ONLY
                 )
             }
         }
     }
 
     fun performSearch() = viewModelScope.launch {
-        if (_state.value.searchQuery.isBlank()) {
-             // Should not happen if called from onSearchQueryChanged, but as a safeguard
-            _state.update { it.copy(searchResults = emptyList(), activeDisplayMode = DisplayMode.TRENDING_ONLY) }
-            return@launch
-        }
+        if (_state.value.searchQuery.isBlank()) return@launch
         _state.update {
             it.copy(
                 isLoadingSearchResults = true,
                 error = null,
-                activeDisplayMode = DisplayMode.SEARCH_RESULTS,
-                selectedCategoryName = null, // Clear category selection
-                recipesForCategory = emptyList() // Clear category recipes
+                activeDisplayMode = DisplayMode.SEARCH_RESULTS
             )
         }
         try {
             val results = repo.searchRecipesByName(_state.value.searchQuery)
-            _state.update {
-                it.copy(isLoadingSearchResults = false, searchResults = results)
-            }
+            _state.update { it.copy(isLoadingSearchResults = false, searchResults = results) }
         } catch (e: Exception) {
-            _state.update {
-                it.copy(isLoadingSearchResults = false, error = e.message, searchResults = emptyList())
-            }
+            _state.update { it.copy(isLoadingSearchResults = false, error = e.message, searchResults = emptyList()) }
         }
     }
 
-    fun loadRecipesForCategory(categoryName: String) = viewModelScope.launch {
+    fun loadRecipesForCategory(categoryName: String) {
         _state.update {
             it.copy(
-                isLoadingRecipesForCategory = true,
-                error = null,
-                recipesForCategory = emptyList(),
                 selectedCategoryName = categoryName,
                 activeDisplayMode = DisplayMode.CATEGORY_RECIPES,
-                searchQuery = "", // Clear search query
-                searchResults = emptyList() // Clear search results
+                searchQuery = "",
+                searchResults = emptyList(),
+                isLoadingCategoryRecipesRefresh = true, // For the initial refresh call
+                error = null
             )
         }
-        try {
-            val recipes = repo.getRecipesByCategory(categoryName)
-            _state.update {
-                it.copy(isLoadingRecipesForCategory = false, recipesForCategory = recipes)
+
+        viewModelScope.launch {
+            // Start observing recipes for this category from the database
+            repo.observeRecipesByCategory(categoryName)
+                .catch { e -> _state.update { it.copy(error = "Error observing $categoryName recipes: ${e.message}", isLoadingCategoryRecipesRefresh = false) } }
+                .collectLatest { recipes ->
+                    _state.update { it.copy(recipesForCategory = recipes, isLoadingCategoryRecipesRefresh = false) } // Stop loading once data flows
+                }
+        }
+        // Trigger a network refresh for this category
+        viewModelScope.launch {
+            try {
+                repo.refreshRecipesForCategory(categoryName)
+            } catch (e: Exception) {
+                _state.update { it.copy(error = "Failed to refresh $categoryName recipes: ${e.message}", isLoadingCategoryRecipesRefresh = false) }
             }
-        } catch (e: Exception) {
-            _state.update {
-                it.copy(isLoadingRecipesForCategory = false, error = e.message, recipesForCategory = emptyList())
-            }
+            // Note: isLoadingCategoryRecipesRefresh is primarily managed by the flow collection now
         }
     }
 
-    // Call this if user explicitly clears search or category selection
-    fun showTrendingOnly(){
+    fun showTrendingOnly() {
         _state.update {
             it.copy(
                 searchQuery = "",

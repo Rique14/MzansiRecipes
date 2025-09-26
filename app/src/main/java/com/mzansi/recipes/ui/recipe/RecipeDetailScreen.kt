@@ -6,12 +6,15 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Bookmark // <<< IMPORT
+import androidx.compose.material.icons.outlined.BookmarkBorder // <<< IMPORT
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -23,16 +26,29 @@ import com.mzansi.recipes.BuildConfig
 import com.mzansi.recipes.R
 import com.mzansi.recipes.ViewModel.RecipeDetailViewModel
 import com.mzansi.recipes.ViewModel.RecipeDetailViewModelFactory
-import com.mzansi.recipes.data.repo.RecipeRepository
+// import com.mzansi.recipes.data.repo.RecipeRepository // No longer directly needed here for instantiation
 import com.mzansi.recipes.di.AppModules
+// import com.mzansi.recipes.util.NetworkMonitor // No longer directly needed here for instantiation
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecipeDetailScreen(nav: NavController, id: String, title: String) {
-    val db = AppModules.provideDb(nav.context)
+    val context = LocalContext.current // Get context
+    val db = AppModules.provideDb(context)
     val shoppingRepo = AppModules.provideShoppingRepo(db, AppModules.provideFirestore(), AppModules.provideAuth())
+    val service = AppModules.provideMealDbService(AppModules.provideOkHttp(BuildConfig.RAPIDAPI_KEY))
+    // Use the singleton NetworkMonitor from AppModules
+    val networkMonitor = remember { AppModules.provideNetworkMonitor(context) }
 
-    val recipeRepo = RecipeRepository(AppModules.provideMealDbService(AppModules.provideOkHttp(BuildConfig.RAPIDAPI_KEY)), db.recipeDao())
+    // Updated RecipeRepository instantiation to use AppModules for all dependencies
+    val recipeRepo = remember {
+        AppModules.provideRecipeRepo(
+            service = service,
+            recipeDao = db.recipeDao(),
+            categoryDao = db.categoryDao(),
+            networkMonitor = networkMonitor
+        )
+    }
     val detailVm: RecipeDetailViewModel = viewModel(factory = RecipeDetailViewModelFactory(recipeRepo, shoppingRepo, id))
     val state by detailVm.state.collectAsState()
 
@@ -45,6 +61,15 @@ fun RecipeDetailScreen(nav: NavController, id: String, title: String) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Color.White)
                     }
                 },
+                actions = { // <<< ADDED ACTIONS PARAMETER
+                    IconButton(onClick = { detailVm.toggleSaveRecipe() }) {
+                        Icon(
+                            imageVector = if (state.isSavedOffline) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
+                            contentDescription = if (state.isSavedOffline) "Unsave Recipe" else "Save Recipe",
+                            tint = Color.White // Match other icon tint
+                        )
+                    }
+                },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary
                 )
@@ -52,12 +77,12 @@ fun RecipeDetailScreen(nav: NavController, id: String, title: String) {
         }
     ) { paddingValues ->
         when {
-            state.loading -> {
+            state.loading && state.details == null -> { // Show loading only if details are not yet available
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator()
                 }
             }
-            state.error != null -> {
+            state.error != null && state.details == null -> { // Show error only if details are not yet available
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Text("Error: ${state.error}", color = MaterialTheme.colorScheme.error)
                 }
@@ -82,7 +107,9 @@ fun RecipeDetailScreen(nav: NavController, id: String, title: String) {
                     Column(Modifier.padding(horizontal = 16.dp)) {
                         Text(details.title, style = MaterialTheme.typography.headlineMedium)
                         Spacer(Modifier.height(8.dp))
-                        Text("${details.area} | ${details.category}", style = MaterialTheme.typography.bodyMedium)
+                        val areaDisplay = details.area?.takeIf { it.isNotBlank() && it.equals("null", ignoreCase = true).not() } ?: "N/A"
+                        val categoryDisplay = details.category?.takeIf { it.isNotBlank() && it.equals("null", ignoreCase = true).not() } ?: stringResource(id = R.string.uncategorized_label)
+                        Text("$areaDisplay | $categoryDisplay", style = MaterialTheme.typography.bodyMedium)
                         Spacer(Modifier.height(24.dp))
                         Text(stringResource(id = R.string.ingredients), style = MaterialTheme.typography.titleLarge)
                         Spacer(Modifier.height(12.dp))
@@ -137,14 +164,18 @@ fun RecipeDetailScreen(nav: NavController, id: String, title: String) {
                     }
                 }
             }
+            // Fallback for when details are null but not loading and no error specific to details loading
+            else -> {
+                 Box(modifier = Modifier.fillMaxSize().padding(paddingValues), contentAlignment = Alignment.Center) {
+                    Text("Recipe details not available.", style = MaterialTheme.typography.bodyLarge)
+                }
+            }
         }
     }
 }
 
 @Composable
 fun IngredientRow(item: String, checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
-    // Removed local isChecked state: var isChecked by remember { mutableStateOf(checked) }
-    // The checked state is now directly controlled by the ViewModel via the 'checked' parameter.
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -152,9 +183,9 @@ fun IngredientRow(item: String, checked: Boolean, onCheckedChange: (Boolean) -> 
             .padding(vertical = 4.dp)
     ) {
         Checkbox(
-            checked = checked, // Use the passed-in checked state
+            checked = checked, 
             onCheckedChange = { newCheckedState -> 
-                onCheckedChange(newCheckedState) // Call the passed-in lambda to notify ViewModel
+                onCheckedChange(newCheckedState) 
             }
         )
         Spacer(Modifier.width(8.dp))

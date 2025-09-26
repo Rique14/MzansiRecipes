@@ -14,12 +14,19 @@
     <string name="add">VOEG BY</string>
     <string name="post">Plaas</string>
     <string name="cancel">Kanselleer</string>
-    <string name="back_button_desc">Terug</string>
     <string name="edit_button" >Wysig</string>
+    <string name="back_button_desc">Terug</string>
     <string name="guest_user">Gasgebruiker</string>
     <string name="no_email_available">Geen e-pos beskikbaar nie</string>
+    <string name="profile_picture_content_desc">Profielfoto</string>
+    <string name="select_image_button">Kies Foto</string>
+    <string name="post_ingredients_label">Pos Bestanddele</string>
+    <string name="post_instructions_label">Posinstruksies</string>
+
+
 
     <!-- Bottom Navigation -->
+    <string name="offline_message">Vanlyn Boodskap</string>
     <string name="bottom_nav_home">Tuis</string>
     <string name="bottom_nav_community">Gemeenskap</string>
     <string name="bottom_nav_shop">Winkel</string>
@@ -50,6 +57,9 @@
     <string name="create_post_title">Skep n Nuwe Plasing</string>
     <string name="post_title_label">Plasingtitel</string>
     <string name="no_posts_message">Nog geen plasings nie. Wees die eerste om te deel!</string>
+    <string name="posts_in_category_title">Plasings in %1$s</string>
+    <string name="select_category_label">Kies Kategorie</string>
+    <string name="category_label">Kategorie</string>
 
     <!-- Shopping Screen -->
     <string name="shopping_list_title">Inkopielys</string>
@@ -66,5 +76,10 @@
     <string name="language">Taal</string>
     <string name="logout">Teken uit</string>
     <string name="select_language">Kies Taal</string>
+
+    <!-- Saved Recipes Screen -->
+    <string name="saved_recipes_title">Gestoorde Resepte</string>
+    <string name="no_saved_recipes">Jy het nog geen gestoorde resepte nie.</string>
+
 
 </resources>
