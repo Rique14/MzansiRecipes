@@ -2,9 +2,9 @@ name: Android CI Build and Test
 
 on:
   push:
-    branches: [ main ] # Adjust if your main branch is named differently (e.g., master)
+    branches: [ master ] # Adjust if your main branch is named differently (e.g., master)
   pull_request:
-    branches: [ main ] # Adjust if your main branch is named differently
+    branches: [ master ] # Adjust if your main branch is named differently
 
 jobs:
   build-and-test:
