@@ -21,7 +21,7 @@
  ### 3.1. Firebase
  The app uses **Firebase** as its backend for:
  - **Authentication**: Securely managing user accounts, including login and registration, with encrypted passwords.
- - **Cloud Firestore**: Storing user-generated data such as saved recipes, user profiles, and community contributions.
+ - **Cloud Firestore**: Storing user-generated data such as saved recipes, user profiles and community contributions.
 ​
  ### 3.2. The MealDB API
  For recipe content, the app is connected to **The MealDB**, a comprehensive database of recipes from around the world, accessed via RapidAPI. This allows users to discover a vast collection of dishes and cooking instructions.
@@ -47,7 +47,7 @@
  - **Room**: For local database storage to enable offline access.
  - **Retrofit**: For making network requests to The MealDB API.
 ​
- The app follows the MVVM (Model-View-ViewModel) architecture to separate the business logic from the UI, making the codebase more modular, testable and maintainable.
+ - The app follows the MVVM (Model-View-ViewModel) architecture to separate the business logic from the UI, making the codebase more modular, testable and maintainable.
 ​
  ## 6. GitHub and GitHub Actions
 ​
