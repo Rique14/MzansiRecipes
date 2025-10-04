@@ -1,10 +1,10 @@
 # Mzansi Recipes App
 ## Group Members
-Princely Makhwara – ST10263265
-Aime Ndumuhire – ST10255663
-Fortunate Majere- ST10231459
-Sabelo Sibiya - ST10327016
-Enrique Arendse – ST10302006
+- Princely Makhwara – ST10263265
+- Aime Ndumuhire – ST10255663
+- Fortunate Majere- ST10231459
+- Sabelo Sibiya - ST10327016
+- Enrique Arendse – ST10302006
 ## Video Link
 
 ​
