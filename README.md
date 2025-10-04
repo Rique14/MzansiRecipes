@@ -1,4 +1,12 @@
 # Mzansi Recipes App
+## Group Members
+Princely Makhwara – ST10263265
+Aime Ndumuhire – ST10255663
+Fortunate Majere- ST10231459
+Sabelo Sibiya - ST10327016
+Enrique Arendse – ST10302006
+## Video Link
+
 ​
  Mzansi Recipes Logo <img width="1024" height="1024" alt="ic_pot_icon" src="https://github.com/user-attachments/assets/d529af05-3864-4d6d-9544-d8ea9ec75543" />
 
