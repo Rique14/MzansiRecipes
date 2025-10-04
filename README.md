@@ -1,7 +1,7 @@
 # Mzansi Recipes App
 ​
- ![Mzansi Recipes Logo](<img width="1024" height="1024" alt="ic_pot_icon" src="https://github.com/user-attachments/assets/d529af05-3864-4d6d-9544-d8ea9ec75543" />
-)
+ ![Mzansi Recipes Logo](<img width="1024" height="1024" alt="ic_pot_icon" src="https://github.com/user-attachments/assets/d529af05-3864-4d6d-9544-d8ea9ec75543" />)
+
 ​
  ## 1. Introduction
 ​
