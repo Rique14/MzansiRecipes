@@ -16,7 +16,7 @@ https://github.com/Rique14/MzansiRecipes
 
 ​
  ## 1. Introduction
- Mzansi Recipes is a mobile application dedicated to celebrating the rich and diverse culinary heritage of South Africa. It provides a platform for users to discover, share and enjoy authentic local recipes. The app is designed to be a community-driven space where food enthusiasts can connect, learn, and preserve the vibrant food culture of the nation.
+ Mzansi Recipes is a mobile application dedicated to celebrating the rich and diverse culinary heritage of South Africa. It provides a platform for users to discover, share and enjoy authentic local recipes. The app is designed to be a community-driven space where food enthusiasts can connect, learn and preserve the vibrant food culture of the nation.
 ​
  ## 2. Features
  - **User Authentication**: Secure user registration and login with encrypted password storage.
@@ -32,8 +32,8 @@ https://github.com/Rique14/MzansiRecipes
  - **Authentication**: Securely managing user accounts, including login and registration, with encrypted passwords.
  - **Cloud Firestore**: Storing user-generated data such as saved recipes, user profiles and community contributions.
 ​
- ### 3.2. The MealDB API
- For recipe content, the app is connected to **The MealDB**, a comprehensive database of recipes from around the world, accessed via RapidAPI. This allows users to discover a vast collection of dishes and cooking instructions.
+ ### 3.2. The MealDB API Integration
+The application sources its recipe content by connecting to The MealDB, a public REST API with a comprehensive database of dishes. This integration is essential for providing users with a vast and varied collection of recipes. We use the Retrofit library to manage all network requests, enabling the app to search, filter and retrieve detailed recipe information. To ensure a smooth user experience and provide offline access, the RecipeRepository class caches the data fetched from the API into a local Room database. This strategy improves performance by reducing network calls and allows the app to remain functional even without an internet connection.
 
  ## 4. Design Considerations
  The app is built with a focus on a clean, intuitive, and user-friendly interface. Key design principles include:
