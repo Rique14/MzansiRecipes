@@ -6,8 +6,7 @@
 - Sabelo Sibiya - ST10327016
 - Enrique Arendse – ST10302006
 ## Video Link
-## Link to Repository 
-https://github.com/Rique14/MzansiRecipes 
+## Link to Repository  https://github.com/Rique14/MzansiRecipes 
 
 ​
  Mzansi Recipes Logo <img width="1024" height="1024" alt="ic_pot_icon" src="https://github.com/user-attachments/assets/d529af05-3864-4d6d-9544-d8ea9ec75543" />
