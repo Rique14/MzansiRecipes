@@ -88,12 +88,13 @@ https://github.com/Rique14/MzansiRecipes
  4. Push your changes to your forked repository.
  5. Create a pull request to the `main` branch of the main repository.
 
-## 8. Logs in Project
-<img width="1920" height="1017" alt="Screenshot (324)" src="https://github.com/user-attachments/assets/d5cab443-e2ad-4e21-8537-32fd082a5e48" />
+## 8. Use of Logs in Project
 
-​<img width="1920" height="1080" alt="Screenshot (328)" src="https://github.com/user-attachments/assets/3f29b32c-bf60-4a5a-b08c-cad2781dc74a" />
+<img width="1920" height="1019" alt="Screenshot (328)" src="https://github.com/user-attachments/assets/c88d2193-d00a-406b-bddd-2fea4b40c037" />
+<img width="1920" height="1017" alt="Screenshot (324)" src="https://github.com/user-attachments/assets/23b7c998-1d22-4690-9f6a-d3752f35fafd" />
+<img width="1920" height="1017" alt="Screenshot (321)" src="https://github.com/user-attachments/assets/939b0e0e-8f0c-40f4-bdfb-f338e459be48" />
+<img width="1920" height="1019" alt="Screenshot (327)" src="https://github.com/user-attachments/assets/e34b7f99-6631-483f-8399-b94cd50e7c20" />
 
-<img width="1920" height="1080" alt="Screenshot (327)" src="https://github.com/user-attachments/assets/0364d52e-b3b3-4827-8f19-4e6e486dca48" />
 
  ## 9. License
 ​
