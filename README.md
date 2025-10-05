@@ -1,4 +1,4 @@
-# Mzansi Recipes App
+# Mzansi Recipes App - Part 2
 ## Group Members
 - Princely Makhwara – ST10263265
 - Aime Ndumuhire – ST10255663
