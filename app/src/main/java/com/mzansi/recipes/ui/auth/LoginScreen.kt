@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -114,7 +115,11 @@ fun LoginScreen(nav: NavController) {
     Column(Modifier.fillMaxSize()) {
         Text(
             text = "WELCOME",
-            modifier = Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.primary).padding(vertical = 40.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.primary)
+                .statusBarsPadding()
+                .padding(vertical = 20.dp),
             style = MaterialTheme.typography.displaySmall,
             color = Color.White,
             fontWeight = FontWeight.Bold,

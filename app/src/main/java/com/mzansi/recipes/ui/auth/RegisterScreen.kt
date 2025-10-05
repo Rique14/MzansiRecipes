@@ -50,7 +50,8 @@ fun RegisterScreen(nav: NavController) {
             modifier = Modifier
                 .fillMaxWidth()
                 .background(MaterialTheme.colorScheme.primary)
-                .padding(vertical = 40.dp),
+                .statusBarsPadding()
+                .padding(vertical = 20.dp),
             contentAlignment = Alignment.Center
         ) {
             Text(
