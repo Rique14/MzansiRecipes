@@ -30,10 +30,10 @@ data class MealDetail(
 
 // Represents a category from TheMealDB API
 data class CategorySummary(
-    val idCategory: String, // Though not used now, it's good to have if the API provides it
+    val idCategory: String,
     val strCategory: String,
-    val strCategoryThumb: String? = null,      // Optional image
-    val strCategoryDescription: String? = null // Optional description
+    val strCategoryThumb: String? = null,
+    val strCategoryDescription: String? = null
 )
 
 // Response for the list of categories

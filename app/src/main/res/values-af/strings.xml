@@ -1,3 +1,4 @@
+
 <resources>
     <string name="app_name">Mzansi Resepte</string>
 
@@ -23,16 +24,12 @@
     <string name="post_ingredients_label">Pos Bestanddele</string>
     <string name="post_instructions_label">Posinstruksies</string>
 
-
-
     <!-- Bottom Navigation -->
     <string name="offline_message">Vanlyn Boodskap</string>
     <string name="bottom_nav_home">Tuis</string>
     <string name="bottom_nav_community">Gemeenskap</string>
     <string name="bottom_nav_shop">Winkel</string>
     <string name="bottom_nav_settings">Instellings</string>
-
-
 
     <!-- Recipe Detail -->
     <string name="ready_in">Gereed in: %1$s min</string>
@@ -84,10 +81,11 @@
     <string name="no_instructions_provided">Geen instruksies verskaf nie.</string>
     <string name="post_not_found_error">Plasing nie gevind nie.</string>
     <string name="loading">Laai tans...</string>
+    <string name="ingredients_added_to_shopping_list">Bestanddele by inkopielys gevoeg</string>
+    <string name="add_to_list">Voeg by Lys</string>
 
     <!-- Saved Recipes Screen -->
     <string name="saved_recipes_title">Gestoorde Resepte</string>
     <string name="no_saved_recipes">Jy het nog geen gestoorde resepte nie.</string>
-
 
 </resources>

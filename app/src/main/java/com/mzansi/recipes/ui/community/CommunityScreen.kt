@@ -1,21 +1,32 @@
 package com.mzansi.recipes.ui.community
 
 import android.net.Uri
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
@@ -24,9 +35,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -44,21 +55,23 @@ import com.mzansi.recipes.di.AppModules
 import com.mzansi.recipes.navigation.Routes
 import com.mzansi.recipes.ui.common.MzansiBottomNavigationBar
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CommunityScreen(nav: NavController) {
-    val context = nav.context // Get context once
-    val communityRepo = AppModules.provideCommunityRepo(
-        AppModules.provideFirestore(),
-        AppModules.provideAuth(),
-        AppModules.provideStorage()
-    )
-    val db = AppModules.provideDb(context)
-    val service = AppModules.provideMealDbService(AppModules.provideOkHttp(BuildConfig.RAPIDAPI_KEY))
-    // Use the singleton NetworkMonitor from AppModules
-    val networkMonitor = remember { AppModules.provideNetworkMonitor(context) }
+    val context = LocalContext.current // Get context once
+
+    // Correctly remember repository instances to avoid re-creation on recomposition
+    val communityRepo = remember {
+        AppModules.provideCommunityRepo(
+            AppModules.provideFirestore(),
+            AppModules.provideAuth(),
+            AppModules.provideStorage()
+        )
+    }
     val recipeRepo = remember {
+        val db = AppModules.provideDb(context)
+        val service = AppModules.provideMealDbService(AppModules.provideOkHttp(BuildConfig.RAPIDAPI_KEY))
+        val networkMonitor = AppModules.provideNetworkMonitor(context)
         AppModules.provideRecipeRepo(
             service = service,
             recipeDao = db.recipeDao(),
@@ -176,7 +189,7 @@ fun CommunityScreen(nav: NavController) {
                                             // Corrected: Use 'id' as the parameter name to match RecipeDetailScreen and Routes
                                             nav.navigate(Routes.recipeDetail(id = post.sourceApiId!!, title = post.title))
                                         } else {
-                                            // Navigate to UserPostDetailScreen for user-uploaded posts
+                                            // Corrected: Removed unnecessary title parameter
                                             nav.navigate(Routes.userPostDetail(postId = post.postId))
                                         }
                                     }
@@ -186,7 +199,9 @@ fun CommunityScreen(nav: NavController) {
                                         painter = rememberAsyncImagePainter(model = post.imageUrl),
                                         contentDescription = post.title,
                                         contentScale = ContentScale.Crop,
-                                        modifier = Modifier.fillMaxWidth().aspectRatio(1f)
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .aspectRatio(1f)
                                     )
                                     Column(Modifier.padding(8.dp)) {
                                         Text(text = post.title, style = MaterialTheme.typography.titleSmall, maxLines = 1, overflow = TextOverflow.Ellipsis)
@@ -219,7 +234,7 @@ fun CreatePostDialog(
     var title by remember { mutableStateOf("") }
     var imageUri by remember { mutableStateOf<Uri?>(null) }
     var ingredientsText by remember { mutableStateOf("") }
-    var instructionsText by remember { mutableStateOf("") } // Corrected mutableStateOf
+    var instructionsText by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf<CategoryEntity?>(null) }
     var isCategoryDropdownExpanded by remember { mutableStateOf(false) }
 
@@ -236,97 +251,90 @@ fun CreatePostDialog(
                 OutlinedTextField(
                     value = title,
                     onValueChange = { title = it },
-                    label = { Text(stringResource(id = R.string.post_title_label)) },
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
+                    label = { Text("Title") },
+                    modifier = Modifier.fillMaxWidth()
                 )
-                Spacer(Modifier.height(16.dp))
-                OutlinedTextField(
-                    value = ingredientsText,
-                    onValueChange = { ingredientsText = it },
-                    label = { Text(stringResource(id = R.string.post_ingredients_label)) },
-                    modifier = Modifier.fillMaxWidth().height(100.dp),
-                    maxLines = 5
-                )
-                Spacer(Modifier.height(16.dp))
-                OutlinedTextField(
-                    value = instructionsText,
-                    onValueChange = { instructionsText = it },
-                    label = { Text(stringResource(id = R.string.post_instructions_label)) },
-                    modifier = Modifier.fillMaxWidth().height(150.dp),
-                    maxLines = 10
-                )
-                Spacer(Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(12.dp))
 
-                // Category Dropdown
-                if (categories.isNotEmpty()) {
-                    ExposedDropdownMenuBox(
-                        expanded = isCategoryDropdownExpanded,
-                        onExpandedChange = { isCategoryDropdownExpanded = !isCategoryDropdownExpanded },
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        OutlinedTextField(
-                            value = selectedCategory?.name ?: stringResource(id = R.string.select_category_label),
-                            onValueChange = {}, // Not directly editable
-                            readOnly = true,
-                            label = { Text(stringResource(id = R.string.category_label)) },
-                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isCategoryDropdownExpanded) },
-                            modifier = Modifier.menuAnchor().fillMaxWidth()
-                        )
-                        ExposedDropdownMenu(
-                            expanded = isCategoryDropdownExpanded,
-                            onDismissRequest = { isCategoryDropdownExpanded = false }
-                        ) {
-                            categories.forEach { category ->
-                                DropdownMenuItem(
-                                    text = { Text(category.name) },
-                                    onClick = {
-                                        selectedCategory = category
-                                        isCategoryDropdownExpanded = false
-                                    }
-                                )
-                            }
-                        }
-                    }
-                    Spacer(Modifier.height(16.dp))
+                // Image Picker
+                Button(onClick = { imagePickerLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) }) {
+                    Text("Select Image")
                 }
-
-                Button(onClick = {
-                    imagePickerLauncher.launch(
-                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                    )
-                }) {
-                    Text(stringResource(id = R.string.select_image_button))
-                }
-                Spacer(Modifier.height(8.dp))
                 imageUri?.let {
                     Image(
-                        painter = rememberAsyncImagePainter(model = it),
+                        painter = rememberAsyncImagePainter(it),
                         contentDescription = "Selected image",
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(200.dp)
-                            .clip(RoundedCornerShape(8.dp)),
-                        contentScale = ContentScale.Crop
+                            .height(150.dp)
+                            .padding(top = 8.dp)
                     )
+                }
+                Spacer(modifier = Modifier.height(12.dp))
+
+                OutlinedTextField(
+                    value = ingredientsText,
+                    onValueChange = { ingredientsText = it },
+                    label = { Text("Ingredients (one per line)") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(100.dp)
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+
+                OutlinedTextField(
+                    value = instructionsText,
+                    onValueChange = { instructionsText = it },
+                    label = { Text("Instructions") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(150.dp)
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                // Category Dropdown
+                ExposedDropdownMenuBox(
+                    expanded = isCategoryDropdownExpanded,
+                    onExpandedChange = { isCategoryDropdownExpanded = !isCategoryDropdownExpanded }
+                ) {
+                    OutlinedTextField(
+                        value = selectedCategory?.name ?: "Select a category",
+                        onValueChange = {},
+                        readOnly = true,
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isCategoryDropdownExpanded) },
+                        modifier = Modifier.menuAnchor().fillMaxWidth()
+                    )
+                    ExposedDropdownMenu(
+                        expanded = isCategoryDropdownExpanded,
+                        onDismissRequest = { isCategoryDropdownExpanded = false }
+                    ) {
+                        categories.forEach { category ->
+                            DropdownMenuItem(
+                                text = { Text(category.name) },
+                                onClick = {
+                                    selectedCategory = category
+                                    isCategoryDropdownExpanded = false
+                                }
+                            )
+                        }
+                    }
                 }
             }
         },
         confirmButton = {
             Button(
                 onClick = {
-                    if (title.isNotBlank()) {
-                        onCreate(title, imageUri, ingredientsText, instructionsText, selectedCategory?.name)
-                    }
+                    onCreate(title, imageUri, ingredientsText, instructionsText, selectedCategory?.name)
                 },
-                enabled = title.isNotBlank()
+                enabled = title.isNotBlank() && ingredientsText.isNotBlank() && instructionsText.isNotBlank() && selectedCategory != null
             ) {
-                Text(stringResource(id = R.string.post))
+                Text("Create")
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(id = R.string.cancel))
+                Text("Cancel")
             }
         }
     )

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Mzansi Recipes</string>
 
@@ -11,25 +12,24 @@
     <string name="for_you">For You</string>
     <string name="community">Community</string>
     <string name="shopping">Shop</string>
-    <string name="add">ADD</string>
+    <string name="add">Add</string>
     <string name="post">Post</string>
     <string name="cancel">Cancel</string>
+    <string name="edit_button">Edit Button</string>
     <string name="back_button_desc">Back</string>
     <string name="guest_user">Guest User</string>
-    <string name="no_email_available">No email available</string>
-    <string name="profile_picture_content_desc">Profile picture</string>
+    <string name="no_email_available">No Email Available</string>
+    <string name="profile_picture_content_desc">Profile Picture</string>
     <string name="select_image_button">Select Image</string>
-    <string name="offline_message">Offline Message</string>
     <string name="post_ingredients_label">Post Ingredients</string>
     <string name="post_instructions_label">Post Instructions</string>
 
-
     <!-- Bottom Navigation -->
+    <string name="offline_message">Offline Message</string>
     <string name="bottom_nav_home">Home</string>
     <string name="bottom_nav_community">Community</string>
     <string name="bottom_nav_shop">Shop</string>
     <string name="bottom_nav_settings">Settings</string>
-
 
     <!-- Recipe Detail -->
     <string name="ready_in">Ready in: %1$s min</string>
@@ -39,13 +39,13 @@
     <string name="recipe_detail">Recipe Detail</string>
 
     <!-- HomeScreen dynamic content -->
-    <string name="search_results_title">Search Results for \"%1$s\"</string>
+    <string name="search_results_title">Search results for \"%1$s\"</string>
     <string name="category_recipes_title">Recipes in %1$s</string>
     <string name="no_search_results">No results found for \"%1$s\".</string>
     <string name="no_category_recipes">No recipes found in %1$s.</string>
     <string name="explore_recipes_placeholder">Explore recipes, search, or select a category!</string>
-    <string name="no_trending_recipes">No trending recipes available at the moment.</string>
-    <string name="error_loading_recipes">Could not load recipes. Please try again.</string>
+    <string name="no_trending_recipes">No trending recipes currently available.</string>
+    <string name="error_loading_recipes">Couldn\'t load recipes. Please try again.</string>
     <string name="no_categories_found">No categories found.</string>
 
     <!-- Community Screen -->
@@ -71,9 +71,8 @@
     <string name="notifications">Notifications</string>
     <string name="themes">Themes</string>
     <string name="language">Language</string>
-    <string name="logout">Logout</string>
+    <string name="logout">Log Out</string>
     <string name="select_language">Select Language</string>
-    <string name="edit_button">Edit</string>
 
     <!-- User Post Detail Screen -->
     <string name="uncategorized_label">Uncategorized</string>
@@ -82,6 +81,8 @@
     <string name="no_instructions_provided">No instructions provided.</string>
     <string name="post_not_found_error">Post not found.</string>
     <string name="loading">Loading...</string>
+    <string name="ingredients_added_to_shopping_list">Ingredients added to shopping list</string>
+    <string name="add_to_list">Add to List</string>
 
     <!-- Saved Recipes Screen -->
     <string name="saved_recipes_title">Saved Recipes</string>

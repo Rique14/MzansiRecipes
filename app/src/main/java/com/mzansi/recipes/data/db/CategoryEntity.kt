@@ -5,8 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "categories")
 data class CategoryEntity(
-    @PrimaryKey val id: String, // Assuming idCategory from API maps to this
-    val name: String,           // Assuming strCategory from API maps to this
-    val imageUrl: String?,      // Assuming strCategoryThumb from API maps to this
-    val description: String?    // Assuming strCategoryDescription from API maps to this
+    @PrimaryKey val id: String, 
+    val name: String,
+    val imageUrl: String, // Corrected: This should not be nullable
+    val description: String?
 )

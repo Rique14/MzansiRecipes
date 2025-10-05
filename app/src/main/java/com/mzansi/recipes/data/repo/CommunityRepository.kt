@@ -38,19 +38,7 @@ class CommunityRepository(
 
         return snapshot.documents.mapNotNull { doc ->
             try {
-                CommunityPost(
-                    postId = doc.id,
-                    userId = doc.getString("userId") ?: "",
-                    title = doc.getString("title") ?: "No title",
-                    imageUrl = doc.getString("imageUrl"),
-                    ingredients = doc.getString("ingredients") ?: "",
-                    instructions = doc.getString("instructions") ?: "",
-                    likes = doc.getLong("likes")?.toInt() ?: 0,
-                    category = doc.getString("category"),
-                    timestamp = doc.getLong("timestamp") ?: 0L,
-                    sourceApiId = doc.getString("sourceApiId"),
-                    isUserUploaded = doc.getBoolean("isUserUploaded") ?: true
-                )
+                doc.toObject(CommunityPost::class.java)?.copy(postId = doc.id)
             } catch (e: Exception) {
                 Log.e("CommunityRepository", "Error mapping document ${doc.id} in listPopular", e)
                 null
@@ -58,26 +46,30 @@ class CommunityRepository(
         }
     }
 
+
+    suspend fun getPost(postId: String): CommunityPost? {
+        return try {
+            val doc = col.document(postId).get().await()
+            if (doc.exists()) {
+                doc.toObject(CommunityPost::class.java)?.copy(postId = doc.id)
+            } else {
+                Log.w("CommunityRepository", "Post with ID $postId not found")
+                null
+            }
+        } catch (e: Exception) {
+            Log.e("CommunityRepository", "Error getting post $postId", e)
+            null
+        }
+    }
+
     fun getPostById(postId: String): Flow<CommunityPost?> {
         return col.document(postId).snapshots().map { doc ->
             if (doc.exists()) {
                 try {
-                    CommunityPost(
-                        postId = doc.id,
-                        userId = doc.getString("userId") ?: "",
-                        title = doc.getString("title") ?: "No title",
-                        imageUrl = doc.getString("imageUrl"),
-                        ingredients = doc.getString("ingredients") ?: "",
-                        instructions = doc.getString("instructions") ?: "",
-                        likes = doc.getLong("likes")?.toInt() ?: 0,
-                        category = doc.getString("category"),
-                        timestamp = doc.getLong("timestamp") ?: 0L,
-                        sourceApiId = doc.getString("sourceApiId"),
-                        isUserUploaded = doc.getBoolean("isUserUploaded") ?: true
-                    )
+                    doc.toObject(CommunityPost::class.java)?.copy(postId = doc.id)
                 } catch (e: Exception) {
                     Log.e("CommunityRepository", "Error mapping document ${doc.id} in getPostById", e)
-                    null // Error during deserialization
+                    null
                 }
             } else {
                 null // Document does not exist
@@ -126,19 +118,7 @@ class CommunityRepository(
         val snapshot = col.whereEqualTo("sourceApiId", apiId).limit(1).get().await()
         return snapshot.documents.firstOrNull()?.let { doc ->
             try {
-                CommunityPost(
-                    postId = doc.id,
-                    userId = doc.getString("userId") ?: "",
-                    title = doc.getString("title") ?: "",
-                    imageUrl = doc.getString("imageUrl"),
-                    ingredients = doc.getString("ingredients") ?: "",
-                    instructions = doc.getString("instructions") ?: "",
-                    likes = doc.getLong("likes")?.toInt() ?: 0,
-                    category = doc.getString("category"),
-                    timestamp = doc.getLong("timestamp") ?: 0L,
-                    sourceApiId = doc.getString("sourceApiId"),
-                    isUserUploaded = doc.getBoolean("isUserUploaded") ?: false
-                )
+                doc.toObject(CommunityPost::class.java)?.copy(postId = doc.id)
             } catch (e: Exception) {
                 Log.e("CommunityRepository", "Error mapping document ${doc.id} in findBySourceApiId", e)
                 null

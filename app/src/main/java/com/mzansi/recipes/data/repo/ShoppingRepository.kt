@@ -27,6 +27,21 @@ class ShoppingRepository(
         )
     }
 
+    // Function to add a list of items
+    suspend fun addItems(items: List<String>, originRecipeId: String? = null) {
+        val userId = auth.currentUser?.uid ?: return
+        val entities = items.map {
+            ShoppingItemEntity(
+                userId = userId,
+                itemName = it,
+                originRecipeId = originRecipeId,
+                pendingSync = true
+            )
+        }
+        dao.upsertAll(entities)
+    }
+
+
     suspend fun toggleChecked(id: Long, checked: Boolean) = dao.setChecked(id, checked)
     suspend fun delete(item: ShoppingItemEntity) = dao.delete(item)
 

@@ -4,8 +4,6 @@ import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.createSavedStateHandle
-import androidx.lifecycle.viewmodel.CreationExtras
 import com.mzansi.recipes.data.preferences.UserPreferences
 import com.mzansi.recipes.data.repo.AuthRepository
 import com.mzansi.recipes.data.repo.CommunityRepository
@@ -54,7 +52,7 @@ class ShoppingViewModelFactory(private val repo: ShoppingRepository) : ViewModel
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ShoppingViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return ShoppingViewModel(repo) as T 
+            return ShoppingViewModel(repo) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
@@ -74,18 +72,21 @@ class CommunityViewModelFactory(
     }
 }
 
-// Factory for UserPostDetailViewModel
+// UPDATED Factory for UserPostDetailViewModel
 class UserPostDetailViewModelFactory(
-    private val communityRepository: CommunityRepository
+    private val communityRepository: CommunityRepository,
+    private val shoppingRepository: ShoppingRepository,
+    private val recipeRepository: RecipeRepository // Added recipeRepository
 ) : AbstractSavedStateViewModelFactory() {
-    override fun <T : ViewModel> create( 
+    override fun <T : ViewModel> create(
         key: String,
         modelClass: Class<T>,
         handle: SavedStateHandle
     ): T {
         if (modelClass.isAssignableFrom(UserPostDetailViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return UserPostDetailViewModel(handle, communityRepository) as T
+            // Pass all three repositories to the ViewModel
+            return UserPostDetailViewModel(handle, communityRepository, shoppingRepository, recipeRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class for UserPostDetailViewModelFactory")
     }
@@ -102,7 +103,6 @@ class SettingsViewModelFactory(private val userPrefs: UserPreferences) : ViewMod
     }
 }
 
-// <<< NEW FACTORY >>>
 // Factory for SavedRecipesViewModel
 class SavedRecipesViewModelFactory(private val recipeRepository: RecipeRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

@@ -1,3 +1,4 @@
+
 <resources>
     <string name="app_name">Mzansi Recipes</string>
 
@@ -83,6 +84,8 @@
     <string name="no_instructions_provided">Ayikho imiyalelo enikeziwe.</string>
     <string name="post_not_found_error">Okuthunyelwe akutholakalanga.</string>
     <string name="loading">Iyalayisha...</string>
+    <string name="ingredients_added_to_shopping_list">Izithako zengezwe ohlwini lokuthenga</string>
+    <string name="add_to_list">Engeza ohlwini</string>
 
     <!-- Saved Recipes Screen -->
     <string name="saved_recipes_title">Amacebo Okupheka Agciniwe</string>

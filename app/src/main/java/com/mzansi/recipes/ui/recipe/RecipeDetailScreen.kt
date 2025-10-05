@@ -6,8 +6,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Bookmark // <<< IMPORT
-import androidx.compose.material.icons.outlined.BookmarkBorder // <<< IMPORT
+import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -26,9 +27,8 @@ import com.mzansi.recipes.BuildConfig
 import com.mzansi.recipes.R
 import com.mzansi.recipes.ViewModel.RecipeDetailViewModel
 import com.mzansi.recipes.ViewModel.RecipeDetailViewModelFactory
-// import com.mzansi.recipes.data.repo.RecipeRepository // No longer directly needed here for instantiation
 import com.mzansi.recipes.di.AppModules
-
+import kotlinx.coroutines.launch // <<< ADDED
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -37,10 +37,7 @@ fun RecipeDetailScreen(nav: NavController, id: String, title: String) {
     val db = AppModules.provideDb(context)
     val shoppingRepo = AppModules.provideShoppingRepo(db, AppModules.provideFirestore(), AppModules.provideAuth())
     val service = AppModules.provideMealDbService(AppModules.provideOkHttp(BuildConfig.RAPIDAPI_KEY))
-
     val networkMonitor = remember { AppModules.provideNetworkMonitor(context) }
-
-    // Updated RecipeRepository instantiation to use AppModules for all dependencies
     val recipeRepo = remember {
         AppModules.provideRecipeRepo(
             service = service,
@@ -49,10 +46,29 @@ fun RecipeDetailScreen(nav: NavController, id: String, title: String) {
             networkMonitor = networkMonitor
         )
     }
+
     val detailVm: RecipeDetailViewModel = viewModel(factory = RecipeDetailViewModelFactory(recipeRepo, shoppingRepo, id))
     val state by detailVm.state.collectAsState()
 
+    // --- Start of Changes for Snackbar ---
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+
+    LaunchedEffect(state.ingredientsAddedToCart) {
+        if (state.ingredientsAddedToCart) {
+            scope.launch {
+                snackbarHostState.showSnackbar(
+                    message = context.getString(R.string.ingredients_added_to_shopping_list),
+                    duration = SnackbarDuration.Short
+                )
+            }
+            detailVm.onAddedToCartHandled() // Reset the event
+        }
+    }
+    // --- End of Changes for Snackbar ---
+
     Scaffold(
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }, // <<< ADDED
         topBar = {
             CenterAlignedTopAppBar(
                 title = { Text(stringResource(id = R.string.recipe_detail), color = Color.White, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, fontSize = 30.sp) },
@@ -74,6 +90,17 @@ fun RecipeDetailScreen(nav: NavController, id: String, title: String) {
                     containerColor = MaterialTheme.colorScheme.primary
                 )
             )
+        },
+        floatingActionButton = {
+            state.details?.let {
+                if (it.ingredients.isNotEmpty()) {
+                    ExtendedFloatingActionButton(
+                        onClick = { detailVm.addAllIngredientsToShopping() },
+                        icon = { Icon(Icons.Filled.ShoppingCart, contentDescription = null) },
+                        text = { Text(stringResource(id = R.string.add_to_list)) }
+                    )
+                }
+            }
         }
     ) { paddingValues ->
         when {
@@ -93,7 +120,7 @@ fun RecipeDetailScreen(nav: NavController, id: String, title: String) {
                     Modifier
                         .padding(paddingValues)
                         .verticalScroll(rememberScrollState())
-                        .padding(bottom = 16.dp)
+                        .padding(bottom = 80.dp) // Add padding for FAB
                 ) {
                     Image(
                         painter = rememberAsyncImagePainter(model = details.imageUrl),
@@ -150,23 +177,12 @@ fun RecipeDetailScreen(nav: NavController, id: String, title: String) {
                                 Text(instruction)
                             }
                         }
-                        Spacer(Modifier.height(24.dp))
-                        Button(
-                            onClick = { detailVm.addAllIngredientsToShopping() },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 32.dp)
-                                .height(50.dp),
-                            shape = MaterialTheme.shapes.medium
-                        ) {
-                            Text(stringResource(id = R.string.add), style = MaterialTheme.typography.labelLarge)
-                        }
                     }
                 }
             }
             // Fallback for when details are null but not loading and no error specific to details loading
             else -> {
-                 Box(modifier = Modifier.fillMaxSize().padding(paddingValues), contentAlignment = Alignment.Center) {
+                Box(modifier = Modifier.fillMaxSize().padding(paddingValues), contentAlignment = Alignment.Center) {
                     Text("Recipe details not available.", style = MaterialTheme.typography.bodyLarge)
                 }
             }
@@ -183,9 +199,9 @@ fun IngredientRow(item: String, checked: Boolean, onCheckedChange: (Boolean) -> 
             .padding(vertical = 4.dp)
     ) {
         Checkbox(
-            checked = checked, 
-            onCheckedChange = { newCheckedState -> 
-                onCheckedChange(newCheckedState) 
+            checked = checked,
+            onCheckedChange = { newCheckedState ->
+                onCheckedChange(newCheckedState)
             }
         )
         Spacer(Modifier.width(8.dp))

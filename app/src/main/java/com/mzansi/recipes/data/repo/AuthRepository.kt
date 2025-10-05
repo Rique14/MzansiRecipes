@@ -44,8 +44,7 @@ class AuthRepository(
             val isNewUser = authResult.additionalUserInfo?.isNewUser == true
             Log.d("AuthRepository", "Is new user: $isNewUser")
 
-            // Always try to set/update Firestore for Google users to ensure profile info is fresh
-            // and default fields are set if it's their first time.
+
             val name = firebaseUser.displayName ?: "User"
             val email = firebaseUser.email ?: ""
 
@@ -80,6 +79,6 @@ class AuthRepository(
         auth.signOut()
         Log.d("AuthRepository", "User logged out.")
         // Consider also signing out from GoogleSignInClient if it was used
-        // However, this is usually handled at the UI layer where GoogleSignInClient is managed.
+        // Handled at the UI layer where GoogleSignInClient is managed.
     }
 }
