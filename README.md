@@ -91,8 +91,13 @@ https://github.com/Rique14/MzansiRecipes
 ## 8. Use of Logs in Project
 
 <img width="1920" height="1019" alt="Screenshot (328)" src="https://github.com/user-attachments/assets/c88d2193-d00a-406b-bddd-2fea4b40c037" />
+
 <img width="1920" height="1017" alt="Screenshot (324)" src="https://github.com/user-attachments/assets/23b7c998-1d22-4690-9f6a-d3752f35fafd" />
+
 <img width="1920" height="1017" alt="Screenshot (321)" src="https://github.com/user-attachments/assets/939b0e0e-8f0c-40f4-bdfb-f338e459be48" />
+
+<img width="1920" height="1013" alt="Screenshot (329)" src="https://github.com/user-attachments/assets/d84884ac-9cce-48fb-ab30-7d94d4cde857" />
+
 <img width="1920" height="1019" alt="Screenshot (327)" src="https://github.com/user-attachments/assets/e34b7f99-6631-483f-8399-b94cd50e7c20" />
 
 
