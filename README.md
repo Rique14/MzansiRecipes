@@ -1,14 +1,18 @@
-# Mzansi Recipes App
+# Mzansi Recipes App - Part 2
 ## Group Members
 - Princely Makhwara – ST10263265
 - Aime Ndumuhire – ST10255663
 - Fortunate Majere- ST10231459
 - Sabelo Sibiya - ST10327016
 - Enrique Arendse – ST10302006
+
 ## Video Link
 
-​
- Mzansi Recipes Logo <img width="1024" height="1024" alt="ic_pot_icon" src="https://github.com/user-attachments/assets/d529af05-3864-4d6d-9544-d8ea9ec75543" />
+## Link to Repository 
+https://github.com/Rique14/MzansiRecipes 
+
+## Mzansi Recipes Logo 
+<img width="1024" height="1024" alt="ic_pot_icon" src="https://github.com/user-attachments/assets/d529af05-3864-4d6d-9544-d8ea9ec75543" />
 
 ​
  ## 1. Introduction
@@ -33,7 +37,7 @@
 ​
  ### 3.2. The MealDB API
  For recipe content, the app is connected to **The MealDB**, a comprehensive database of recipes from around the world, accessed via RapidAPI. This allows users to discover a vast collection of dishes and cooking instructions.
-​
+
  ## 4. Design Considerations
 ​
  The app is built with a focus on a clean, intuitive, and user-friendly interface. Key design principles include:
@@ -60,7 +64,7 @@
  ## 6. GitHub and GitHub Actions
 ​
  The project is hosted on GitHub and we use GitHub Actions to automate our development workflow.
-​
+
  ### 6.1. Continuous Integration (CI)
 ​
  We have a CI pipeline that runs on every push and pull request to the `main` branch. This pipeline performs the following tasks:
@@ -83,7 +87,14 @@
  3. Make your changes and commit them with a descriptive commit message.
  4. Push your changes to your forked repository.
  5. Create a pull request to the `main` branch of the main repository.
-​
- ## 8. License
+
+## 8. Logs in Project
+<img width="1920" height="1017" alt="Screenshot (324)" src="https://github.com/user-attachments/assets/d5cab443-e2ad-4e21-8537-32fd082a5e48" />
+
+​<img width="1920" height="1080" alt="Screenshot (328)" src="https://github.com/user-attachments/assets/3f29b32c-bf60-4a5a-b08c-cad2781dc74a" />
+
+<img width="1920" height="1080" alt="Screenshot (327)" src="https://github.com/user-attachments/assets/0364d52e-b3b3-4827-8f19-4e6e486dca48" />
+
+ ## 9. License
 ​
  This project is licensed under the MIT License. See the `LICENSE` file for more information.
