@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Visibility // Changed import for Visibility icon
+import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.outlined.MailOutline
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.*
@@ -21,10 +21,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.mzansi.recipes.navigation.Routes
 import com.mzansi.recipes.ViewModel.AuthViewModel
 import com.mzansi.recipes.ViewModel.AuthViewModelFactory
 import com.mzansi.recipes.di.AppModules
+import com.mzansi.recipes.navigation.Routes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -38,8 +38,11 @@ fun RegisterScreen(nav: NavController) {
     var pw by remember { mutableStateOf("") }
     var confirm by remember { mutableStateOf("") }
 
-    if (state.loggedIn) {
-        LaunchedEffect(Unit) { nav.navigate(Routes.Home) { popUpTo(Routes.Login) { inclusive = true } } }
+    LaunchedEffect(state.registrationSuccess) {
+        if (state.registrationSuccess) {
+            nav.navigate(Routes.Login) { popUpTo(Routes.Register) { inclusive = true } }
+            vm.onRegistrationSuccessHandled()
+        }
     }
 
     Column(Modifier.fillMaxSize()) {
@@ -47,8 +50,7 @@ fun RegisterScreen(nav: NavController) {
             modifier = Modifier
                 .fillMaxWidth()
                 .background(MaterialTheme.colorScheme.primary)
-                .statusBarsPadding()
-                .padding(vertical = 20.dp), // Adjust padding for header height
+                .padding(vertical = 40.dp),
             contentAlignment = Alignment.Center
         ) {
             Text(
@@ -81,8 +83,10 @@ fun RegisterScreen(nav: NavController) {
                     unfocusedContainerColor = Color(0xFFF0F0F0)
                 ),
                 singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                isError = state.nameError != null
             )
+            state.nameError?.let { Text(it, color = MaterialTheme.colorScheme.error) }
 
             Spacer(Modifier.height(16.dp))
 
@@ -101,8 +105,10 @@ fun RegisterScreen(nav: NavController) {
                     unfocusedContainerColor = Color(0xFFF0F0F0)
                 ),
                 singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                isError = state.emailError != null
             )
+            state.emailError?.let { Text(it, color = MaterialTheme.colorScheme.error) }
 
             Spacer(Modifier.height(16.dp))
 
@@ -111,7 +117,7 @@ fun RegisterScreen(nav: NavController) {
                 onValueChange = { pw = it },
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = { Text("Password") },
-                trailingIcon = { Icon(Icons.Filled.Visibility, contentDescription = "Password Icon") }, // Changed to Filled.Visibility
+                trailingIcon = { Icon(Icons.Filled.Visibility, contentDescription = "Password Icon") },
                 shape = RoundedCornerShape(8.dp),
                 colors = TextFieldDefaults.colors(
                     focusedIndicatorColor = Color.Transparent,
@@ -121,8 +127,10 @@ fun RegisterScreen(nav: NavController) {
                     unfocusedContainerColor = Color(0xFFF0F0F0)
                 ),
                 singleLine = true,
-                visualTransformation = PasswordVisualTransformation()
+                visualTransformation = PasswordVisualTransformation(),
+                isError = state.passwordError != null
             )
+            state.passwordError?.let { Text(it, color = MaterialTheme.colorScheme.error) }
 
             Spacer(Modifier.height(16.dp))
 
@@ -131,7 +139,7 @@ fun RegisterScreen(nav: NavController) {
                 onValueChange = { confirm = it },
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = { Text("Confirm Password") },
-                trailingIcon = { Icon(Icons.Filled.Visibility, contentDescription = "Confirm Password Icon") }, // Changed to Filled.Visibility
+                trailingIcon = { Icon(Icons.Filled.Visibility, contentDescription = "Confirm Password Icon") },
                 shape = RoundedCornerShape(8.dp),
                 colors = TextFieldDefaults.colors(
                     focusedIndicatorColor = Color.Transparent,
@@ -141,14 +149,16 @@ fun RegisterScreen(nav: NavController) {
                     unfocusedContainerColor = Color(0xFFF0F0F0)
                 ),
                 singleLine = true,
-                visualTransformation = PasswordVisualTransformation()
+                visualTransformation = PasswordVisualTransformation(),
+                isError = state.confirmPasswordError != null
             )
+            state.confirmPasswordError?.let { Text(it, color = MaterialTheme.colorScheme.error) }
 
             Spacer(Modifier.height(24.dp))
 
             Button(
-                onClick = { if (pw == confirm && pw.length >= 6) vm.register(name.trim(), email.trim(), pw) },
-                enabled = pw.isNotBlank() && confirm.isNotBlank() && pw == confirm && name.isNotBlank() && email.isNotBlank() && !state.loading,
+                onClick = { vm.register(name.trim(), email.trim(), pw, confirm) },
+                enabled = !state.loading,
                 modifier = Modifier.fillMaxWidth().height(48.dp),
                 shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
