@@ -16,11 +16,9 @@ https://github.com/Rique14/MzansiRecipes
 
 ​
  ## 1. Introduction
-​
  Mzansi Recipes is a mobile application dedicated to celebrating the rich and diverse culinary heritage of South Africa. It provides a platform for users to discover, share and enjoy authentic local recipes. The app is designed to be a community-driven space where food enthusiasts can connect, learn, and preserve the vibrant food culture of the nation.
 ​
  ## 2. Features
-​
  - **User Authentication**: Secure user registration and login with encrypted password storage.
  - **Recipe Discovery**: Browse a wide variety of recipes from around the world using **The MealDB API**.
  - **User Settings**: Users can manage their profile and app settings.
@@ -29,7 +27,6 @@ https://github.com/Rique14/MzansiRecipes
  - **Offline Access**: Access your favorite recipes and shopping lists even without an internet connection.
 ​
  ## 3. Backend and API
-​
  ### 3.1. Firebase
  The app uses **Firebase** as its backend for:
  - **Authentication**: Securely managing user accounts, including login and registration, with encrypted passwords.
@@ -39,7 +36,6 @@ https://github.com/Rique14/MzansiRecipes
  For recipe content, the app is connected to **The MealDB**, a comprehensive database of recipes from around the world, accessed via RapidAPI. This allows users to discover a vast collection of dishes and cooking instructions.
 
  ## 4. Design Considerations
-​
  The app is built with a focus on a clean, intuitive, and user-friendly interface. Key design principles include:
 ​
  - **Simplicity**: A minimalist design that makes it easy for users to navigate and find what they need.
@@ -48,7 +44,6 @@ https://github.com/Rique14/MzansiRecipes
  - **Visual Appeal**: High-quality images and a visually appealing layout to showcase the delicious food.
 ​
  ## 5. Tech Stack and Architecture
-​
  The Mzansi Recipes app is built using the latest Android development technologies:
 ​
  - **Kotlin**: The primary programming language for building robust and modern Android apps.
