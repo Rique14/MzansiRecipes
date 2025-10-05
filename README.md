@@ -6,6 +6,7 @@
 - Sabelo Sibiya - ST10327016
 - Enrique Arendse – ST10302006
 ## Video Link
+## Link to Repository 
 
 ​
  Mzansi Recipes Logo <img width="1024" height="1024" alt="ic_pot_icon" src="https://github.com/user-attachments/assets/d529af05-3864-4d6d-9544-d8ea9ec75543" />
@@ -60,8 +61,6 @@
  ## 6. GitHub and GitHub Actions
 ​
  The project is hosted on GitHub and we use GitHub Actions to automate our development workflow.
- 
-​<img width="1920" height="1080" alt="Screenshot (326)" src="https://github.com/user-attachments/assets/ebc76fbc-61e5-40e1-b775-7aa0404ed1ea" />
 
  ### 6.1. Continuous Integration (CI)
 ​
