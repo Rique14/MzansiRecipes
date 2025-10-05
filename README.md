@@ -33,9 +33,6 @@
 ​
  ### 3.2. The MealDB API
  For recipe content, the app is connected to **The MealDB**, a comprehensive database of recipes from around the world, accessed via RapidAPI. This allows users to discover a vast collection of dishes and cooking instructions.
- <img width="1920" height="1080" alt="Screenshot (322)" src="https://github.com/user-attachments/assets/e01a03cc-6d9f-48df-aa75-0bd2e76df2fa" />
-
-​<img width="1920" height="1080" alt="Screenshot (323)" src="https://github.com/user-attachments/assets/fe54786a-e173-4cf8-a812-c8a139e302e8" />
 
  ## 4. Design Considerations
 ​
@@ -88,7 +85,14 @@
  3. Make your changes and commit them with a descriptive commit message.
  4. Push your changes to your forked repository.
  5. Create a pull request to the `main` branch of the main repository.
-​
- ## 8. License
+
+## 8. Logs in Project
+<img width="1920" height="1017" alt="Screenshot (324)" src="https://github.com/user-attachments/assets/d5cab443-e2ad-4e21-8537-32fd082a5e48" />
+
+​<img width="1920" height="1080" alt="Screenshot (328)" src="https://github.com/user-attachments/assets/3f29b32c-bf60-4a5a-b08c-cad2781dc74a" />
+
+<img width="1920" height="1080" alt="Screenshot (327)" src="https://github.com/user-attachments/assets/0364d52e-b3b3-4827-8f19-4e6e486dca48" />
+
+ ## 9. License
 ​
  This project is licensed under the MIT License. See the `LICENSE` file for more information.
