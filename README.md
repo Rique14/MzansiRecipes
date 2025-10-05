@@ -33,7 +33,10 @@
 ​
  ### 3.2. The MealDB API
  For recipe content, the app is connected to **The MealDB**, a comprehensive database of recipes from around the world, accessed via RapidAPI. This allows users to discover a vast collection of dishes and cooking instructions.
-​
+ <img width="1920" height="1080" alt="Screenshot (322)" src="https://github.com/user-attachments/assets/e01a03cc-6d9f-48df-aa75-0bd2e76df2fa" />
+
+​<img width="1920" height="1080" alt="Screenshot (323)" src="https://github.com/user-attachments/assets/fe54786a-e173-4cf8-a812-c8a139e302e8" />
+
  ## 4. Design Considerations
 ​
  The app is built with a focus on a clean, intuitive, and user-friendly interface. Key design principles include:
@@ -60,7 +63,9 @@
  ## 6. GitHub and GitHub Actions
 ​
  The project is hosted on GitHub and we use GitHub Actions to automate our development workflow.
-​
+ 
+​<img width="1920" height="1080" alt="Screenshot (326)" src="https://github.com/user-attachments/assets/ebc76fbc-61e5-40e1-b775-7aa0404ed1ea" />
+
  ### 6.1. Continuous Integration (CI)
 ​
  We have a CI pipeline that runs on every push and pull request to the `main` branch. This pipeline performs the following tasks:
