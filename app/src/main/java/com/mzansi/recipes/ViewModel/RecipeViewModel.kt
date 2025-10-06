@@ -2,9 +2,10 @@ package com.mzansi.recipes.ViewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mzansi.recipes.data.db.CategoryEntity // Changed from CategorySummary
+import com.mzansi.recipes.data.db.CategoryEntity
 import com.mzansi.recipes.data.db.RecipeEntity
 import com.mzansi.recipes.data.repo.RecipeRepository
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -38,11 +39,13 @@ class RecipeViewModel(private val repo: RecipeRepository) : ViewModel() {
     private val _state = MutableStateFlow(HomeState())
     val state: StateFlow<HomeState> = _state.asStateFlow()
 
+    // ✅ NEW: Keep track of active category loading job
+    private var categoryJob: Job? = null
+
     init {
         observeCategories()
         observeTrendingRecipes()
 
-        // Initial refresh attempts
         refreshCategories(isInitial = true)
         refreshTrendingRecipes(isInitial = true)
     }
@@ -61,7 +64,7 @@ class RecipeViewModel(private val repo: RecipeRepository) : ViewModel() {
         viewModelScope.launch {
             if (isInitial) _state.update { it.copy(isLoadingCategoriesRefresh = true, error = null) }
             try {
-                repo.refreshCategoriesIfNeeded() // Fetches from network if cache is empty & online
+                repo.refreshCategoriesIfNeeded()
             } catch (e: Exception) {
                 _state.update { it.copy(error = "Failed to refresh categories: ${e.message}") }
             } finally {
@@ -131,27 +134,28 @@ class RecipeViewModel(private val repo: RecipeRepository) : ViewModel() {
                 activeDisplayMode = DisplayMode.CATEGORY_RECIPES,
                 searchQuery = "",
                 searchResults = emptyList(),
-                isLoadingCategoryRecipesRefresh = true, // For the initial refresh call
+                isLoadingCategoryRecipesRefresh = true,
                 error = null
             )
         }
 
-        viewModelScope.launch {
-            // Start observing recipes for this category from the database
+        // ✅ FIX: Cancel previous category observer before launching a new one
+        categoryJob?.cancel()
+        categoryJob = viewModelScope.launch {
             repo.observeRecipesByCategory(categoryName)
                 .catch { e -> _state.update { it.copy(error = "Error observing $categoryName recipes: ${e.message}", isLoadingCategoryRecipesRefresh = false) } }
                 .collectLatest { recipes ->
-                    _state.update { it.copy(recipesForCategory = recipes, isLoadingCategoryRecipesRefresh = false) } // Stop loading once data flows
+                    _state.update { it.copy(recipesForCategory = recipes, isLoadingCategoryRecipesRefresh = false) }
                 }
         }
-        // Trigger a network refresh for this category
+
+        // Trigger network refresh
         viewModelScope.launch {
             try {
                 repo.refreshRecipesForCategory(categoryName)
             } catch (e: Exception) {
                 _state.update { it.copy(error = "Failed to refresh $categoryName recipes: ${e.message}", isLoadingCategoryRecipesRefresh = false) }
             }
-
         }
     }
 

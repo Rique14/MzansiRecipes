@@ -10,7 +10,12 @@ import com.mzansi.recipes.data.db.RecipeEntity
 import com.mzansi.recipes.util.NetworkMonitor
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import java.io.IOException
+import kotlinx.coroutines.runBlocking
+import kotlin.random.Random
 
 // Data class for combined recipe details, including ingredients
 data class RecipeFullDetails(
@@ -29,14 +34,9 @@ class RecipeRepository(
     private val categoryDao: CategoryDao,
     private val networkMonitor: NetworkMonitor
 ) {
-    private val TAG = "RecipeRepository" // Logging Tag
+    private val TAG = "RecipeRepository"
 
-    companion object {
-        private const val FEATURED_CATEGORY_NAME = "Dessert"
-    }
-
-    // --- Categories --- 
-
+    // --- Categories ---
     fun observeCategories(): Flow<List<CategoryEntity>> = categoryDao.observeAll()
 
     suspend fun refreshCategoriesIfNeeded() {
@@ -61,8 +61,7 @@ class RecipeRepository(
         }
     }
 
-    // --- Trending Recipes (now sourced from a specific category) ---
-
+    // --- Trending Recipes ---
     fun observeTrendingRecipes(): Flow<List<RecipeEntity>> = recipeDao.observeTrending()
 
     suspend fun triggerTrendingRecipesRefresh() {
@@ -72,43 +71,55 @@ class RecipeRepository(
         }
 
         try {
-            val oldTrendingItems = recipeDao.getOldTrendingItems()
+            // Demote old trending items
+            val oldTrendingItems = recipeDao.observeTrending().first()
             if (oldTrendingItems.isNotEmpty()) {
-                val demotedItems = oldTrendingItems.map { it.copy(trending = false) }
-                recipeDao.upsertAll(demotedItems)
+                recipeDao.upsertAll(oldTrendingItems.map { it.copy(trending = false) })
             }
         } catch (e: Exception) {
             Log.e(TAG, "Error demoting old trending items: ${e.message}", e)
         }
 
-        Log.d(TAG, "triggerTrendingRecipesRefresh: Fetching recipes from category '$FEATURED_CATEGORY_NAME' to mark as trending.")
         try {
-            val response = service.filterByCategory(FEATURED_CATEGORY_NAME)
-            val trendingRecipeEntities = response.meals?.take(10)?.mapNotNull { mealSummary ->
-                val existing = recipeDao.getById(mealSummary.idMeal)
-                RecipeEntity(
-                    id = mealSummary.idMeal,
-                    title = mealSummary.strMeal,
-                    imageUrl = mealSummary.strMealThumb ?: "",
-                    category = FEATURED_CATEGORY_NAME,
-                    trending = true,
-                    instructions = existing?.instructions ?: "",
-                    area = existing?.area ?: "",
-                    pendingSync = existing?.pendingSync ?: false,
-                    isSavedOffline = existing?.isSavedOffline ?: false
-                )
-            } ?: emptyList()
+            // Fetch all categories from API
+            val categoryResponse = service.listCategories()
+            val allCategories = categoryResponse.categories?.mapNotNull { it.strCategory } ?: emptyList()
+            if (allCategories.isEmpty()) return
 
-            if (trendingRecipeEntities.isNotEmpty()) {
-                recipeDao.upsertAll(trendingRecipeEntities)
+            // Shuffle and pick 3 random categories
+            val randomCategories = allCategories.shuffled().take(3)
+            val newTrending = mutableListOf<RecipeEntity>()
+
+            for (category in randomCategories) {
+                val response = service.filterByCategory(category)
+                val meals = response.meals?.shuffled()?.take(2) ?: emptyList() // Take 2 from each category
+                for (meal in meals) {
+                    val existing = recipeDao.getById(meal.idMeal)
+                    newTrending.add(
+                        RecipeEntity(
+                            id = meal.idMeal,
+                            title = meal.strMeal,
+                            imageUrl = meal.strMealThumb ?: "",
+                            category = category,
+                            trending = true,
+                            instructions = existing?.instructions ?: "",
+                            area = existing?.area ?: "",
+                            pendingSync = existing?.pendingSync ?: false,
+                            isSavedOffline = existing?.isSavedOffline ?: false
+                        )
+                    )
+                }
+            }
+
+            if (newTrending.isNotEmpty()) {
+                recipeDao.upsertAll(newTrending)
             }
         } catch (e: Exception) {
             Log.e(TAG, "Exception during triggerTrendingRecipesRefresh: ${e.message}", e)
         }
     }
 
-    // --- Recipes by Category --- 
-
+    // --- Recipes by Category ---
     fun observeRecipesByCategory(categoryName: String): Flow<List<RecipeEntity>> {
         return recipeDao.observeByCategory(categoryName)
     }
@@ -141,8 +152,7 @@ class RecipeRepository(
         }
     }
 
-    // --- Search --- 
-
+    // --- Search ---
     suspend fun searchRecipesByName(searchTerm: String): List<RecipeEntity> {
         if (searchTerm.isBlank() || !networkMonitor.isOnline.first()) return emptyList()
         return try {
@@ -153,7 +163,7 @@ class RecipeRepository(
                     id = mealSummary.idMeal,
                     title = mealSummary.strMeal,
                     imageUrl = mealSummary.strMealThumb ?: "",
-                    category = existing?.category ?: "", // Provide a fallback for category
+                    category = existing?.category ?: "",
                     trending = existing?.trending ?: false,
                     instructions = existing?.instructions ?: "",
                     area = existing?.area ?: "",
@@ -167,14 +177,12 @@ class RecipeRepository(
         }
     }
 
-    // --- Full Recipe Detail --- 
-
+    // --- Full Recipe Detail ---
     fun observeRecipeById(recipeId: String): Flow<RecipeEntity?> = recipeDao.observeById(recipeId)
 
     suspend fun fetchAndCacheFullRecipeDetails(recipeId: String): RecipeFullDetails? {
         val localEntity = recipeDao.getById(recipeId)
 
-        // FIX: Only use local data if ingredients are meaningfully cached.
         if (localEntity != null && localEntity.isSavedOffline && localEntity.ingredients.any { it.isNotBlank() }) {
             return RecipeFullDetails(
                 id = localEntity.id,
@@ -191,22 +199,22 @@ class RecipeRepository(
             try {
                 val response = service.lookupRecipeById(recipeId)
                 val networkDetail = response.meals?.firstOrNull()
-                
+
                 if (networkDetail != null) {
                     val ingredients = formatIngredients(networkDetail)
                     val bestCategory = networkDetail.strCategory?.takeIf { it.isNotBlank() } ?: localEntity?.category
-                    
+
                     val updatedEntity = (localEntity ?: RecipeEntity(id = networkDetail.idMeal, title = networkDetail.strMeal, imageUrl = networkDetail.strMealThumb ?: "", category = "", instructions = "", area = "")).copy(
                         instructions = networkDetail.strInstructions ?: localEntity?.instructions ?: "",
                         area = networkDetail.strArea ?: localEntity?.area ?: "",
-                        title = networkDetail.strMeal, 
+                        title = networkDetail.strMeal,
                         imageUrl = networkDetail.strMealThumb ?: "",
                         category = bestCategory ?: "",
-                        trending = localEntity?.trending ?: (bestCategory == FEATURED_CATEGORY_NAME),
-                        ingredients = ingredients // Save ingredients to the database
+                        trending = localEntity?.trending ?: false,
+                        ingredients = ingredients
                     )
                     recipeDao.upsert(updatedEntity)
-                    
+
                     return RecipeFullDetails(
                         id = updatedEntity.id,
                         title = updatedEntity.title,
@@ -222,7 +230,6 @@ class RecipeRepository(
             }
         }
 
-        // Fallback for when API fails but we still have some local data.
         return localEntity?.let {
             RecipeFullDetails(
                 id = it.id,
@@ -231,13 +238,12 @@ class RecipeRepository(
                 instructions = it.instructions,
                 category = it.category,
                 area = it.area,
-                ingredients = it.ingredients.filter { i -> i.isNotBlank() } // Clean up bogus ingredients
+                ingredients = it.ingredients.filter { i -> i.isNotBlank() }
             )
         }
     }
 
     // --- Saved Recipes for Offline ---
-
     suspend fun saveRecipeEntity(recipe: RecipeEntity) {
         recipeDao.upsert(recipe)
     }
