@@ -157,7 +157,7 @@ The community section transforms the app from a solo experience into an interact
 <img width="1920" height="1007" alt="Screenshot (344)" src="https://github.com/user-attachments/assets/0d0818d1-4839-4c37-9c2f-2c02d2bf30b8" />
 
 
-### Shpping Screen
+### Shopping Screen
 The shopping list feature is a practical tool designed to simplify grocery shopping for the user. Its core functionality is to allow users to add ingredients from any recipe to a digital list with a single tap. User can tick off the ingredients as they shop and later clear it when they done.
 
 <img width="1920" height="1017" alt="Screenshot (346)" src="https://github.com/user-attachments/assets/3f81b01d-4377-423f-816f-f7f538716bb7" />
