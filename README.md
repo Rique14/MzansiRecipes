@@ -66,12 +66,12 @@ The application sources its recipe content by connecting to The MealDB, a public
  ### 6.1. Github Action
 <table>
   <tr>
-    <td><img src="https://github.com/user-attachments/assets/6740e9a9-d215-433f-9c5e-6ef8b836d6ce" alt="Screenshot (336)" width="100%"/></td>
-    <td><img src="https://github.com/user-attachments/assets/d154de22-5110-43b0-bdae-ca9d7101b49f" alt="Screenshot (337)" width="100%"/></td>
+    <td><<img src="https://github.com/user-attachments/assets/97d6cc51-0906-4dac-9aca-148a362a36a0"  width="100%"  alt="Screenshot (336)"/></td>
+    <td><<img src="https://github.com/user-attachments/assets/99765953-5c16-4eb6-9654-bea85b92e237"  width="100%" alt="Screenshot (337)" /></td>
   </tr>
   <tr>
     <td colspan="2" align="center">
-      <img src="https://github.com/user-attachments/assets/9d9eb35d-653f-4fdc-8cad-0b8fbaff3d15" alt="Screenshot (338)" width="50%"/>
+      <<img src="https://github.com/user-attachments/assets/248fc0b2-6a1c-4214-a280-ff1fe6bc6b92" width="50%" alt="Screenshot (338)"  />
     </td>
   </tr>
 </table>
@@ -123,60 +123,61 @@ The application sources its recipe content by connecting to The MealDB, a public
  ### Splash Screen
 The splash screen serves as the initial visual introduction to the application the moment it is launched. Its primary function is to display branding elements like the app's logo, name, or a unique graphic while the main application is loading in the background. This provides immediate feedback to the user that the app is starting, creating a smoother and more professional user experience than a blank screen would. Essentially, it acts as a welcome mat, setting the tone for the application and making the load time feel shorter and more engaging for the user.
 
-<img width="1920" height="1080" alt="Screenshot (350)" src="https://github.com/user-attachments/assets/f11fc522-d22c-4c9f-ba69-d3813ea4c6f6" />
+<img width="1920" height="1024" alt="Screenshot (350)" src="https://github.com/user-attachments/assets/48b23c8b-2a48-4164-9263-1aa5e9f536f9" />
 
 ### Login Screen
 The login screen is the secure gateway for returning users to access their personal accounts and saved content. Its core functionality is to authenticate a user's identity, typically through an email or username and a password. To enhance user convenience, modern login screens often include options for social media logins, allowing for quick access through existing accounts like Google. Additionally, a crucial feature is the "forgot password" link, which enables users to reset their password if they have forgotten it, ensuring they can regain access to their account without creating a new one.
 
-<img width="1920" height="1080" alt="Screenshot (340)" src="https://github.com/user-attachments/assets/028bcdc4-3358-4289-8cdb-dbfc48572e69" />
+<img width="1920" height="1011" alt="Screenshot (340)" src="https://github.com/user-attachments/assets/1583de4d-96ae-4004-9293-a30f40d657c2" />
 
 
 ### Register Screen
 The registration, or sign-up, screen is designed for new users to create a personal account within the application. The primary function is to collect essential user information, which typically includes a name, email address, and a password for the new account. The goal is to make the sign-up process as quick and straightforward as possible to encourage user retention from the very beginning.
 
-<img width="1920" height="1080" alt="Screenshot (341)" src="https://github.com/user-attachments/assets/3f414b41-2079-4644-b48d-dfbc747f6cf7" />
+<img width="1920" height="1028" alt="Screenshot (341)" src="https://github.com/user-attachments/assets/3b40e8bf-9f31-4a5f-bfca-742cf66bcfeb" />
 
 
 ### Home Screen
 The home screen is the central hub of the application, where users begin their journey and discover content. This screen is designed for easy navigation, providing clear pathways to the app's main features like recipe categories, the search function, and trending recipes. By presenting dynamic and interesting content, the home screen encourages users to explore the app further.
 
-<img width="1920" height="1080" alt="Screenshot (342)" src="https://github.com/user-attachments/assets/146920bf-e77f-4f84-942d-437e4d9a36eb" />
+<img width="1920" height="1011" alt="Screenshot (342)" src="https://github.com/user-attachments/assets/50c301f6-6834-45cc-8920-4177900ea966" />
 
 
 ### Recipe Detail Screen
 The recipe detail screen provides all the necessary information for a user to successfully prepare a specific dish. It prominently displays the recipe's name, an appealing image, and a list of all required ingredients with their quantities. This screen offers clear, step-by-step cooking instructions. Additional functionalities often include the ability to save recipes to the saved recipes screen and to add ingredients to the shopping list.
 
-<img width="1920" height="1080" alt="Screenshot (345)" src="https://github.com/user-attachments/assets/c82d22a6-b9dd-48d4-8ee0-27a3205b4268" />
+<img width="1920" height="1017" alt="Screenshot (345)" src="https://github.com/user-attachments/assets/a0e9de50-d849-484f-9da5-4528e93bf398" />
+
 
 ### Community Screen 
 The community section transforms the app from a solo experience into an interactive social platform. Its functionality revolves around enabling users to connect and engage with one another over their shared interest in cooking. This is achieved through features that allow users to share their own recipes, post photos of their culinary creations. Furthermore, users can interact by liking recipes, which helps to build a vibrant and supportive community of food lovers.
 
-<img width="1920" height="1080" alt="Screenshot (343)" src="https://github.com/user-attachments/assets/37aa28c7-1b20-4c8c-b7bb-2effa82673a2" />
+<img width="1920" height="1021" alt="Screenshot (343)" src="https://github.com/user-attachments/assets/94e53723-4a90-47a4-8dc7-5a32e9d9cebd" />
 
-<img width="1920" height="1080" alt="Screenshot (344)" src="https://github.com/user-attachments/assets/9a8a7bfa-f914-4f32-bf2d-f665e0b1768d" />
+<img width="1920" height="1007" alt="Screenshot (344)" src="https://github.com/user-attachments/assets/0d0818d1-4839-4c37-9c2f-2c02d2bf30b8" />
 
 
 ### Shpping Screen
 The shopping list feature is a practical tool designed to simplify grocery shopping for the user. Its core functionality is to allow users to add ingredients from any recipe to a digital list with a single tap. User can tick off the ingredients as they shop and later clear it when they done.
 
-<img width="1920" height="1080" alt="Screenshot (346)" src="https://github.com/user-attachments/assets/31f77514-e94e-4c21-84f8-239c16191c2d" />
+<img width="1920" height="1017" alt="Screenshot (346)" src="https://github.com/user-attachments/assets/3f81b01d-4377-423f-816f-f7f538716bb7" />
 
 ### Settings Screen
 The settings screen is where users can customize their app experience to their personal preferences. This section allows users to view their profile, saved recipes inside profile, turning notifications on or off, change theme to light or dark, change the language to their preference and to safely logout.
 
-<img width="1920" height="1080" alt="Screenshot (347)" src="https://github.com/user-attachments/assets/399bbc78-dd03-46fe-ae68-abedc57d2740" />
+<img width="1920" height="1007" alt="Screenshot (347)" src="https://github.com/user-attachments/assets/9cbd09d6-202d-456c-971a-663bf64943e5" />
+
 
 ### Profile Screen
 The user can see their full name and email. They can also view their saved recipes.
 
-<img width="1920" height="1080" alt="Screenshot (348)" src="https://github.com/user-attachments/assets/10a91b62-72a1-43e1-b19e-f2552670f231" />
+<img width="1920" height="1007" alt="Screenshot (348)" src="https://github.com/user-attachments/assets/6f49ceb1-bd1f-4ec6-8bac-233bd970f9fe" />
 
 
 ### Saved Recipes Screen
 Users saved recipes are saved to the saved recipes screen for when they want to cook an specific recipe or also just for later view.
 
-<img width="1920" height="1080" alt="Screenshot (349)" src="https://github.com/user-attachments/assets/5236676b-d78e-4950-ad9b-f8c0007fb10a" />
-
+<img width="1920" height="1017" alt="Screenshot (349)" src="https://github.com/user-attachments/assets/dbbd4af6-9699-44f2-85ab-42898eda10d7" />
 
 
  ## 10. License
