@@ -62,8 +62,8 @@ The application sources its recipe content by connecting to The MealDB, a public
  The project is hosted on GitHub and we use GitHub Actions to automate our development workflow.
 
  ### 6.1. Github Action
- <img  align="right" width="45%" height="1080" alt="Screenshot (336)" src="https://github.com/user-attachments/assets/6740e9a9-d215-433f-9c5e-6ef8b836d6ce" /><img  align="right" width="45%" height="1080" alt="Screenshot (337)" src="https://github.com/user-attachments/assets/d154de22-5110-43b0-bdae-ca9d7101b49f" />
-<img width="45%" height="1080" alt="Screenshot (338)" src="https://github.com/user-attachments/assets/9d9eb35d-653f-4fdc-8cad-0b8fbaff3d15" />
+ <img  align="left" width="50%" height="1080" alt="Screenshot (336)" src="https://github.com/user-attachments/assets/6740e9a9-d215-433f-9c5e-6ef8b836d6ce" /><img  align="right" width="50%" height="1080" alt="Screenshot (337)" src="https://github.com/user-attachments/assets/d154de22-5110-43b0-bdae-ca9d7101b49f" />
+<img align="left" width="50%" height="1080" alt="Screenshot (338)" src="https://github.com/user-attachments/assets/9d9eb35d-653f-4fdc-8cad-0b8fbaff3d15" />
 
 
  ### 6.2. Continuous Integration (CI)
@@ -91,12 +91,12 @@ The application sources its recipe content by connecting to The MealDB, a public
 
 ## 8. Use of Logs in Project
 
-<img  align="left" width="1920" height="1019" alt="Screenshot (328)" src="https://github.com/user-attachments/assets/c88d2193-d00a-406b-bddd-2fea4b40c037" /> <img  align="right" width="1920" height="1017" alt="Screenshot (324)" src="https://github.com/user-attachments/assets/23b7c998-1d22-4690-9f6a-d3752f35fafd" />
+<img  align="left" width="50%" height="1019" alt="Screenshot (328)" src="https://github.com/user-attachments/assets/c88d2193-d00a-406b-bddd-2fea4b40c037" /> <img  align="right" width="50%" height="1017" alt="Screenshot (324)" src="https://github.com/user-attachments/assets/23b7c998-1d22-4690-9f6a-d3752f35fafd" />
 
-<img  align="left" width="1920" height="1017" alt="Screenshot (321)" src="https://github.com/user-attachments/assets/939b0e0e-8f0c-40f4-bdfb-f338e459be48" /> 
-<img  align="right" width="1920" height="1013" alt="Screenshot (329)" src="https://github.com/user-attachments/assets/d84884ac-9cce-48fb-ab30-7d94d4cde857" />
+<img  align="left" width="50%" height="1017" alt="Screenshot (321)" src="https://github.com/user-attachments/assets/939b0e0e-8f0c-40f4-bdfb-f338e459be48" /> 
+<img  align="right" width="50%" height="1013" alt="Screenshot (329)" src="https://github.com/user-attachments/assets/d84884ac-9cce-48fb-ab30-7d94d4cde857" />
 
-<img width="1920" height="1019" alt="Screenshot (327)" src="https://github.com/user-attachments/assets/e34b7f99-6631-483f-8399-b94cd50e7c20" />
+<img lign="left" width="50%" height="1019" alt="Screenshot (327)" src="https://github.com/user-attachments/assets/e34b7f99-6631-483f-8399-b94cd50e7c20" />
 
  ## 9. App Functionality 
 
