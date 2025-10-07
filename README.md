@@ -122,14 +122,24 @@ The application sources its recipe content by connecting to The MealDB, a public
  ## 9. App Functionality 
  ### Splash Screen
 The splash screen serves as the initial visual introduction to the application the moment it is launched. Its primary function is to display branding elements like the app's logo, name, or a unique graphic while the main application is loading in the background. This provides immediate feedback to the user that the app is starting, creating a smoother and more professional user experience than a blank screen would. Essentially, it acts as a welcome mat, setting the tone for the application and making the load time feel shorter and more engaging for the user.
+
 <img width="438" height="796" alt="Screenshot 2025-10-07 142911" src="https://github.com/user-attachments/assets/0a567a48-9996-4640-8d3b-9bcb29d44e6f" />
 
 ### Login Screen
 The login screen is the secure gateway for returning users to access their personal accounts and saved content. Its core functionality is to authenticate a user's identity, typically through an email or username and a password. To enhance user convenience, modern login screens often include options for social media logins, allowing for quick access through existing accounts like Google or Facebook. Additionally, a crucial feature is the "forgot password" link, which enables users to reset their password if they have forgotten it, ensuring they can regain access to their account without creating a new one.
+
 <img width="498" height="837" alt="Screenshot 2025-10-07 142604" src="https://github.com/user-attachments/assets/cfa0f04a-4970-463c-bef0-70060d34bacd" />
 
 ### Register Screen
+The registration, or sign-up, screen is designed for new users to create a personal account within the application. The primary function is to collect essential user information, which typically includes a name, email address, and a password for the new account. To streamline this process, many apps offer social media integration, allowing users to register with a single tap using their existing social media profiles. The goal is to make the sign-up process as quick and straightforward as possible to encourage user retention from the very beginning.
+
+[<img width="447" height="839" alt="Screenshot 2025-10-07 142615" src="https://github.com/user-attachments/assets/0262fa2e-05d2-4cd9-9280-338fccc77f90" />]
+
 ### Home Screen
+The home screen is the central hub of the application, where users begin their journey and discover content. Its main purpose is to engage the user by showcasing relevant and personalized information, such as daily recipe suggestions, popular or trending dishes, and recently viewed items. This screen is designed for easy navigation, providing clear pathways to the app's main features like recipe categories, the search function, and the user's saved recipes. By presenting dynamic and interesting content, the home screen encourages users to explore the app further.
+
+[<img width="469" height="825" alt="Screenshot 2025-10-07 142656" src="https://github.com/user-attachments/assets/070c77c0-d241-4f4f-a498-f352fe3f420a" />]
+
 ### Community Screen
 ### Shpping Screen
 ### Settings Screen
