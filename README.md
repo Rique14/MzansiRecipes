@@ -140,12 +140,37 @@ The home screen is the central hub of the application, where users begin their j
 
 [<img width="469" height="825" alt="Screenshot 2025-10-07 142656" src="https://github.com/user-attachments/assets/070c77c0-d241-4f4f-a498-f352fe3f420a" />]
 
-### Community Screen
+### Community Screen 
+
+<img width="462" height="829" alt="Screenshot 2025-10-07 142746" src="https://github.com/user-attachments/assets/a9f113ed-1ded-44f4-916f-51953651c171" />
+
+<img width="452" height="824" alt="Screenshot 2025-10-07 142755" src="https://github.com/user-attachments/assets/7cb08f08-4b35-4b9a-bce7-5fd0bf58a752" />
+
+
+
 ### Shpping Screen
+
+
+<img width="503" height="828" alt="Screenshot 2025-10-07 142808" src="https://github.com/user-attachments/assets/bdc367af-9e99-4aeb-ae76-71f5bf89c636" />
+
 ### Settings Screen
+
+<img width="433" height="832" alt="Screenshot 2025-10-07 142842" src="https://github.com/user-attachments/assets/13ce5424-1a5d-4916-81e1-59da737dc031" />
+
+
 ### Saved Recipes Screen
+
+<img width="410" height="822" alt="Screenshot 2025-10-07 142830" src="https://github.com/user-attachments/assets/b4d8a280-58fe-422f-8005-3c7bca66d2ab" />
+
+
 ### Profile Screen
+
+
+<img width="416" height="829" alt="Screenshot 2025-10-07 142821" src="https://github.com/user-attachments/assets/40ea7f7a-8a0d-4149-918d-fb1d02d94542" />
+
 ### Recipe Detail Screen
+
+<img width="472" height="827" alt="Screenshot 2025-10-07 142716" src="https://github.com/user-attachments/assets/dff0e332-6693-4a81-8f5f-6b308b1449bc" />
 
 
 
