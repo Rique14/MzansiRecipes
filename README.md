@@ -63,7 +63,7 @@ The application sources its recipe content by connecting to The MealDB, a public
 
  ### 6.1. Continuous Integration (CI)
 ​
- We have a CI pipeline that runs on every push and pull request to the `main` branch. This pipeline performs the following tasks:
+ We have a CI pipeline that runs on every push and pull request to the `master` branch. This pipeline performs the following tasks:
 ​
  - **Build the App**: Compiles the code and ensures that the app builds successfully.
  - **Run Tests**: Executes unit and instrumentation tests to ensure the correctness of the code.
