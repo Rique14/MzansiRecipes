@@ -120,7 +120,14 @@ The application sources its recipe content by connecting to The MealDB, a public
 
 
  ## 9. App Functionality 
-
+ ### Splash Screen
+The splash screen serves as the initial visual introduction to the application the moment it is launched. Its primary function is to display branding elements like the app's logo, name, or a unique graphic while the main application is loading in the background. This provides immediate feedback to the user that the app is starting, creating a smoother and more professional user experience than a blank screen would. Essentially, it acts as a welcome mat, setting the tone for the application and making the load time feel shorter and more engaging for the user.
+<table>
+  <tr>
+    <td><<img width="600" height="600" alt="Screenshot 2025-10-07 142911" src="https://github.com/user-attachments/assets/5b350e52-5b22-4bd4-af1d-8b0c3b22385f" />
+</td>
+  </tr>
+</table
 
 
 
