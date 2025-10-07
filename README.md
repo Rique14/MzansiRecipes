@@ -122,7 +122,20 @@ The application sources its recipe content by connecting to The MealDB, a public
  ## 9. App Functionality 
  ### Splash Screen
 The splash screen serves as the initial visual introduction to the application the moment it is launched. Its primary function is to display branding elements like the app's logo, name, or a unique graphic while the main application is loading in the background. This provides immediate feedback to the user that the app is starting, creating a smoother and more professional user experience than a blank screen would. Essentially, it acts as a welcome mat, setting the tone for the application and making the load time feel shorter and more engaging for the user.
-<<img width="600" height="600" alt="Screenshot 2025-10-07 142911" src="https://github.com/user-attachments/assets/5b350e52-5b22-4bd4-af1d-8b0c3b22385f" />
+<img width="438" height="796" alt="Screenshot 2025-10-07 142911" src="https://github.com/user-attachments/assets/0a567a48-9996-4640-8d3b-9bcb29d44e6f" />
+
+### Login Screen
+The login screen is the secure gateway for returning users to access their personal accounts and saved content. Its core functionality is to authenticate a user's identity, typically through an email or username and a password. To enhance user convenience, modern login screens often include options for social media logins, allowing for quick access through existing accounts like Google or Facebook. Additionally, a crucial feature is the "forgot password" link, which enables users to reset their password if they have forgotten it, ensuring they can regain access to their account without creating a new one.
+<img width="498" height="837" alt="Screenshot 2025-10-07 142604" src="https://github.com/user-attachments/assets/cfa0f04a-4970-463c-bef0-70060d34bacd" />
+
+### Register Screen
+### Home Screen
+### Community Screen
+### Shpping Screen
+### Settings Screen
+### Saved Recipes Screen
+### Profile Screen
+### Recipe Detail Screen
 
 
 
