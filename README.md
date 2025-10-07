@@ -123,55 +123,59 @@ The application sources its recipe content by connecting to The MealDB, a public
  ### Splash Screen
 The splash screen serves as the initial visual introduction to the application the moment it is launched. Its primary function is to display branding elements like the app's logo, name, or a unique graphic while the main application is loading in the background. This provides immediate feedback to the user that the app is starting, creating a smoother and more professional user experience than a blank screen would. Essentially, it acts as a welcome mat, setting the tone for the application and making the load time feel shorter and more engaging for the user.
 
-<img width="438" height="796" alt="Screenshot 2025-10-07 142911" src="https://github.com/user-attachments/assets/0a567a48-9996-4640-8d3b-9bcb29d44e6f" />
+<img width="1920" height="1080" alt="Screenshot (350)" src="https://github.com/user-attachments/assets/f11fc522-d22c-4c9f-ba69-d3813ea4c6f6" />
 
 ### Login Screen
-The login screen is the secure gateway for returning users to access their personal accounts and saved content. Its core functionality is to authenticate a user's identity, typically through an email or username and a password. To enhance user convenience, modern login screens often include options for social media logins, allowing for quick access through existing accounts like Google or Facebook. Additionally, a crucial feature is the "forgot password" link, which enables users to reset their password if they have forgotten it, ensuring they can regain access to their account without creating a new one.
+The login screen is the secure gateway for returning users to access their personal accounts and saved content. Its core functionality is to authenticate a user's identity, typically through an email or username and a password. To enhance user convenience, modern login screens often include options for social media logins, allowing for quick access through existing accounts like Google. Additionally, a crucial feature is the "forgot password" link, which enables users to reset their password if they have forgotten it, ensuring they can regain access to their account without creating a new one.
 
-<img width="498" height="837" alt="Screenshot 2025-10-07 142604" src="https://github.com/user-attachments/assets/cfa0f04a-4970-463c-bef0-70060d34bacd" />
+<img width="1920" height="1080" alt="Screenshot (340)" src="https://github.com/user-attachments/assets/028bcdc4-3358-4289-8cdb-dbfc48572e69" />
+
 
 ### Register Screen
-The registration, or sign-up, screen is designed for new users to create a personal account within the application. The primary function is to collect essential user information, which typically includes a name, email address, and a password for the new account. To streamline this process, many apps offer social media integration, allowing users to register with a single tap using their existing social media profiles. The goal is to make the sign-up process as quick and straightforward as possible to encourage user retention from the very beginning.
+The registration, or sign-up, screen is designed for new users to create a personal account within the application. The primary function is to collect essential user information, which typically includes a name, email address, and a password for the new account. The goal is to make the sign-up process as quick and straightforward as possible to encourage user retention from the very beginning.
 
-[<img width="447" height="839" alt="Screenshot 2025-10-07 142615" src="https://github.com/user-attachments/assets/0262fa2e-05d2-4cd9-9280-338fccc77f90" />]
+<img width="1920" height="1080" alt="Screenshot (341)" src="https://github.com/user-attachments/assets/3f414b41-2079-4644-b48d-dfbc747f6cf7" />
+
 
 ### Home Screen
-The home screen is the central hub of the application, where users begin their journey and discover content. Its main purpose is to engage the user by showcasing relevant and personalized information, such as daily recipe suggestions, popular or trending dishes, and recently viewed items. This screen is designed for easy navigation, providing clear pathways to the app's main features like recipe categories, the search function, and the user's saved recipes. By presenting dynamic and interesting content, the home screen encourages users to explore the app further.
+The home screen is the central hub of the application, where users begin their journey and discover content. This screen is designed for easy navigation, providing clear pathways to the app's main features like recipe categories, the search function, and trending recipes. By presenting dynamic and interesting content, the home screen encourages users to explore the app further.
 
-[<img width="469" height="825" alt="Screenshot 2025-10-07 142656" src="https://github.com/user-attachments/assets/070c77c0-d241-4f4f-a498-f352fe3f420a" />]
+<img width="1920" height="1080" alt="Screenshot (342)" src="https://github.com/user-attachments/assets/146920bf-e77f-4f84-942d-437e4d9a36eb" />
+
+
+### Recipe Detail Screen
+The recipe detail screen provides all the necessary information for a user to successfully prepare a specific dish. It prominently displays the recipe's name, an appealing image, and a list of all required ingredients with their quantities. This screen offers clear, step-by-step cooking instructions. Additional functionalities often include the ability to save recipes to the saved recipes screen and to add ingredients to the shopping list.
+
+<img width="1920" height="1080" alt="Screenshot (345)" src="https://github.com/user-attachments/assets/c82d22a6-b9dd-48d4-8ee0-27a3205b4268" />
 
 ### Community Screen 
+The community section transforms the app from a solo experience into an interactive social platform. Its functionality revolves around enabling users to connect and engage with one another over their shared interest in cooking. This is achieved through features that allow users to share their own recipes, post photos of their culinary creations. Furthermore, users can interact by liking recipes, which helps to build a vibrant and supportive community of food lovers.
 
-<img width="462" height="829" alt="Screenshot 2025-10-07 142746" src="https://github.com/user-attachments/assets/a9f113ed-1ded-44f4-916f-51953651c171" />
+<img width="1920" height="1080" alt="Screenshot (343)" src="https://github.com/user-attachments/assets/37aa28c7-1b20-4c8c-b7bb-2effa82673a2" />
 
-<img width="452" height="824" alt="Screenshot 2025-10-07 142755" src="https://github.com/user-attachments/assets/7cb08f08-4b35-4b9a-bce7-5fd0bf58a752" />
-
+<img width="1920" height="1080" alt="Screenshot (344)" src="https://github.com/user-attachments/assets/9a8a7bfa-f914-4f32-bf2d-f665e0b1768d" />
 
 
 ### Shpping Screen
+The shopping list feature is a practical tool designed to simplify grocery shopping for the user. Its core functionality is to allow users to add ingredients from any recipe to a digital list with a single tap. User can tick off the ingredients as they shop and later clear it when they done.
 
-
-<img width="503" height="828" alt="Screenshot 2025-10-07 142808" src="https://github.com/user-attachments/assets/bdc367af-9e99-4aeb-ae76-71f5bf89c636" />
+<img width="1920" height="1080" alt="Screenshot (346)" src="https://github.com/user-attachments/assets/31f77514-e94e-4c21-84f8-239c16191c2d" />
 
 ### Settings Screen
+The settings screen is where users can customize their app experience to their personal preferences. This section allows users to view their profile, saved recipes inside profile, turning notifications on or off, change theme to light or dark, change the language to their preference and to safely logout.
 
-<img width="433" height="832" alt="Screenshot 2025-10-07 142842" src="https://github.com/user-attachments/assets/13ce5424-1a5d-4916-81e1-59da737dc031" />
+<img width="1920" height="1080" alt="Screenshot (347)" src="https://github.com/user-attachments/assets/399bbc78-dd03-46fe-ae68-abedc57d2740" />
+
+### Profile Screen
+The user can see their full name and email. They can also view their saved recipes.
+
+<img width="1920" height="1080" alt="Screenshot (348)" src="https://github.com/user-attachments/assets/10a91b62-72a1-43e1-b19e-f2552670f231" />
 
 
 ### Saved Recipes Screen
+Users saved recipes are saved to the saved recipes screen for when they want to cook an specific recipe or also just for later view.
 
-<img width="410" height="822" alt="Screenshot 2025-10-07 142830" src="https://github.com/user-attachments/assets/b4d8a280-58fe-422f-8005-3c7bca66d2ab" />
-
-
-### Profile Screen
-
-
-<img width="416" height="829" alt="Screenshot 2025-10-07 142821" src="https://github.com/user-attachments/assets/40ea7f7a-8a0d-4149-918d-fb1d02d94542" />
-
-### Recipe Detail Screen
-
-<img width="472" height="827" alt="Screenshot 2025-10-07 142716" src="https://github.com/user-attachments/assets/dff0e332-6693-4a81-8f5f-6b308b1449bc" />
-
+<img width="1920" height="1080" alt="Screenshot (349)" src="https://github.com/user-attachments/assets/5236676b-d78e-4950-ad9b-f8c0007fb10a" />
 
 
 
