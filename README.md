@@ -13,7 +13,7 @@ https://youtu.be/nLh78x2sff4
 https://github.com/Rique14/MzansiRecipes 
 
 ## Mzansi Recipes Logo 
-<img width="900" height="900" alt="ic_pot_icon" src="https://github.com/user-attachments/assets/d529af05-3864-4d6d-9544-d8ea9ec75543" />
+<img width="700" height="700" alt="ic_pot_icon" src="https://github.com/user-attachments/assets/d529af05-3864-4d6d-9544-d8ea9ec75543" />
 
 ​
  ## 1. Introduction
