@@ -32,6 +32,8 @@ https://github.com/Rique14/MzansiRecipes
  The app uses **Firebase** as its backend for:
  - **Authentication**: Securely managing user accounts, including login and registration, with encrypted passwords.
  - **Cloud Firestore**: Storing user-generated data such as saved recipes, user profiles and community contributions.
+ - <img width="600" height="600" alt="Screenshot 2025-10-07 141535" src="https://github.com/user-attachments/assets/bd5af3a9-5a29-47a6-92b3-6d7fdeff610a" />
+
 ​
  ### 3.2. The MealDB API Integration
 The application sources its recipe content by connecting to The MealDB, a public REST API with a comprehensive database of dishes. This integration is essential for providing users with a vast and varied collection of recipes. We use the Retrofit library to manage all network requests, enabling the app to search, filter and retrieve detailed recipe information. To ensure a smooth user experience and provide offline access, the RecipeRepository class caches the data fetched from the API into a local Room database. This strategy improves performance by reducing network calls and allows the app to remain functional even without an internet connection.
