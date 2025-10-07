@@ -21,8 +21,9 @@ data class CommunityPost(
     val likes: Int = 0,
     val category: String? = null,
     val timestamp: Long = System.currentTimeMillis(),
-    val sourceApiId: String? = null, // To link to original API recipe if applicable
-    val isUserUploaded: Boolean = true // True for user posts, false for API-sourced posts
+    val sourceApiId: String? = null,
+    val isUserUploaded: Boolean = false,
+    val createdAt: Long = System.currentTimeMillis()
 )
 
 class CommunityRepository(
@@ -33,9 +34,7 @@ class CommunityRepository(
     private val col get() = fs.collection("community")
 
     suspend fun listPopular(): List<CommunityPost> {
-        val snapshot = col.orderBy("likes", com.google.firebase.firestore.Query.Direction.DESCENDING)
-            .limit(20).get().await()
-
+        val snapshot = col.get().await() // fetch all or limit
         return snapshot.documents.mapNotNull { doc ->
             try {
                 doc.toObject(CommunityPost::class.java)?.copy(postId = doc.id)
@@ -43,8 +42,11 @@ class CommunityRepository(
                 Log.e("CommunityRepository", "Error mapping document ${doc.id} in listPopular", e)
                 null
             }
-        }
+        }.sortedWith(compareByDescending<CommunityPost> { it.likes }.thenByDescending { it.createdAt })
     }
+
+
+
 
 
     suspend fun getPost(postId: String): CommunityPost? {
@@ -126,7 +128,15 @@ class CommunityRepository(
         }
     }
 
-    suspend fun createOrGetApiRecipePost(apiRecipeId: String, title: String, imageUrl: String?, category: String?, initialIngredients: String = "", initialInstructions: String = ""): String {
+    suspend fun createOrGetApiRecipePost(
+        apiRecipeId: String,
+        title: String,
+        imageUrl: String?,
+        category: String?,
+        initialIngredients: String = "",
+        initialInstructions: String = "",
+        createdAt: Long = System.currentTimeMillis() // ✅ Add createdAt parameter
+    ): String {
         val existingPost = findBySourceApiId(apiRecipeId)
         if (existingPost != null) {
             return existingPost.postId
@@ -144,9 +154,12 @@ class CommunityRepository(
             category = category,
             isUserUploaded = false,
             sourceApiId = apiRecipeId,
-            timestamp = System.currentTimeMillis()
+            timestamp = createdAt,   // use createdAt for sorting
+            createdAt = createdAt    // ✅ assign to createdAt field
         )
+
         newPostRef.set(communityPost).await()
         return newPostRef.id
     }
+
 }

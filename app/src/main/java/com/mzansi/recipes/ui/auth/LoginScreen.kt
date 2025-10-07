@@ -6,39 +6,14 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.outlined.MailOutline
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -67,10 +42,12 @@ import com.mzansi.recipes.navigation.Routes
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(nav: NavController) {
-    val repo = AppModules.provideAuthRepo(AppModules.provideAuth(), AppModules.provideFirestore())
-    val vm: AuthViewModel = viewModel(factory = AuthViewModelFactory(repo))
-    val state by vm.state.collectAsState()
     val context = LocalContext.current
+    val factory = remember {
+        AuthViewModelFactory(AppModules.provideAuthRepo(AppModules.provideAuth(), AppModules.provideFirestore()))
+    }
+    val vm: AuthViewModel = viewModel(factory = factory)
+    val state by vm.state.collectAsState()
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -78,7 +55,7 @@ fun LoginScreen(nav: NavController) {
     // Configure Google Sign-In
     val googleSignInClient: GoogleSignInClient by lazy {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(context.getString(R.string.default_web_client_id)) // Crucial for Firebase
+            .requestIdToken(context.getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
         GoogleSignIn.getClient(context, gso)
@@ -95,15 +72,12 @@ fun LoginScreen(nav: NavController) {
                         vm.signInWithGoogle(account.idToken!!)
                     } else {
                         Log.w("LoginScreen", "Google Sign In failed: No ID token or account found.")
-
                     }
                 } catch (e: ApiException) {
                     Log.w("LoginScreen", "Google Sign In failed with ApiException: ${e.statusCode}", e)
-
                 }
             } else {
-                 Log.w("LoginScreen", "Google Sign In activity was cancelled or failed. Result code: ${result.resultCode}")
-
+                Log.w("LoginScreen", "Google Sign In activity was cancelled or failed. Result code: ${result.resultCode}")
             }
         }
     )
@@ -113,19 +87,22 @@ fun LoginScreen(nav: NavController) {
     }
 
     Column(Modifier.fillMaxSize()) {
-        Text(
-            text = "WELCOME",
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(MaterialTheme.colorScheme.primary)
                 .statusBarsPadding()
                 .padding(vertical = 20.dp),
-            style = MaterialTheme.typography.displaySmall,
-            color = Color.White,
-            fontWeight = FontWeight.Bold,
-            fontSize = 30.sp,
-            textAlign = TextAlign.Center
-        )
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "WELCOME",
+                style = MaterialTheme.typography.displaySmall,
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                fontSize = 30.sp
+            )
+        }
 
         Column(
             modifier = Modifier

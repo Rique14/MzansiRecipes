@@ -29,8 +29,10 @@ import com.mzansi.recipes.navigation.Routes
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterScreen(nav: NavController) {
-    val repo = AppModules.provideAuthRepo(AppModules.provideAuth(), AppModules.provideFirestore())
-    val vm: AuthViewModel = viewModel(factory = AuthViewModelFactory(repo))
+    val factory = remember {
+        AuthViewModelFactory(AppModules.provideAuthRepo(AppModules.provideAuth(), AppModules.provideFirestore()))
+    }
+    val vm: AuthViewModel = viewModel(factory = factory)
     val state by vm.state.collectAsState()
 
     var name by remember { mutableStateOf("") }

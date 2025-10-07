@@ -5,22 +5,16 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mzansi.recipes.data.db.CategoryEntity
-import com.mzansi.recipes.data.db.RecipeEntity // Required for the combined list
+import com.mzansi.recipes.data.db.RecipeEntity
 import com.mzansi.recipes.data.repo.CommunityPost
 import com.mzansi.recipes.data.repo.CommunityRepository
 import com.mzansi.recipes.data.repo.RecipeRepository
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 data class CommunityUiState(
-    val posts: List<CommunityPost> = emptyList(), // All posts from the repository
-    val filteredPosts: List<CommunityPost> = emptyList(), // Posts to display after filtering
+    val posts: List<CommunityPost> = emptyList(),
+    val filteredPosts: List<CommunityPost> = emptyList(),
     val categories: List<CategoryEntity> = emptyList(),
     val selectedCategoryName: String? = null,
     val loadingPosts: Boolean = false,
@@ -32,6 +26,7 @@ class CommunityViewModel(
     private val communityRepo: CommunityRepository,
     private val recipeRepo: RecipeRepository
 ) : ViewModel() {
+
     private val _state = MutableStateFlow(CommunityUiState())
     val state: StateFlow<CommunityUiState> = _state.asStateFlow()
 
@@ -41,16 +36,62 @@ class CommunityViewModel(
     }
 
     fun loadContent() {
-        loadPostsAndEnsureApiRecipes()
-        refreshCategories(isInitial = true)
+        viewModelScope.launch {
+            _state.update { it.copy(loadingPosts = true, error = null) }
+            try {
+                refreshApiRecipes(listOf("Beef", "Chicken")) // Add more categories if needed
+                loadAllPosts()
+            } catch (e: Exception) {
+                Log.e("CommunityVM", "Error loading content: ${e.message}", e)
+                _state.update { it.copy(error = "Failed to load content: ${e.message}") }
+            } finally {
+                _state.update { it.copy(loadingPosts = false) }
+            }
+        }
+    }
+
+    private suspend fun refreshApiRecipes(categories: List<String>) {
+        val dbRecipes: List<RecipeEntity> = recipeRepo.observeAllRecipes().first()
+
+        for (category in categories) {
+            recipeRepo.refreshRecipesForCategory(category)
+            val recipes: List<RecipeEntity> = recipeRepo.observeRecipesByCategory(category).first()
+            for (recipe in recipes) {
+                try {
+                    communityRepo.createOrGetApiRecipePost(
+                        apiRecipeId = recipe.id,
+                        title = recipe.title,
+                        imageUrl = recipe.imageUrl,
+                        category = recipe.category,
+                        initialIngredients = recipe.ingredients.joinToString("\n"),
+                        initialInstructions = recipe.instructions ?: "",
+                        createdAt = System.currentTimeMillis()
+                    )
+                } catch (e: Exception) {
+                    Log.e("CommunityVM", "Error creating API post: ${e.message}", e)
+                }
+            }
+        }
+    }
+
+    private suspend fun loadAllPosts() {
+        try {
+            val allPosts: List<CommunityPost> = communityRepo.listPopular()
+            val sortedPosts = allPosts.sortedByDescending { it.createdAt }
+            _state.update { it.copy(posts = sortedPosts) }
+            applyFilter()
+        } catch (e: Exception) {
+            Log.e("CommunityVM", "Error loading posts: ${e.message}", e)
+            _state.update { it.copy(error = "Failed to load posts: ${e.message}") }
+        }
     }
 
     private fun applyFilter() {
         _state.update { currentState ->
-            val filtered = if (currentState.selectedCategoryName == null) {
-                currentState.posts
-            } else {
-                currentState.posts.filter { it.category == currentState.selectedCategoryName }
+            val filtered = currentState.posts.filter { post ->
+                currentState.selectedCategoryName?.let { selected ->
+                    post.category?.trim()?.equals(selected.trim(), ignoreCase = true) ?: false
+                } ?: true
             }
             currentState.copy(filteredPosts = filtered)
         }
@@ -58,69 +99,11 @@ class CommunityViewModel(
 
     fun onCategorySelected(categoryName: String?) {
         _state.update { currentState ->
-            val newSelectedCategory = if (currentState.selectedCategoryName == categoryName) {
-                null
-            } else {
-                categoryName
-            }
+            val newSelectedCategory = if (currentState.selectedCategoryName == categoryName) null else categoryName
             currentState.copy(selectedCategoryName = newSelectedCategory)
         }
         applyFilter()
     }
-
-    private suspend fun loadAllPosts() {
-        try {
-            val allCommunityPosts = communityRepo.listPopular()
-            Log.d("CommunityVM", "Reloaded all community posts. Total: ${allCommunityPosts.size}")
-            _state.update { it.copy(posts = allCommunityPosts) }
-            applyFilter()
-        } catch (e: Exception) {
-            Log.e("CommunityVM", "Error loading community posts: ${e.message}", e)
-            _state.update { it.copy(error = "Failed to load posts: ${e.message}") }
-        }
-    }
-
-    private fun loadPostsAndEnsureApiRecipes() = viewModelScope.launch {
-        _state.update { it.copy(loadingPosts = true, error = null) }
-        try {
-            Log.d("CommunityVM", "Refreshing Beef and Chicken categories for featured posts")
-            recipeRepo.refreshRecipesForCategory("Beef")
-            recipeRepo.refreshRecipesForCategory("Chicken")
-
-            val beefRecipes = recipeRepo.observeRecipesByCategory("Beef").first()
-            val chickenRecipes = recipeRepo.observeRecipesByCategory("Chicken").first()
-            val apiRecipes: List<RecipeEntity> = beefRecipes + chickenRecipes
-            Log.d("CommunityVM", "Fetched ${beefRecipes.size} beef recipes and ${chickenRecipes.size} chicken recipes. Total: ${apiRecipes.size}")
-
-            if (apiRecipes.isNotEmpty()) {
-                apiRecipes.forEach { recipeEntity ->
-                    try {
-                        Log.d("CommunityVM", "Ensuring API recipe post for ${recipeEntity.title} (ID: ${recipeEntity.id})")
-                        communityRepo.createOrGetApiRecipePost(
-                            apiRecipeId = recipeEntity.id,
-                            title = recipeEntity.title,
-                            imageUrl = recipeEntity.imageUrl,
-                            category = recipeEntity.category, // Will be "Beef" or "Chicken"
-                            initialIngredients = "",
-                            initialInstructions = recipeEntity.instructions ?: ""
-                        )
-                    } catch (e: Exception) {
-                        Log.e("CommunityVM", "Error ensuring API recipe post for ${recipeEntity.id}: ${e.message}", e)
-                    }
-                }
-            } else {
-                Log.d("CommunityVM", "No API recipes found for Beef or Chicken categories to feature.")
-            }
-
-            loadAllPosts()
-
-        } catch (e: Exception) {
-            Log.e("CommunityVM", "Error in loadPostsAndEnsureApiRecipes: ${e.message}", e)
-        } finally {
-            _state.update { it.copy(loadingPosts = false) }
-        }
-    }
-
 
     private fun observeCategories() {
         viewModelScope.launch {
@@ -148,17 +131,23 @@ class CommunityViewModel(
     fun like(postId: String) = viewModelScope.launch {
         try {
             communityRepo.like(postId)
-            loadAllPosts() // Reload posts to show updated like count
+            loadAllPosts()
         } catch (e: Exception) {
             _state.update { it.copy(error = "Failed to like post: ${e.message}") }
         }
     }
 
-    fun create(title: String, imageUri: Uri?, ingredients: String, instructions: String, category: String? = null) = viewModelScope.launch {
+    fun create(
+        title: String,
+        imageUri: Uri?,
+        ingredients: String,
+        instructions: String,
+        category: String?
+    ) = viewModelScope.launch {
         _state.update { it.copy(loadingPosts = true, error = null) }
         try {
             communityRepo.create(title, imageUri, ingredients, instructions, category)
-            loadAllPosts() // Reload all posts to show the new one
+            loadAllPosts()
         } catch (e: Exception) {
             _state.update { it.copy(error = "Failed to create post: ${e.message}") }
         } finally {
