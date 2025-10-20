@@ -27,16 +27,16 @@ jobs:
 
       - name: Decode Keystore
         # This step decodes the base64-encoded keystore from secrets
-        # and creates the .jks file in the right directory for the build.
+        # and creates the .jks file in the correct root directory for the build.
         run: |
-          echo "${{ secrets.RELEASE_KEYSTORE_BASE64 }}" | base64 --decode > ${{ github.workspace }}/app/mzansirecipes.jks
+          echo "${{ secrets.RELEASE_KEYSTORE_BASE64 }}" | base64 --decode > ${{ github.workspace }}/mzansirecipes.jks
 
       - name: Build Release Bundle
         # This command builds the release app bundle.
         # It passes the secrets as environment variables, which our updated build.gradle.kts can read.
         run: ./gradlew :app:bundleRelease
         env:
-          KEYSTORE_PATH: ${{ github.workspace }}/app/mzansirecipes.jks
+          KEYSTORE_PATH: ${{ github.workspace }}/mzansirecipes.jks
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
