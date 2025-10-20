@@ -17,20 +17,29 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: '17'
-          distribution: 'temurin' # Standard distribution
+          distribution: 'temurin'
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
-
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
+      - name: Decode Keystore
+        # This step decodes the base64-encoded keystore from secrets
+        # and creates the .jks file in the right directory for the build.
+        run: |
+          echo "${{ secrets.RELEASE_KEYSTORE_BASE64 }}" | base64 --decode > ${{ github.workspace }}/app/mzansirecipes.jks
+
+      - name: Build Release Bundle
+        # This command builds the release app bundle.
+        # It passes the secrets as environment variables, which our updated build.gradle.kts can read.
+        run: ./gradlew :app:bundleRelease
+        env:
+          KEYSTORE_PATH: ${{ github.workspace }}/app/mzansirecipes.jks
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+
       - name: Build and run unit tests
         run: ./gradlew build
-
-
-      # Part 3:
-      # - name: Run unit tests
-      #   run: ./gradlew testDebugUnitTest
-

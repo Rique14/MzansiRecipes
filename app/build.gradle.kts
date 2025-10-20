@@ -15,20 +15,31 @@ android {
 
     signingConfigs {
         create("release") {
-            val keystoreProperties = Properties()
-            val keystorePropertiesFile = rootProject.file("keystore.properties")
-            if (keystorePropertiesFile.exists()) {
-                keystorePropertiesFile.inputStream().use { stream: java.io.InputStream ->
-                    keystoreProperties.load(stream)
+            // First, try to read from environment variables (for CI)
+            val storeFileFromEnv = System.getenv("KEYSTORE_PATH")
+            val keyAliasFromEnv = System.getenv("KEY_ALIAS")
+            val keyPasswordFromEnv = System.getenv("KEY_PASSWORD")
+            val storePasswordFromEnv = System.getenv("KEYSTORE_PASSWORD")
+
+            if (storeFileFromEnv != null && keyAliasFromEnv != null && keyPasswordFromEnv != null && storePasswordFromEnv != null) {
+                storeFile = file(storeFileFromEnv)
+                keyAlias = keyAliasFromEnv
+                keyPassword = keyPasswordFromEnv
+                storePassword = storePasswordFromEnv
+            } else {
+                // Fallback to keystore.properties (for local builds)
+                val keystoreProperties = Properties()
+                val keystorePropertiesFile = rootProject.file("keystore.properties")
+                if (keystorePropertiesFile.exists()) {
+                    keystorePropertiesFile.inputStream().use { stream: java.io.InputStream ->
+                        keystoreProperties.load(stream)
+                    }
+                    keyAlias = keystoreProperties.getProperty("keyAlias")
+                    keyPassword = keystoreProperties.getProperty("keyPassword")
+                    storeFile = file(keystoreProperties.getProperty("storeFile"))
+                    storePassword = keystoreProperties.getProperty("storePassword")
                 }
             }
-
-            keyAlias = keystoreProperties.getProperty("keyAlias")
-            keyPassword = keystoreProperties.getProperty("keyPassword")
-            keystoreProperties.getProperty("storeFile")?.let {
-                storeFile = rootProject.file(it)
-            }
-            storePassword = keystoreProperties.getProperty("storePassword")
         }
     }
 
@@ -42,7 +53,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         // Explicitly load local.properties
-        val localProps = Properties() // Use imported Properties
+        val localProps = Properties()
         val localPropsFile = rootProject.file("local.properties")
         var apiKeyFromLocalProps = "" // Default to empty
         if (localPropsFile.exists() && localPropsFile.isFile) { // Corrected: isFile property
