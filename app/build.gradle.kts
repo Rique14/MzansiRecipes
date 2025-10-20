@@ -36,7 +36,7 @@ android {
                     }
                     keyAlias = keystoreProperties.getProperty("keyAlias")
                     keyPassword = keystoreProperties.getProperty("keyPassword")
-                    storeFile = file(keystoreProperties.getProperty("storeFile"))
+                    storeFile = rootProject.file(keystoreProperties.getProperty("storeFile"))
                     storePassword = keystoreProperties.getProperty("storePassword")
                 }
             }
@@ -176,5 +176,4 @@ dependencies {
     implementation("androidx.compose.material:material-icons-core")
 
     implementation("androidx.compose.material:material-icons-extended")
-    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
 }
