@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "114113882209-nbq6ruake4oqe45mdmqqdbjrhkfequ9i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mzansi.recipes",
+            "certificate_hash": "34973ae6377958209681e0d3cc688e9fa85f0878"
+          }
+        },
+        {
           "client_id": "114113882209-gp8cblvmjcdh3gmov898pq1jerugg24i.apps.googleusercontent.com",
           "client_type": 3
         }

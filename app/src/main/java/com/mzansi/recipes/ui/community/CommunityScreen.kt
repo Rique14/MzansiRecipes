@@ -1,7 +1,5 @@
 package com.mzansi.recipes.ui.community
 
-
-
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
@@ -13,9 +11,11 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.*
@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -32,15 +33,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.mzansi.recipes.BuildConfig
+import com.mzansi.recipes.R
 import com.mzansi.recipes.ViewModel.CommunityViewModel
 import com.mzansi.recipes.ViewModel.CommunityViewModelFactory
 import com.mzansi.recipes.data.db.CategoryEntity
 import com.mzansi.recipes.di.AppModules
 import com.mzansi.recipes.navigation.Routes
 import com.mzansi.recipes.ui.common.MzansiBottomNavigationBar
-import androidx.compose.foundation.lazy.items
-
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -71,14 +70,23 @@ fun CommunityScreen(nav: NavController) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("Community", color = Color.White, fontSize = 30.sp) },
+                title = { Text(stringResource(R.string.community), color = Color.White, fontSize = 30.sp) },
+                navigationIcon = {
+                    IconButton(onClick = { nav.popBackStack() }) {
+                        Icon(
+                            Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(R.string.back_button_desc),
+                            tint = Color.White
+                        )
+                    }
+                },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.colorScheme.primary)
             )
         },
         bottomBar = { MzansiBottomNavigationBar(navController = nav) },
         floatingActionButton = {
             FloatingActionButton(onClick = { showCreateDialog = true }) {
-                Icon(Icons.Default.Add, contentDescription = "Create Post")
+                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.create_post_title))
             }
         }
     ) { paddingValues ->
@@ -96,13 +104,13 @@ fun CommunityScreen(nav: NavController) {
 
         Column(modifier = Modifier.padding(paddingValues).padding(horizontal = 16.dp)) {
             Spacer(Modifier.height(16.dp))
-            Text("Categories", style = MaterialTheme.typography.titleLarge)
+            Text(stringResource(R.string.categories), style = MaterialTheme.typography.titleLarge)
             Spacer(Modifier.height(8.dp))
 
             if (state.isLoadingCategoriesRefresh) {
                 LinearProgressIndicator(Modifier.fillMaxWidth())
             } else if (state.categories.isEmpty()) {
-                Text("No categories found")
+                Text(stringResource(R.string.no_categories_found))
             } else {
                 LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     items(state.categories) { category: CategoryEntity ->
@@ -121,7 +129,7 @@ fun CommunityScreen(nav: NavController) {
 
             Spacer(Modifier.height(16.dp))
 
-            val titleText = state.selectedCategoryName ?: "Popular"
+            val titleText = state.selectedCategoryName ?: stringResource(R.string.popular)
             Text(titleText, style = MaterialTheme.typography.titleLarge)
             Spacer(Modifier.height(8.dp))
 
@@ -133,7 +141,7 @@ fun CommunityScreen(nav: NavController) {
                     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { Text("Error: ${state.error}", color = MaterialTheme.colorScheme.error) }
                 }
                 state.filteredPosts.isEmpty() -> {
-                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { Text("No posts available") }
+                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { Text(stringResource(R.string.no_posts_message)) }
                 }
                 else -> {
                     LazyVerticalGrid(
@@ -163,11 +171,11 @@ fun CommunityScreen(nav: NavController) {
                                     )
                                     Column(Modifier.padding(8.dp)) {
                                         Text(post.title, style = MaterialTheme.typography.titleSmall, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                                        Text(post.category ?: "Uncategorized", style = MaterialTheme.typography.bodySmall, color = Color.Gray)
+                                        Text(post.category ?: stringResource(R.string.uncategorized_label), style = MaterialTheme.typography.bodySmall, color = Color.Gray)
                                         Spacer(Modifier.height(4.dp))
                                         Row(verticalAlignment = Alignment.CenterVertically) {
                                             IconButton(onClick = { vm.like(post.postId) }, modifier = Modifier.size(24.dp)) {
-                                                Icon(Icons.Filled.Favorite, contentDescription = "Like post", tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(16.dp))
+                                                Icon(Icons.Filled.Favorite, contentDescription = stringResource(R.string.like_post_desc), tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(16.dp))
                                             }
                                             Text("${post.likes}", style = MaterialTheme.typography.bodySmall)
                                         }
@@ -203,24 +211,24 @@ fun CreatePostDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Create Post") },
+        title = { Text(stringResource(R.string.create_post_title)) },
         text = {
             Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-                OutlinedTextField(value = title, onValueChange = { title = it }, label = { Text("Title") }, modifier = Modifier.fillMaxWidth())
+                OutlinedTextField(value = title, onValueChange = { title = it }, label = { Text(stringResource(R.string.post_title_label)) }, modifier = Modifier.fillMaxWidth())
                 Spacer(Modifier.height(12.dp))
 
                 Button(onClick = { imagePickerLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) }) {
-                    Text("Select Image")
+                    Text(stringResource(R.string.select_image_button))
                 }
                 imageUri?.let {
-                    Image(painter = rememberAsyncImagePainter(it), contentDescription = "Selected image", modifier = Modifier.fillMaxWidth().height(150.dp).padding(top = 8.dp))
+                    Image(painter = rememberAsyncImagePainter(it), contentDescription = stringResource(R.string.select_image_button), modifier = Modifier.fillMaxWidth().height(150.dp).padding(top = 8.dp))
                 }
                 Spacer(Modifier.height(12.dp))
 
                 OutlinedTextField(
                     value = ingredientsText,
                     onValueChange = { ingredientsText = it },
-                    label = { Text("Ingredients (one per line)") },
+                    label = { Text(stringResource(R.string.post_ingredients_label)) },
                     modifier = Modifier.fillMaxWidth().height(100.dp)
                 )
                 Spacer(Modifier.height(12.dp))
@@ -228,7 +236,7 @@ fun CreatePostDialog(
                 OutlinedTextField(
                     value = instructionsText,
                     onValueChange = { instructionsText = it },
-                    label = { Text("Instructions") },
+                    label = { Text(stringResource(R.string.post_instructions_label)) },
                     modifier = Modifier.fillMaxWidth().height(150.dp)
                 )
                 Spacer(Modifier.height(12.dp))
@@ -238,7 +246,7 @@ fun CreatePostDialog(
                     onExpandedChange = { isCategoryDropdownExpanded = !isCategoryDropdownExpanded }
                 ) {
                     OutlinedTextField(
-                        value = selectedCategory?.name ?: "Select a category",
+                        value = selectedCategory?.name ?: stringResource(R.string.select_category_label),
                         onValueChange = {},
                         readOnly = true,
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isCategoryDropdownExpanded) },
@@ -265,10 +273,10 @@ fun CreatePostDialog(
             Button(
                 onClick = { onCreate(title, imageUri, ingredientsText, instructionsText, selectedCategory?.name) },
                 enabled = title.isNotBlank() && ingredientsText.isNotBlank() && instructionsText.isNotBlank() && selectedCategory != null
-            ) { Text("Create") }
+            ) { Text(stringResource(R.string.create_post_title)) }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) { Text("Cancel") }
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) }
         }
     )
 }

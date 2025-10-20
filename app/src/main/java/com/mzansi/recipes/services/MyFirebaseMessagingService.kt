@@ -15,8 +15,17 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.mzansi.recipes.MainActivity
 import com.mzansi.recipes.R
+import com.mzansi.recipes.di.AppModules
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
+
+    private val serviceJob = SupervisorJob()
+    private val serviceScope = CoroutineScope(Dispatchers.IO + serviceJob)
 
     companion object {
         private const val TAG = "MyFirebaseMsgService"
@@ -24,48 +33,34 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         const val CHANNEL_ID_RECIPES = "mzansi_recipe_alerts"
     }
 
-    /**
-     * Called when a new FCM registration token is generated for the device.
-     * Token is used to send messages to this specific device.
-     */
     override fun onNewToken(token: String) {
         Log.d(TAG, "Refreshed token: $token")
-        // TODO: Send this token to your server and associate it with the logged-in user.
-        // For now, let's try to save it to the current user's Firestore document if they are logged in.
         sendRegistrationToServer(token)
     }
 
-    /**
-     * Called when a message is received.
-     *
-     * @param remoteMessage Object representing the message received from Firebase Cloud Messaging.
-     */
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        Log.d(TAG, "From: ${remoteMessage.from}")
+        // Use the existing provider to get the user preferences
+        val prefs = AppModules.provideUserPrefs(this)
 
-
-        remoteMessage.data.isNotEmpty().let {
-            Log.d(TAG, "Message data payload: " + remoteMessage.data)
-            // Handle data payload here. For example, determine the type of alert.
-
-            val notificationType = remoteMessage.data["type"] ?: "general"
-            val channelId = when (notificationType) {
-                "shopping" -> CHANNEL_ID_SHOPPING
-                "recipe" -> CHANNEL_ID_RECIPES
-                else -> CHANNEL_ID_RECIPES // Default channel
+        serviceScope.launch {
+            val notificationsEnabled = prefs.settings.first().notificationsEnabled
+            if (!notificationsEnabled) {
+                Log.d(TAG, "Notifications are disabled by the user. Skipping notification.")
+                return@launch
             }
 
-             val dataTitle = remoteMessage.data["title"]
-             val dataBody = remoteMessage.data["body"]
-        }
+            Log.d(TAG, "From: ${remoteMessage.from}")
 
+            remoteMessage.data.isNotEmpty().let {
+                Log.d(TAG, "Message data payload: " + remoteMessage.data)
+            }
 
-        remoteMessage.notification?.let {
-            Log.d(TAG, "Message Notification Body: ${it.body}")
-            sendNotification(it.title, it.body, remoteMessage.data["type"])
+            remoteMessage.notification?.let {
+                Log.d(TAG, "Message Notification Body: ${it.body}")
+                sendNotification(it.title, it.body, remoteMessage.data["type"])
+            }
         }
     }
-
 
     private fun sendRegistrationToServer(token: String?) {
         val userId = FirebaseAuth.getInstance().currentUser?.uid
@@ -79,7 +74,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             Log.d(TAG, "User not logged in or token is null, cannot save FCM token to Firestore.")
         }
     }
-
 
     private fun sendNotification(messageTitle: String?, messageBody: String?, notificationType: String?) {
         val intent = Intent(this, MainActivity::class.java)
@@ -107,9 +101,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-
             val shoppingChannel = NotificationChannel(
                 CHANNEL_ID_SHOPPING,
                 "Shopping Reminders",
@@ -127,5 +119,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
         Log.d(TAG, "Notification sent: Title='$messageTitle', Body='$messageBody', Channel='$channelId'")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        serviceJob.cancel()
     }
 }

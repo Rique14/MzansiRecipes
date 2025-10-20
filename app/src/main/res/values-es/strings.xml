@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Recetas de Mzansi</string>
+
+    <!-- Common UI Text -->
+    <string name="search">Buscar</string>
+    <string name="categories">Categorías</string>
+    <string name="breakfast">Desayuno</string>
+    <string name="lunch">Almuerzo</string>
+    <string name="dinner">Cena</string>
+    <string name="trending">Tendencias</string>
+    <string name="for_you">Para Ti</string>
+    <string name="community">Comunidad</string>
+    <string name="shopping">Compras</string>
+    <string name="add">Añadir</string>
+    <string name="post">Publicar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="edit_button">Botón de Editar</string>
+    <string name="back_button_desc">Atrás</string>
+    <string name="guest_user">Usuario Invitado</string>
+    <string name="no_email_available">Correo Electrónico no Disponible</string>
+    <string name="profile_picture_content_desc">Foto de Perfil</string>
+    <string name="select_image_button">Seleccionar Imagen</string>
+    <string name="post_ingredients_label">Ingredientes de la Publicación</string>
+    <string name="post_instructions_label">Instrucciones de la Publicación</string>
+
+    <!-- Bottom Navigation -->
+    <string name="offline_message">Estás sin conexión</string>
+    <string name="bottom_nav_home">Inicio</string>
+    <string name="bottom_nav_community">Comunidad</string>
+    <string name="bottom_nav_shop">Compras</string>
+    <string name="bottom_nav_settings">Ajustes</string>
+
+    <!-- Recipe Detail -->
+    <string name="ready_in">Listo en: %1$s min</string>
+    <string name="serves">Porciones: %1$s</string>
+    <string name="ingredients">Ingredientes</string>
+    <string name="instructions">Instrucciones</string>
+    <string name="recipe_detail">Detalle de la Receta</string>
+
+    <!-- HomeScreen dynamic content -->
+    <string name="search_results_title">Resultados de búsqueda para \"%1$s\"</string>
+    <string name="category_recipes_title">Recetas en %1$s</string>
+    <string name="no_search_results">No se encontraron resultados para \"%1$s\".</string>
+    <string name="no_category_recipes">No se encontraron recetas en %1$s.</string>
+    <string name="explore_recipes_placeholder">¡Explora recetas, busca o selecciona una categoría!</string>
+    <string name="no_trending_recipes">No hay recetas en tendencia actualmente.</string>
+    <string name="error_loading_recipes">No se pudieron cargar las recetas. Por favor, inténtalo de nuevo.</string>
+    <string name="no_categories_found">No se encontraron categorías.</string>
+
+    <!-- Community Screen -->
+    <string name="popular">Populares</string>
+    <string name="recent">Recientes</string>
+    <string name="create_post_title">Crear una Nueva Publicación</string>
+    <string name="post_title_label">Título de la Publicación</string>
+    <string name="no_posts_message">Aún no hay publicaciones. ¡Sé el primero en compartir!</string>
+    <string name="posts_in_category_title">Publicaciones en %1$s</string>
+    <string name="select_category_label">Seleccionar Categoría</string>
+    <string name="category_label">Categoría</string>
+
+    <!-- Shopping Screen -->
+    <string name="shopping_list_title">Lista de Compras</string>
+    <string name="shopping_list_section_header">Mi Lista</string>
+    <string name="shopping_list_empty_message">Tu lista de compras está vacía.</string>
+    <string name="delete_item_action_desc">Eliminar artículo</string>
+
+    <!-- Settings Screen -->
+    <string name="settings">Ajustes</string>
+    <string name="general">GENERAL</string>
+    <string name="profile">Perfil</string>
+    <string name="notifications">Notificaciones</string>
+    <string name="themes">Temas</string>
+    <string name="language">Idioma</string>
+    <string name="logout">Cerrar Sesión</string>
+    <string name="select_language">Seleccionar Idioma</string>
+
+    <!-- User Post Detail Screen -->
+    <string name="uncategorized_label">Sin Categoría</string>
+    <string name="like_post_desc">Me gusta la publicación</string>
+    <string name="no_ingredients_provided">No se proporcionaron ingredientes.</string>
+    <string name="no_instructions_provided">No se proporcionaron instrucciones.</string>
+    <string name="post_not_found_error">Publicación no encontrada.</string>
+    <string name="loading">Cargando...</string>
+    <string name="ingredients_added_to_shopping_list">Ingredientes añadidos a la lista de compras</string>
+    <string name="add_to_list">Añadir a la Lista</string>
+
+    <!-- Saved Recipes Screen -->
+    <string name="saved_recipes_title">Recetas Guardadas</string>
+    <string name="no_saved_recipes">Aún no tienes recetas guardadas.</string>
+
+</resources>

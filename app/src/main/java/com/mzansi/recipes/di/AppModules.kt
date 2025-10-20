@@ -133,5 +133,5 @@ object AppModules {
         CommunityRepository(fs, auth, storage)
 
     fun provideAuthRepo(auth: FirebaseAuth, fs: FirebaseFirestore) =
-        AuthRepository(auth, fs)
+        AuthRepository(auth, fs, provideStorage())
 }

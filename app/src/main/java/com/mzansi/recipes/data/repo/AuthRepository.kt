@@ -1,15 +1,19 @@
 package com.mzansi.recipes.data.repo
 
+import android.net.Uri
 import android.util.Log
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.userProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions // For merging data
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.tasks.await
 
 class AuthRepository(
     private val auth: FirebaseAuth,
-    private val fs: FirebaseFirestore
+    private val fs: FirebaseFirestore,
+    private val storage: FirebaseStorage
 ) {
     suspend fun register(name: String, email: String, password: String) {
         val res = auth.createUserWithEmailAndPassword(email, password).await()
@@ -72,6 +76,34 @@ class AuthRepository(
             Log.e("AuthRepository", "Firebase user is null after signing in with credential.")
             throw IllegalStateException("Firebase user is null after successful credential sign-in.")
         }
+    }
+
+    suspend fun updateUserProfile(name: String, imageUri: Uri?) {
+        val user = auth.currentUser ?: throw IllegalStateException("User not logged in")
+        var photoUrl: String? = null
+
+        // 1. Upload image if a new one is provided
+        if (imageUri != null) {
+            val storageRef = storage.reference.child("profile_images/${user.uid}")
+            storageRef.putFile(imageUri).await()
+            photoUrl = storageRef.downloadUrl.await().toString()
+        }
+
+        // 2. Update Firebase Auth user profile
+        val profileUpdates = userProfileChangeRequest {
+            displayName = name
+            if (photoUrl != null) {
+                photoUri = Uri.parse(photoUrl)
+            }
+        }
+        user.updateProfile(profileUpdates).await()
+
+        // 3. Update Firestore user document
+        val userDocData = mutableMapOf<String, Any>("name" to name)
+        if (photoUrl != null) {
+            userDocData["photoUrl"] = photoUrl
+        }
+        fs.collection("users").document(user.uid).set(userDocData, SetOptions.merge()).await()
     }
 
     fun currentUserId(): String? = auth.currentUser?.uid

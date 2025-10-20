@@ -156,6 +156,9 @@ fun SettingsScreen(nav: NavController) {
                             text = when (state.language) {
                                 "zu" -> "isiZulu"
                                 "af" -> "Afrikaans"
+                                "es" -> "Español"
+                                "fr" -> "Français"
+                                "de" -> "Deutsch"
                                 else -> "English"
                             },
                             style = MaterialTheme.typography.bodyLarge.copy(
@@ -171,7 +174,6 @@ fun SettingsScreen(nav: NavController) {
                                 text = { Text("English") },
                                 onClick = {
                                     vm.setLanguage("en")
-
                                     AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags("en"))
                                     languageExpanded = false
                                 }
@@ -189,6 +191,30 @@ fun SettingsScreen(nav: NavController) {
                                 onClick = {
                                     vm.setLanguage("af")
                                     AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags("af"))
+                                    languageExpanded = false
+                                }
+                            )
+                            DropdownMenuItem(
+                                text = { Text("Español") },
+                                onClick = {
+                                    vm.setLanguage("es")
+                                    AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags("es"))
+                                    languageExpanded = false
+                                }
+                            )
+                            DropdownMenuItem(
+                                text = { Text("Français") },
+                                onClick = {
+                                    vm.setLanguage("fr")
+                                    AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags("fr"))
+                                    languageExpanded = false
+                                }
+                            )
+                            DropdownMenuItem(
+                                text = { Text("Deutsch") },
+                                onClick = {
+                                    vm.setLanguage("de")
+                                    AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags("de"))
                                     languageExpanded = false
                                 }
                             )

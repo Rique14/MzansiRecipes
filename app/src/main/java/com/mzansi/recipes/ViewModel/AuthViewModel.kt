@@ -1,5 +1,6 @@
 package com.mzansi.recipes.ViewModel
 
+import android.net.Uri
 import android.util.Log
 import android.util.Patterns
 import androidx.lifecycle.ViewModel
@@ -18,7 +19,8 @@ data class AuthUiState(
     val nameError: String? = null,
     val emailError: String? = null,
     val passwordError: String? = null,
-    val confirmPasswordError: String? = null
+    val confirmPasswordError: String? = null,
+    val updateSuccess: Boolean = false
 )
 
 class AuthViewModel(private val repo: AuthRepository) : ViewModel() {
@@ -27,6 +29,10 @@ class AuthViewModel(private val repo: AuthRepository) : ViewModel() {
 
     fun onRegistrationSuccessHandled() {
         _state.value = _state.value.copy(registrationSuccess = false)
+    }
+
+    fun onUpdateSuccessHandled() {
+        _state.value = _state.value.copy(updateSuccess = false)
     }
 
     fun register(name: String, email: String, password: String, confirm: String) = viewModelScope.launch {
@@ -98,6 +104,16 @@ class AuthViewModel(private val repo: AuthRepository) : ViewModel() {
         } catch (e: Exception) {
             Log.e("AuthViewModel", "Google Sign-In failed", e)
             _state.value = _state.value.copy(loading = false, error = e.message ?: "Google Sign-In failed")
+        }
+    }
+
+    fun updateUserProfile(name: String, imageUri: Uri?) = viewModelScope.launch {
+        _state.value = _state.value.copy(loading = true, error = null, updateSuccess = false)
+        try {
+            repo.updateUserProfile(name, imageUri)
+            _state.value = _state.value.copy(loading = false, updateSuccess = true)
+        } catch (e: Exception) {
+            _state.value = _state.value.copy(loading = false, error = e.message)
         }
     }
 }

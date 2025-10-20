@@ -13,6 +13,25 @@ android {
     namespace = "com.mzansi.recipes"
     compileSdk = 36
 
+    signingConfigs {
+        create("release") {
+            val keystoreProperties = Properties()
+            val keystorePropertiesFile = rootProject.file("keystore.properties")
+            if (keystorePropertiesFile.exists()) {
+                keystorePropertiesFile.inputStream().use { stream: java.io.InputStream ->
+                    keystoreProperties.load(stream)
+                }
+            }
+
+            keyAlias = keystoreProperties.getProperty("keyAlias")
+            keyPassword = keystoreProperties.getProperty("keyPassword")
+            keystoreProperties.getProperty("storeFile")?.let {
+                storeFile = rootProject.file(it)
+            }
+            storePassword = keystoreProperties.getProperty("storePassword")
+        }
+    }
+
     defaultConfig {
         applicationId = "com.mzansi.recipes"
         minSdk = 24
@@ -29,8 +48,8 @@ android {
         if (localPropsFile.exists() && localPropsFile.isFile) { // Corrected: isFile property
             try {
                 // Explicitly type the stream parameter
-                localPropsFile.inputStream().use { stream: java.io.InputStream -> 
-                    localProps.load(stream) 
+                localPropsFile.inputStream().use { stream: java.io.InputStream ->
+                    localProps.load(stream)
                 }
                 apiKeyFromLocalProps = localProps.getProperty("RAPIDAPI_KEY") ?: ""
             } catch (e: Exception) {
@@ -57,6 +76,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
         }
     }
 
@@ -123,8 +143,6 @@ dependencies {
     // kapt("androidx.room:room-compiler:2.6.1") // Changed
     ksp("androidx.room:room-compiler:2.6.1") // To KSP
     implementation(libs.androidx.navigation.compose)
-
-
 
     // DataStore
     implementation("androidx.datastore:datastore-preferences:1.1.7")
