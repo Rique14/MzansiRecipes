@@ -25,21 +25,24 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
-      - name: Decode Keystore
-        # This step decodes the base64-encoded keystore from secrets
-        # and creates the .jks file in the correct root directory for the build.
-        run: |
-          echo "${{ secrets.RELEASE_KEYSTORE_BASE64 }}" | base64 --decode > ${{ github.workspace }}/mzansirecipes.jks
+      # Create all required secret files before the build
+      - name: Create google-services.json
+        run: echo "${{ secrets.GOOGLE_SERVICES_JSON }}" > ${{ github.workspace }}/app/google-services.json
 
+      - name: Create local.properties
+        run: echo "RAPIDAPI_KEY=${{ secrets.RAPIDAPI_KEY }}" > ${{ github.workspace }}/local.properties
+
+      - name: Decode Keystore
+        run: echo "${{ secrets.RELEASE_KEYSTORE_BASE64 }}" | base64 --decode > ${{ github.workspace }}/app/mzansirecipes.jks
+
+      # Build the app, passing all secrets as environment variables
       - name: Build Release Bundle
-        # This command builds the release app bundle.
-        # It passes the secrets as environment variables, which our updated build.gradle.kts can read.
         run: ./gradlew :app:bundleRelease
         env:
-          KEYSTORE_PATH: ${{ github.workspace }}/mzansirecipes.jks
+          KEYSTORE_PATH: ${{ github.workspace }}/app/mzansirecipes.jks
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
 
       - name: Build and run unit tests
-        run: ./gradlew build
+        run: ./gradlew test
