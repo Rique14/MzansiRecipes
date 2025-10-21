@@ -26,7 +26,7 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
-      #  Safely create google-services.json using HEREDOC (prevents malformed JSON)
+      #  Safely create google-services.json using HEREDOC
       - name: Create google-services.json
         run: |
           mkdir -p $GITHUB_WORKSPACE/app
