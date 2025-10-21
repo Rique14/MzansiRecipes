@@ -1,4 +1,4 @@
-# Mzansi Recipes App - Part 2
+# Mzansi Recipes App - POE
 ## Group Members
 - Princely Makhwara – ST10263265
 - Aime Ndumuhire – ST10255663
@@ -179,6 +179,34 @@ Users saved recipes are saved to the saved recipes screen for when they want to 
 
 <img width="1920" height="1017" alt="Screenshot (349)" src="https://github.com/user-attachments/assets/dbbd4af6-9699-44f2-85ab-42898eda10d7" />
 
+ ## 10. Release Notes – Updates
+ ### Overview
 
- ## 10. License
+This POE update introduces several new, innovative features that enhance security, accessibility, and user experience.
+
+ ### New Features 
+
+ Single Sign-On (SSO): Enables users to log in seamlessly using an existing Google account.
+
+ Offline Mode with Sync: Users can now interact with selected features offline, and data automatically syncs when reconnected (using RoomDB / SQLite).
+
+ Real-time Notifications: Push notifications added for instant updates on new community recipes and interactions.
+
+ Multi-language Support: The app now supports two South African languages (e.g., English and isiZulu).
+
+ ### Other Enhancements
+
+Improved encryption and data security.
+
+Optimized Firebase integration for faster syncing.
+
+Enhanced UI consistency and accessibility improvements.
+
+### Summary
+
+The POE release of Mzansi Recipes focuses on:
+
+Improved accessibility, real-time engagement, offline usability, and inclusive language support — bringing South African food culture closer to everyone.
+
+ ## 11. License
 ​This project is licensed under the MIT License. See the `LICENSE` file for more information.
