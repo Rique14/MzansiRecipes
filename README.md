@@ -179,34 +179,29 @@ Users saved recipes are saved to the saved recipes screen for when they want to 
 
 <img width="1920" height="1017" alt="Screenshot (349)" src="https://github.com/user-attachments/assets/dbbd4af6-9699-44f2-85ab-42898eda10d7" />
 
- ## 10. Release Notes – Updates
+ ## 10. Release Notes – Mzansi Recipes Final POE
  ### Overview
 
-This POE update introduces several new, innovative features that enhance security, accessibility, and user experience.
+This update marks the final Proof of Evidence (POE) release of Mzansi Recipes, introducing several innovative features that significantly enhance the app's functionality, usability, and resilience.
 
  ### New Features 
 
- Single Sign-On (SSO): Enables users to log in seamlessly using an existing Google account.
-
- Offline Mode with Sync: Users can now interact with selected features offline, and data automatically syncs when reconnected (using RoomDB / SQLite).
-
- Real-time Notifications: Push notifications added for instant updates on new community recipes and interactions.
-
- Multi-language Support: The app now supports two South African languages (e.g., English and isiZulu).
-
+- Single Sign-On (SSO): Enables users to log in seamlessly using an existing Google account for quicker access.
+- Multi-language Support: The app now supports multiple South African languages, making it more accessible to a diverse audience.
+- Offline-First Experience: Mzansi Recipes now works seamlessly even without an internet connection. You can browse recipes you've previously viewed and manage your saved collection offline. All changes are automatically synced with the cloud once you reconnect, thanks to a robust background synchronization mechanism.
+- Community and Social Sharing: A new "Community" section has been added where users can share their own culinary creations. You can now view posts from other users and get inspired by the broader Mzansi Recipes family.
+- Save Your Favorites: You can now save your favorite recipes with a single tap. All saved recipes are available in a dedicated "Saved Recipes" screen for quick and easy access, even when you're offline.
+- Complete User Authentication: The app now features a full authentication system, allowing users to register for a new account, log in and securely reset their passwords if needed.
+- 
  ### Other Enhancements
 
-Improved encryption and data security.
-
-Optimized Firebase integration for faster syncing.
-
-Enhanced UI consistency and accessibility improvements.
+- Modern, Reactive UI: The entire user interface has been built using Jetpack Compose, offering a smooth, modern, and reactive experience.
+- Optimized Data Handling: We've integrated the MealDB API for a vast collection of recipes and optimized data flow using Kotlin Coroutines and Flow.
+- Improved Navigation: The app's navigation has been streamlined, making it more intuitive to move between recipe browsing, your saved collection, and the new community section.
 
 ### Summary
 
-The POE release of Mzansi Recipes focuses on:
-
-Improved accessibility, real-time engagement, offline usability, and inclusive language support — bringing South African food culture closer to everyone.
+This POE release transforms Mzansi Recipes into a feature-rich, resilient and user-centric application. The introduction of offline capabilities, social features and a fully reactive UI makes it easier than ever for users to discover, save and share the best of South African cuisine.
 
  ## 11. License
 ​This project is licensed under the MIT License. See the `LICENSE` file for more information.
