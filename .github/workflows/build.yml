@@ -9,6 +9,7 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -25,17 +26,31 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
-      # Create all required secret files before the build
+      #  Safely create google-services.json using HEREDOC (prevents malformed JSON)
       - name: Create google-services.json
-        run: echo "${{ secrets.GOOGLE_SERVICES_JSON }}" > ${{ github.workspace }}/app/google-services.json
+        run: |
+          mkdir -p $GITHUB_WORKSPACE/app
+          cat > $GITHUB_WORKSPACE/app/google-services.json <<'EOF'
+          ${{ secrets.GOOGLE_SERVICES_JSON }}
+          EOF
 
+      # Optional sanity check for JSON correctness
+      - name: Validate google-services.json
+        run: |
+          echo "Validating google-services.json..."
+          python3 -m json.tool $GITHUB_WORKSPACE/app/google-services.json > /dev/null
+          echo " JSON is valid!"
+
+      # Create local.properties for local config like RAPIDAPI_KEY
       - name: Create local.properties
-        run: echo "RAPIDAPI_KEY=${{ secrets.RAPIDAPI_KEY }}" > ${{ github.workspace }}/local.properties
+        run: echo "RAPIDAPI_KEY=${{ secrets.RAPIDAPI_KEY }}" > $GITHUB_WORKSPACE/local.properties
 
+      # Decode your release keystore
       - name: Decode Keystore
-        run: echo "${{ secrets.RELEASE_KEYSTORE_BASE64 }}" | base64 --decode > ${{ github.workspace }}/app/mzansirecipes.jks
+        run: |
+          echo "${{ secrets.RELEASE_KEYSTORE_BASE64 }}" | base64 --decode > $GITHUB_WORKSPACE/app/mzansirecipes.jks
 
-      # Build the app, providing all secrets as environment variables
+      # Build the signed release bundle
       - name: Build Release Bundle
         run: ./gradlew :app:bundleRelease --stacktrace
         env:
@@ -44,5 +59,6 @@ jobs:
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
 
+      # Run Unit Tests
       - name: Run Unit Tests
         run: ./gradlew test --stacktrace
