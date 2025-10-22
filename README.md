@@ -1,9 +1,9 @@
 # Mzansi Recipes App - POE
 ## Table of Contents
- [Group Members](group-members)
- [ Video Link](video-link)
- [Link to Repository](link-to-repository)
- [Mzansi Recipes Logo](mzansi-recipes-logo)
+ [Group Members](#group-members)
+ [ Video Link](#video-link)
+ [Link to Repository](#link-to-repository)
+ [Mzansi Recipes Logo](#mzansi-recipes-logo)
 1. [Introduction](#1-introduction)
 2. [Features](#2-features)
 3. [Backend and API](#3-backend-and-api)
