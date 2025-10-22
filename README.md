@@ -179,12 +179,12 @@ Users saved recipes are saved to the saved recipes screen for when they want to 
 
 <img width="1920" height="1017" alt="Screenshot (349)" src="https://github.com/user-attachments/assets/dbbd4af6-9699-44f2-85ab-42898eda10d7" />
 
- ## 10. Release Notes – Mzansi Recipes Final POE
+ # 10. Release Notes – Mzansi Recipes Final POE
  ### Overview
 
-This update marks the final Proof of Evidence (POE) release of Mzansi Recipes, introducing several innovative features that significantly enhance the app's functionality, usability, and resilience.
+This update marks the final Proof of Evidence (POE) release of Mzansi Recipes, introducing several innovative features that significantly enhance the app's functionality, usability and resilience.
 
- ### New Features 
+ ## 10.1 New Features 
 
 - Single Sign-On (SSO): Enables users to log in seamlessly using an existing Google account for quicker access.
 - Multi-language Support: The app now supports multiple South African languages, making it more accessible to a diverse audience.
@@ -193,15 +193,55 @@ This update marks the final Proof of Evidence (POE) release of Mzansi Recipes, i
 - Save Your Favorites: You can now save your favorite recipes with a single tap. All saved recipes are available in a dedicated "Saved Recipes" screen for quick and easy access, even when you're offline.
 - Complete User Authentication: The app now features a full authentication system, allowing users to register for a new account, log in and securely reset their passwords if needed.
 - 
- ### Other Enhancements
+ ## 10.2 Other Enhancements
 
 - Modern, Reactive UI: The entire user interface has been built using Jetpack Compose, offering a smooth, modern, and reactive experience.
 - Optimized Data Handling: We've integrated the MealDB API for a vast collection of recipes and optimized data flow using Kotlin Coroutines and Flow.
 - Improved Navigation: The app's navigation has been streamlined, making it more intuitive to move between recipe browsing, your saved collection, and the new community section.
 
-### Summary
+## 10.3 App running on mobile phone
+![WhatsApp Image 2025-10-22 at 17 50 04_dba53150](https://github.com/user-attachments/assets/47c90b77-dd1e-49dc-b12c-fb7596d2fb1c)
 
-This POE release transforms Mzansi Recipes into a feature-rich, resilient and user-centric application. The introduction of offline capabilities, social features and a fully reactive UI makes it easier than ever for users to discover, save and share the best of South African cuisine.
+
+### 10.3.1 Splash Screen
+![WhatsApp Image 2025-10-21 at 21 55 26_333942ab](https://github.com/user-attachments/assets/ee8bdaca-fdcc-4f47-80ad-fa935475af70)
+
+### 10.3.2 Login Screen
+![WhatsApp Image 2025-10-21 at 21 55 30_ccbeb9fb](https://github.com/user-attachments/assets/79986e8c-70c3-4af9-a227-1e62db2a1f36)
+
+### 10.3.3 Register Screen
+![WhatsApp Image 2025-10-21 at 21 55 30_2c03609c](https://github.com/user-attachments/assets/7801d77e-3283-4a74-8d5d-13e99201121d)
+
+### 10.3.4 Home Screen
+![WhatsApp Image 2025-10-21 at 21 55 34_0268feb9](https://github.com/user-attachments/assets/88f4b2cf-b6ad-433e-9d3a-59f310d8f095)
+
+### 10.3.5 Recipe Detail Screen
+![WhatsApp Image 2025-10-21 at 21 55 34_ce7b37db](https://github.com/user-attachments/assets/8a71dd79-7989-440c-a112-737bbb12aefd)
+
+### 10.3.6 Community Screen
+![WhatsApp Image 2025-10-21 at 21 55 35_6faea4cb](https://github.com/user-attachments/assets/2f5c7c39-76e2-4a44-8038-512233c5b533)
+
+### 10.3.7 Shopping Screen
+![WhatsApp Image 2025-10-21 at 21 55 35_7b2b4819](https://github.com/user-attachments/assets/64fb2a6a-1bf2-46bf-93dc-9ad73e2da8a9)
+
+### 10.3.8 Settings Screen
+![WhatsApp Image 2025-10-21 at 21 55 35_45c14b73](https://github.com/user-attachments/assets/9c1fb867-f5ee-4253-a518-0c111ecc74d1)
+
+### 10.3.9 Saved Recipe Screen
+![WhatsApp Image 2025-10-21 at 21 55 36_88e6c80e](https://github.com/user-attachments/assets/4019bbef-b79c-462d-9a23-691e0c91b847)
+
+### 10.3.10 Profile Screen
+![WhatsApp Image 2025-10-21 at 21 55 35_e638a7c1](https://github.com/user-attachments/assets/b216d0ce-3df3-4fb1-a0c5-c3268c8c2f0a) ![WhatsApp Image 2025-10-21 at 21 55 36_27913f5f](https://github.com/user-attachments/assets/4cf12f8d-7ef4-4b19-aecb-fd1d9c424a61)
+
+### 10.3.11 Push Notification
+![WhatsApp Image 2025-10-22 at 17 50 04_fcc254e9](https://github.com/user-attachments/assets/dd509093-2f36-47b4-93f9-897956339457)
+
+### 10.3.12 Signed APK
+<img width="1919" height="1018" alt="Screenshot 2025-10-21 162832" src="https://github.com/user-attachments/assets/9ee78c14-b4c8-4a8c-8d29-c55bc0ebbc32" />
+
+### 10.3.13 Ready for upload on google playstore
+<img width="1910" height="1020" alt="Screenshot 2025-10-21 195243" src="https://github.com/user-attachments/assets/272af2d1-ffd8-4ea3-bc45-b2772cd0c0ce" />
+
 
  ## 11. License
 ​This project is licensed under the MIT License. See the `LICENSE` file for more information.
