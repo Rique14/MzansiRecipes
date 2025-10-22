@@ -182,7 +182,7 @@ Users saved recipes are saved to the saved recipes screen for when they want to 
  # 10. Release Notes – Mzansi Recipes Final POE
  ### Overview
 
-This update marks the final Proof of Evidence (POE) release of Mzansi Recipes, introducing several innovative features that significantly enhance the app's functionality, usability and resilience.
+This update marks the final Proof of Evidence (POE) release of Mzansi Recipes, introducing innovative features that significantly enhance the app's functionality, usability and resilience.
 
  ## 10.1 New Features 
 
