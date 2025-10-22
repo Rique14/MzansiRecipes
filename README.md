@@ -207,34 +207,34 @@ This update marks the final Proof of Evidence (POE) release of Mzansi Recipes, i
 
 
 ### 10.3.2 Login Screen
-![WhatsApp Image 2025-10-21 at 21 55 30_ccbeb9fb](https://github.com/user-attachments/assets/79986e8c-70c3-4af9-a227-1e62db2a1f36)
+< img src="https://github.com/user-attachments/assets/79986e8c-70c3-4af9-a227-1e62db2a1f36" alt="Login Screen" width="300" height="600" />
 
 ### 10.3.3 Register Screen
-![WhatsApp Image 2025-10-21 at 21 55 30_2c03609c](https://github.com/user-attachments/assets/7801d77e-3283-4a74-8d5d-13e99201121d)
+< img src="ttps://github.com/user-attachments/assets/7801d77e-3283-4a74-8d5d-13e99201121d" alt="Register Screen" width="300" height="600" />
 
 ### 10.3.4 Home Screen
-![WhatsApp Image 2025-10-21 at 21 55 34_0268feb9](https://github.com/user-attachments/assets/88f4b2cf-b6ad-433e-9d3a-59f310d8f095)
+< img src= "https://github.com/user-attachments/assets/88f4b2cf-b6ad-433e-9d3a-59f310d8f095" alt="Home Screen" width="300" height="600"  />
 
 ### 10.3.5 Recipe Detail Screen
-![WhatsApp Image 2025-10-21 at 21 55 34_ce7b37db](https://github.com/user-attachments/assets/8a71dd79-7989-440c-a112-737bbb12aefd)
+< img src="https://github.com/user-attachments/assets/8a71dd79-7989-440c-a112-737bbb12aefd" alt="Recipe Detail Screen" width="300"  height="600" />
 
 ### 10.3.6 Community Screen
-![WhatsApp Image 2025-10-21 at 21 55 35_6faea4cb](https://github.com/user-attachments/assets/2f5c7c39-76e2-4a44-8038-512233c5b533)
+< img src="https://github.com/user-attachments/assets/2f5c7c39-76e2-4a44-8038-512233c5b533" alt="Community Screen"  width="300" height="600"  />
 
 ### 10.3.7 Shopping Screen
-![WhatsApp Image 2025-10-21 at 21 55 35_7b2b4819](https://github.com/user-attachments/assets/64fb2a6a-1bf2-46bf-93dc-9ad73e2da8a9)
+< img src="https://github.com/user-attachments/assets/64fb2a6a-1bf2-46bf-93dc-9ad73e2da8a9"  alt="Shopping Screen" width="300" height="600" />
 
 ### 10.3.8 Settings Screen
-![WhatsApp Image 2025-10-21 at 21 55 35_45c14b73](https://github.com/user-attachments/assets/9c1fb867-f5ee-4253-a518-0c111ecc74d1)
+< img src="https://github.com/user-attachments/assets/9c1fb867-f5ee-4253-a518-0c111ecc74d1" alt="Settings Screen" width="300" height="600" />
 
 ### 10.3.9 Saved Recipe Screen
-![WhatsApp Image 2025-10-21 at 21 55 36_88e6c80e](https://github.com/user-attachments/assets/4019bbef-b79c-462d-9a23-691e0c91b847)
+< img src="https://github.com/user-attachments/assets/4019bbef-b79c-462d-9a23-691e0c91b847" alt="Saved Recipe Screen" width="300" height="600" />
 
 ### 10.3.10 Profile Screen
-![WhatsApp Image 2025-10-21 at 21 55 35_e638a7c1](https://github.com/user-attachments/assets/b216d0ce-3df3-4fb1-a0c5-c3268c8c2f0a) ![WhatsApp Image 2025-10-21 at 21 55 36_27913f5f](https://github.com/user-attachments/assets/4cf12f8d-7ef4-4b19-aecb-fd1d9c424a61)
+< img src="https://github.com/user-attachments/assets/b216d0ce-3df3-4fb1-a0c5-c3268c8c2f0a" alt="Profile Screen" width="300" height="600" />  <img src="https://github.com/user-attachments/assets/4cf12f8d-7ef4-4b19-aecb-fd1d9c424a61" alt="Profile Screen" width="300" height="600" />
 
 ### 10.3.11 Push Notification
-![WhatsApp Image 2025-10-22 at 17 50 04_fcc254e9](https://github.com/user-attachments/assets/dd509093-2f36-47b4-93f9-897956339457)
+<img src="https://github.com/user-attachments/assets/dd509093-2f36-47b4-93f9-897956339457" alt="Shopping Screen" width="300" height="600" />
 
 ### 10.3.12 Signed APK
 <img width="1919" height="1018" alt="Screenshot 2025-10-21 162832" src="https://github.com/user-attachments/assets/9ee78c14-b4c8-4a8c-8d29-c55bc0ebbc32" />
