@@ -1,4 +1,21 @@
 # Mzansi Recipes App - POE
+## Table of Contents
+ [Group Members](group-members)
+ [ Video Link](video-link)
+ [Link to Repository](link-to-repository)
+ [Mzansi Recipes Logo](mzansi-recipes-logo)
+1. [Introduction](#1-introduction)
+2. [Features](#2-features)
+3. [Backend and API](#3-backend-and-api)
+4. [Design Considerations](#4-design-considerations)
+5. [Tech Stack and Architecture](#5-tech-stack-and-architecture)
+6. [GitHub and GitHub Actions](#6-github-and-github-actions)
+7. [How to Contribute](#7-how-to-contribute)
+8. [Use of Logs in Project](#8-use-of-logs-in-project)
+9. [App Functionality ](#9-app-functionality)
+10. [Release Notes – Final POE](#10-release-notes--mzansi-recipes-final-poe)
+11. [License](#11-license)
+
 ## Group Members
 - Princely Makhwara – ST10263265
 - Aime Ndumuhire – ST10255663
