@@ -219,7 +219,7 @@ This update marks the final Proof of Evidence (POE) release of Mzansi Recipes, i
 <img src="https://github.com/user-attachments/assets/8a71dd79-7989-440c-a112-737bbb12aefd" alt="Recipe Detail Screen" width="300"  height="600" />
 
 ### 10.3.6 Community Screen
-<img src="https://github.com/user-attachments/assets/2f5c7c39-76e2-4a44-8038-512233c5b533" alt="Community Screen"  width="300" height="600"  />
+<img src="https://github.com/user-attachments/assets/2f5c7c39-76e2-4a44-8038-512233c5b533" alt="Community Screen"  width="300" height="600" /> <img src="https://github.com/user-attachments/assets/4f5cf9ef-9b74-4be4-a4c0-664990bb0fbd" alt="Community Screen" width="300"  height="600"/>
 
 ### 10.3.7 Shopping Screen
 <img src="https://github.com/user-attachments/assets/64fb2a6a-1bf2-46bf-93dc-9ad73e2da8a9"  alt="Shopping Screen" width="300" height="600" />
