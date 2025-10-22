@@ -207,31 +207,31 @@ This update marks the final Proof of Evidence (POE) release of Mzansi Recipes, i
 
 
 ### 10.3.2 Login Screen
-< img src="https://github.com/user-attachments/assets/79986e8c-70c3-4af9-a227-1e62db2a1f36" alt="Login Screen" width="300" height="600" />
+<img src="https://github.com/user-attachments/assets/79986e8c-70c3-4af9-a227-1e62db2a1f36" alt="Login Screen" width="300" height="600" />
 
 ### 10.3.3 Register Screen
-< img src="ttps://github.com/user-attachments/assets/7801d77e-3283-4a74-8d5d-13e99201121d" alt="Register Screen" width="300" height="600" />
+<img src="https://github.com/user-attachments/assets/7801d77e-3283-4a74-8d5d-13e99201121d" alt="Register Screen" width="300" height="600" />
 
 ### 10.3.4 Home Screen
-< img src= "https://github.com/user-attachments/assets/88f4b2cf-b6ad-433e-9d3a-59f310d8f095" alt="Home Screen" width="300" height="600"  />
+<img src= "https://github.com/user-attachments/assets/88f4b2cf-b6ad-433e-9d3a-59f310d8f095" alt="Home Screen" width="300" height="600"  />
 
 ### 10.3.5 Recipe Detail Screen
-< img src="https://github.com/user-attachments/assets/8a71dd79-7989-440c-a112-737bbb12aefd" alt="Recipe Detail Screen" width="300"  height="600" />
+<img src="https://github.com/user-attachments/assets/8a71dd79-7989-440c-a112-737bbb12aefd" alt="Recipe Detail Screen" width="300"  height="600" />
 
 ### 10.3.6 Community Screen
-< img src="https://github.com/user-attachments/assets/2f5c7c39-76e2-4a44-8038-512233c5b533" alt="Community Screen"  width="300" height="600"  />
+<img src="https://github.com/user-attachments/assets/2f5c7c39-76e2-4a44-8038-512233c5b533" alt="Community Screen"  width="300" height="600"  />
 
 ### 10.3.7 Shopping Screen
-< img src="https://github.com/user-attachments/assets/64fb2a6a-1bf2-46bf-93dc-9ad73e2da8a9"  alt="Shopping Screen" width="300" height="600" />
+<img src="https://github.com/user-attachments/assets/64fb2a6a-1bf2-46bf-93dc-9ad73e2da8a9"  alt="Shopping Screen" width="300" height="600" />
 
 ### 10.3.8 Settings Screen
-< img src="https://github.com/user-attachments/assets/9c1fb867-f5ee-4253-a518-0c111ecc74d1" alt="Settings Screen" width="300" height="600" />
+<img src="https://github.com/user-attachments/assets/9c1fb867-f5ee-4253-a518-0c111ecc74d1" alt="Settings Screen" width="300" height="600" />
 
 ### 10.3.9 Saved Recipe Screen
-< img src="https://github.com/user-attachments/assets/4019bbef-b79c-462d-9a23-691e0c91b847" alt="Saved Recipe Screen" width="300" height="600" />
+<img src="https://github.com/user-attachments/assets/4019bbef-b79c-462d-9a23-691e0c91b847" alt="Saved Recipe Screen" width="300" height="600" />
 
 ### 10.3.10 Profile Screen
-< img src="https://github.com/user-attachments/assets/b216d0ce-3df3-4fb1-a0c5-c3268c8c2f0a" alt="Profile Screen" width="300" height="600" />  <img src="https://github.com/user-attachments/assets/4cf12f8d-7ef4-4b19-aecb-fd1d9c424a61" alt="Profile Screen" width="300" height="600" />
+<img src="https://github.com/user-attachments/assets/b216d0ce-3df3-4fb1-a0c5-c3268c8c2f0a" alt="Profile Screen" width="300" height="600" />  <img src="https://github.com/user-attachments/assets/4cf12f8d-7ef4-4b19-aecb-fd1d9c424a61" alt="Profile Screen" width="300" height="600" />
 
 ### 10.3.11 Push Notification
 <img src="https://github.com/user-attachments/assets/dd509093-2f36-47b4-93f9-897956339457" alt="Shopping Screen" width="300" height="600" />
