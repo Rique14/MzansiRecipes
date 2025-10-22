@@ -200,11 +200,11 @@ This update marks the final Proof of Evidence (POE) release of Mzansi Recipes, i
 - Improved Navigation: The app's navigation has been streamlined, making it more intuitive to move between recipe browsing, your saved collection, and the new community section.
 
 ## 10.3 App running on mobile phone
-![WhatsApp Image 2025-10-22 at 17 50 04_dba53150](https://github.com/user-attachments/assets/47c90b77-dd1e-49dc-b12c-fb7596d2fb1c)
-
+<img src="https://github.com/user-attachments/assets/47c90b77-dd1e-49dc-b12c-fb7596d2fb1c" alt="App running on phone" width="300" height="600" />
 
 ### 10.3.1 Splash Screen
-![WhatsApp Image 2025-10-21 at 21 55 26_333942ab](https://github.com/user-attachments/assets/ee8bdaca-fdcc-4f47-80ad-fa935475af70)
+<img src="https://github.com/user-attachments/assets/ee8bdaca-fdcc-4f47-80ad-fa935475af70" alt="Splash Screen" width="300" height="600" />
+
 
 ### 10.3.2 Login Screen
 ![WhatsApp Image 2025-10-21 at 21 55 30_ccbeb9fb](https://github.com/user-attachments/assets/79986e8c-70c3-4af9-a227-1e62db2a1f36)
