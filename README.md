@@ -210,6 +210,7 @@ This update marks the final Proof of Evidence (POE) release of Mzansi Recipes, i
 - Community and Social Sharing: A new "Community" section has been added where users can share their own culinary creations. You can now view posts from other users and get inspired by the broader Mzansi Recipes family.
 - Save Your Favorites: You can now save your favorite recipes with a single tap. All saved recipes are available in a dedicated "Saved Recipes" screen for quick and easy access, even when you're offline.
 - Complete User Authentication: The app now features a full authentication system, allowing users to register for a new account, log in and securely reset their passwords if needed.
+- Profile Screen: Update to profile Screen, Users are now able to change their display names and upload an profile picture.
 
  ## 10.2 Other Enhancements
 
