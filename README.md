@@ -25,7 +25,7 @@
 - Enrique Arendse – ST10302006
 
 ## Video Link
-https://youtu.be/fczRRG2IlvQ 
+https://youtu.be/6LzYR9QMYmw 
 
 ## Link to Repository 
 https://github.com/Rique14/MzansiRecipes 
@@ -198,8 +198,8 @@ Users saved recipes are saved to the saved recipes screen for when they want to 
 <img width="1920" height="1017" alt="Screenshot (349)" src="https://github.com/user-attachments/assets/dbbd4af6-9699-44f2-85ab-42898eda10d7" />
 
  # 10. Release Notes – Mzansi Recipes Final POE
+ 
  ### Overview
-
 This update marks the final Proof of Evidence (POE) release of Mzansi Recipes, introducing innovative features that significantly enhance the app's functionality, usability and resilience.
 
  ## 10.1 New Features 
